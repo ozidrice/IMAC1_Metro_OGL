@@ -1,0 +1,19 @@
+CONFIGURATION : 
+git init 						--> Initialiser 
+git remote add origin [LIEN] 	--> Changer d'origin 
+
+
+PULL (récuperer des changements) : 
+git pull origin [BRANCH]
+
+
+COMMIT & PUSH : 
+git add * 				--> Ajouter au prochain commit 
+git commit -m "message"	--> Creer un nouveau commit
+git push origin [BRANCH]	--> envoyer les commit
+
+	
+BRANCHES : 
+git checkout [BRANCH] --> Changer de branche 
+git checkout -b [BRANCH] --> Changer de branche (si elle n'existe pas en créé une nouvelle)
+
