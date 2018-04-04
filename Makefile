@@ -5,7 +5,7 @@ LDFLAGS = -lSDL -lm
 
 APP_BIN = minimetro
 
-
+LIB = -lSDL -lGLU -lGL -lSDL_image
 SRC_PATH = src
 OBJ_PATH = obj
 INC_PATH = -I include
@@ -19,7 +19,7 @@ all: $(APP_BIN)
 
 $(APP_BIN): $(OBJ_FILES)
 	@mkdir -p $(BIN_PATH)
-	$(CC) -o $(BIN_PATH)/$(APP_BIN) $(OBJ_FILES) $(LDFLAGS)
+	$(CC) -o $(BIN_PATH)/$(APP_BIN) $(OBJ_FILES) $(LDFLAGS) $(LIB)
 
 $(OBJ_PATH)/%.o: $(SRC_PATH)/%.c
 	@mkdir -p "$(@D)"
