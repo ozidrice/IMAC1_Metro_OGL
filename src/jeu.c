@@ -4,6 +4,7 @@
 #include <SDL/SDL_image.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
+#include "monde.h"
 
 static char *WINDOW_TITLE = "Jeu -- OpenGL";
 static unsigned int WINDOW_WIDTH = 800;
