@@ -1,0 +1,7 @@
+img : Image necessaires 
+map : Cartes des niveaux
+include : .h
+src : .c
+obj : .o générés
+bin : executable
+
