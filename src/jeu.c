@@ -30,16 +30,16 @@ void resizeViewport() {
 */
 void loop(){
     int loop = 1;
-    glClearColor(0.1, 0.1, 0.1 ,1.0);
+    Monde *monde = creerMonde();
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
 
-        
+        glClearColor(0.1, 0.1, 0.1 ,1.0);
+        afficherMonde(monde);
         //Detection des évènements
         SDL_Event e;
         while(SDL_PollEvent(&e)) {
             switch(e.type) {
-
                 case SDL_QUIT:
                 loop = 0;
                 break;
@@ -48,6 +48,7 @@ void loop(){
                 WINDOW_WIDTH = e.resize.w;
                 WINDOW_HEIGHT = e.resize.h;
                 resizeViewport();
+                break;
 
                 default:
                 break;

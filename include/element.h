@@ -1,8 +1,9 @@
-#ifndef _MONDE_
-#define _MONDE_
+#ifndef _ELEMENT_
+#define _ELEMENT_
 
 #include <stdlib.h>
 #include <stdio.h>
+#include "forme.h"
 
 typedef struct Element {
 	int pv;
@@ -15,7 +16,10 @@ typedef struct ennemi {
 	/* ... */
 }Ennemi;
 
-/* Initialise joueur/ennemis/obstacle */
+/* Malloc un element */
 Element* initElement(int pv, float x, float y, float taille, char * texture);
+
+/* Affiche un element sur la fenetre*/
+void afficheElement(Element *e);
 
 #endif
