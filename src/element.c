@@ -11,3 +11,10 @@ Element* initElement(int pv, float x, float y, float taille, char * texture){
 	return element;
 	
 }
+
+void moving(Element* e, float x, float y){
+	e->posx += x;
+	e->posy += y;
+}
+
+

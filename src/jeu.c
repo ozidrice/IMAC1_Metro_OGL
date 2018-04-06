@@ -39,7 +39,7 @@ void loop(){
         
 	// Bind la texture sur un carré puis débind et désactive la texture
 	glBindTexture(GL_TEXTURE_2D, textureID);
-	drawSquare();
+	/*drawSquare();*/
 	glBindTexture(GL_TEXTURE_2D,0);
 	glDisable(GL_TEXTURE_2D); 
 	
@@ -52,13 +52,38 @@ void loop(){
                 case SDL_QUIT:
                 loop = 0;
                 break;
-
+	
                 case SDL_VIDEORESIZE:
                 WINDOW_WIDTH = e.resize.w;
                 WINDOW_HEIGHT = e.resize.h;
                 resizeViewport();
+		break;
+		
+		case SDL_KEYDOWN:
+			switch(e.key.keysym.sym) {
 
-                default:
+				case SDLK_DOWN:
+				/* TO DO */ 
+		                break;
+
+				case SDLK_UP:
+				/* TO DO */ 
+			        break;
+
+				case SDLK_RIGHT:
+  	      		        /* TO DO */ 
+			        break;
+			
+				case SDLK_LEFT:
+			        /* TO DO */ 
+			        break;
+				
+				default:
+		                break;
+			}
+		break;
+
+		default:
                 break;
             }
         }

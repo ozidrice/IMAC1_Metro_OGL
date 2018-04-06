@@ -18,4 +18,7 @@ typedef struct ennemi {
 /* Initialise joueur/ennemis/obstacle */
 Element* initElement(int pv, float x, float y, float taille, char * texture);
 
+/*Déplace l'élement passé en paramètre */
+void moving(Element* e, float x, float y);
+
 #endif
