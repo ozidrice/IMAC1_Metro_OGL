@@ -1,49 +1,45 @@
 #include "monde.h"
 
-
-Element* initElement(int pv, float x, float y, float taille, char * texture){
-	Element* element = malloc(sizeof(Element));
-	if (!element)
-		return NULL;
-	element->pv= pv;
-	element->posx=x;
-	element->posy=y;
-	element->taille=taille;
-	return element;
-	
-}
-
-/* générer la texture à partir d'un nom de fichier */
-GLuint GenerateTexture(char *filename){
-	SDL_Surface* texture;
-	texture = IMG_Load(filename);
-	if(texture==NULL){
-		fprintf(stderr, "Problème de chargement de la texture.\n");
-	        return EXIT_FAILURE;
+/* génère texture à partir d'un chemin en paramètres */
+GLuint generateID(char *chemin){
+	SDL_Surface* texture_img;
+		texture_img= IMG_Load(chemin);
+		if(texture_img==NULL){
+			fprintf(stderr, "Le pointeur est NULL, déso.\n");
+		        return EXIT_FAILURE;
 		}
-	
 	GLuint textureID;
-	glGenTextures(1, &textureID);
+	glGenTextures(1,&textureID);
 	
 	glBindTexture(GL_TEXTURE_2D, textureID);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-
+	
 	glTexImage2D(
 		GL_TEXTURE_2D,
 		0,
-		GL_RGB,
-		texture->w,
-		texture->h,
+		GL_RGBA,
+		texture_img->w,
+		texture_img->h,
 		0,
-		GL_RGB,
+		GL_RGBA,
 		GL_UNSIGNED_BYTE,
-		texture->pixels);
-	
-	glBindTexture(GL_TEXTURE_2D,0);
+		texture_img->pixels);
 
-	/* libérer la mémoire allouée */
-	SDL_FreeSurface(texture);
-	
+	glBindTexture(GL_TEXTURE_2D,0);
+	SDL_FreeSurface(texture_img);
 	return textureID;
+}
+
+void drawSquare(){
+	glBegin(GL_QUADS);
+		glTexCoord2f(0,1);
+		glVertex2f(-0.5,-0.5);
+		glTexCoord2f(1,1);
+		glVertex2f(0.5,-0.5);
+		glTexCoord2f(1,0);
+		glVertex2f(0.5,0.5);
+		glTexCoord2f(0,0);
+		glVertex2f(-0.5,0.5);
+	glEnd();
 }
 
