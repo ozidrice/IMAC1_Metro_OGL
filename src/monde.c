@@ -1,6 +1,8 @@
 #include "monde.h"
 
-/* générer la texture à partir d'un nom de fichier */
+/* 
+*	Générer la texture à partir d'un nom de fichier 
+*/
 GLuint GenerateTexture(char *filename){
 	SDL_Surface* texture;
 	texture = IMG_Load(filename);
@@ -34,3 +36,29 @@ GLuint GenerateTexture(char *filename){
 	return textureID;
 }
 
+/* 
+*	Malloc un monde 
+*/
+Monde *creerMonde(){
+	Monde *m = (Monde *)malloc(sizeof(Monde));
+	m->joueur = creerJoueur();
+	m->liste_ennemis = NULL;
+	return m;
+}
+
+/*
+*	Créé un fond à la fenetre
+*/
+void creerBackground(){
+	glColor3f(.9,.9,.9);
+	traceRectanglePlein(-1.,1.,1.,-1.);
+}
+
+
+/*
+*	Affiche le monde et ses parametre dans la fenetre
+*/
+void afficherMonde(Monde *m){
+	creerBackground();
+	afficheJoueur(m->joueur);
+}

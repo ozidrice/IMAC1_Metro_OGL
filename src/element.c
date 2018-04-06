@@ -1,5 +1,8 @@
 #include "element.h"
 
+/* 
+*	Malloc un element 
+*/
 Element* initElement(int pv, float x, float y, float taille, char * texture){
 	Element* element = malloc(sizeof(Element));
 	if (!element)
@@ -10,4 +13,12 @@ Element* initElement(int pv, float x, float y, float taille, char * texture){
 	element->taille=taille;
 	return element;
 	
+}
+
+
+/* 
+*	Affiche un element sur la fenetre
+*/
+void afficheElement(Element *e){
+	traceRectanglePlein(e->posx, e->posy, e->posx+e->taille, e->posy+e->taille);
 }
