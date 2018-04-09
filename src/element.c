@@ -16,5 +16,3 @@ void moving(Element* e, float x, float y){
 	e->posx += x;
 	e->posy += y;
 }
-
-

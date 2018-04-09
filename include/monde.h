@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 
+
 /* Initialise texture */
 GLuint generateID(char *chemin);
 
