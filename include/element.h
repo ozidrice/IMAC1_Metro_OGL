@@ -1,5 +1,5 @@
-#ifndef _MONDE_
-#define _MONDE_
+#ifndef _ELEMENT_
+#define _ELEMENT_
 
 #include <stdlib.h>
 #include <stdio.h>
@@ -17,5 +17,8 @@ typedef struct ennemi {
 
 /* Initialise joueur/ennemis/obstacle */
 Element* initElement(int pv, float x, float y, float taille, char * texture);
+
+/*Déplace l'élement passé en paramètre */
+void moving(Element* e, float x, float y);
 
 #endif

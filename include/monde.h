@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-/* Charger une image */
-void ImgLoad(char *filename);
 
 /* Initialise texture */
-GLuint GenerateTexture(char *filename);
+GLuint generateID(char *chemin);
+
+/* Dessine carré */
+void drawSquare();
 
 #endif

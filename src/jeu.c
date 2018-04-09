@@ -1,10 +1,5 @@
-#include <stdio.h>
+#include "jeu.h"
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include "monde.h"
 
 static char *WINDOW_TITLE = "Jeu -- OpenGL";
 static unsigned int WINDOW_WIDTH = 800;
@@ -23,33 +18,66 @@ void resizeViewport() {
     SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
 }
 
-
-
 /*
 *   Boucle d'affichage
 */
 void loop(){
+    char *filename = "./img/0.png";
+    GLuint textureID = generateID(filename);
     int loop = 1;
     glClearColor(0.1, 0.1, 0.1 ,1.0);
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
-
+	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_TEXTURE_2D);
         
-        //Detection des évènements
+	// Bind la texture sur un carré puis débind et désactive la texture
+	glBindTexture(GL_TEXTURE_2D, textureID);
+	/*drawSquare();*/
+	glBindTexture(GL_TEXTURE_2D,0);
+	glDisable(GL_TEXTURE_2D); 
+	
+
         SDL_Event e;
+	
         while(SDL_PollEvent(&e)) {
             switch(e.type) {
 
                 case SDL_QUIT:
                 loop = 0;
                 break;
-
+	
                 case SDL_VIDEORESIZE:
                 WINDOW_WIDTH = e.resize.w;
                 WINDOW_HEIGHT = e.resize.h;
                 resizeViewport();
+		break;
+		
+		case SDL_KEYDOWN:
+			switch(e.key.keysym.sym) {
 
-                default:
+				case SDLK_DOWN:
+				/* TO DO */ 
+		                break;
+
+				case SDLK_UP:
+				/* TO DO */ 
+			        break;
+
+				case SDLK_RIGHT:
+  	      		        /* TO DO */ 
+			        break;
+			
+				case SDLK_LEFT:
+			        /* TO DO */ 
+			        break;
+				
+				default:
+		                break;
+			}
+		break;
+
+		default:
                 break;
             }
         }
@@ -61,6 +89,7 @@ void loop(){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
+	glDeleteTextures(1,&textureID);
 }
 
 
