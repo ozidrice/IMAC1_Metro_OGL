@@ -25,59 +25,60 @@ void loop(){
     char *filename = "./img/0.png";
     GLuint textureID = generateID(filename);
     int loop = 1;
-    glClearColor(0.1, 0.1, 0.1 ,1.0);
+    Monde *monde = creerMonde();
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
-	glClear(GL_COLOR_BUFFER_BIT);
-	glEnable(GL_TEXTURE_2D);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glEnable(GL_TEXTURE_2D);
         
 	// Bind la texture sur un carré puis débind et désactive la texture
-	glBindTexture(GL_TEXTURE_2D, textureID);
+        glBindTexture(GL_TEXTURE_2D, textureID);
 	/*drawSquare();*/
-	glBindTexture(GL_TEXTURE_2D,0);
-	glDisable(GL_TEXTURE_2D); 
-	
-
+        glBindTexture(GL_TEXTURE_2D,0);
+        glDisable(GL_TEXTURE_2D); 
+        
+        afficherMonde(monde);
+        //Detection des évènements
         SDL_Event e;
-	
+        
         while(SDL_PollEvent(&e)) {
             switch(e.type) {
-
                 case SDL_QUIT:
                 loop = 0;
                 break;
-	
+                
                 case SDL_VIDEORESIZE:
                 WINDOW_WIDTH = e.resize.w;
                 WINDOW_HEIGHT = e.resize.h;
                 resizeViewport();
-		break;
-		
-		case SDL_KEYDOWN:
-			switch(e.key.keysym.sym) {
+                break;
+                
+                case SDL_KEYDOWN:
+                switch(e.key.keysym.sym) {
 
-				case SDLK_DOWN:
+                    case SDLK_DOWN:
 				/* TO DO */ 
-		                break;
+                    break;
 
-				case SDLK_UP:
+                    case SDLK_UP:
 				/* TO DO */ 
-			        break;
+                    break;
 
-				case SDLK_RIGHT:
+                    case SDLK_RIGHT:
   	      		        /* TO DO */ 
-			        break;
-			
-				case SDLK_LEFT:
+                    break;
+                    
+                    case SDLK_LEFT:
 			        /* TO DO */ 
-			        break;
-				
-				default:
-		                break;
-			}
-		break;
+                    break;
+                    
+                    default:
+                    break;
+                }
+                break;
 
-		default:
+                default:
                 break;
             }
         }
@@ -89,7 +90,7 @@ void loop(){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
-	glDeleteTextures(1,&textureID);
+    glDeleteTextures(1,&textureID);
 }
 
 
@@ -113,7 +114,7 @@ int launch(){
         return 0;
     }
     SDL_WM_SetCaption(WINDOW_TITLE, NULL);
-        
+    
     loop();
 
     // Liberation des ressources associÃ©es Ã  la SDL

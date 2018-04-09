@@ -1,5 +1,6 @@
 #include "monde.h"
 
+
 /* génère texture à partir d'un chemin en paramètres */
 GLuint generateID(char *chemin){
 	SDL_Surface* texture_img;
@@ -30,16 +31,30 @@ GLuint generateID(char *chemin){
 	return textureID;
 }
 
-void drawSquare(){
-	glBegin(GL_QUADS);
-		glTexCoord2f(0,1);
-		glVertex2f(-0.5,-0.5);
-		glTexCoord2f(1,1);
-		glVertex2f(0.5,-0.5);
-		glTexCoord2f(1,0);
-		glVertex2f(0.5,0.5);
-		glTexCoord2f(0,0);
-		glVertex2f(-0.5,0.5);
-	glEnd();
+
+/* 
+*	Malloc un monde 
+*/
+Monde *creerMonde(){
+	Monde *m = (Monde *)malloc(sizeof(Monde));
+	m->joueur = creerJoueur();
+	m->liste_ennemis = NULL;
+	return m;
 }
 
+/*
+*	Créé un fond à la fenetre
+*/
+void creerBackground(){
+	glColor3f(.9,.9,.9);
+	traceRectanglePlein(-1.,1.,1.,-1.);
+}
+
+
+/*
+*	Affiche le monde et ses parametre dans la fenetre
+*/
+void afficherMonde(Monde *m){
+	creerBackground();
+	afficheJoueur(m->joueur);
+}
