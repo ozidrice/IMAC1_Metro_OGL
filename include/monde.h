@@ -8,9 +8,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include <joueur.h>
-#include <element.h>
-#include <forme.h>
+#include "element.h"
+#include "joueur.h"
+#include "forme.h"
 
 typedef struct monde
 {
@@ -26,7 +26,7 @@ void afficherMonde(Monde *m);
 Monde *creerMonde();
 
 /* Initialise texture */
-GLuint generateID(char *chemin);
+GLuint *generateID(char *chemin);
 
 /* Dessine carré */
 void drawSquare();

@@ -8,7 +8,7 @@
 typedef struct Element {
 	int pv;
 	float posx, posy, taille;
-	char* texture;
+	GLuint *texture;
 }Element;
 
 typedef struct ennemi {
@@ -17,7 +17,7 @@ typedef struct ennemi {
 }Ennemi;
 
 /* Malloc un element */
-Element* initElement(int pv, float x, float y, float taille, char * texture);
+Element* initElement(int pv, float x, float y, float taille, char * path_texture);
 
 /*Déplace l'élement passé en paramètre */
 void moving(Element* e, float x, float y);

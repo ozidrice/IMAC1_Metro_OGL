@@ -9,7 +9,6 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "monde.h"
-#include "joueur.h"
 /*
 *	Lance une partie
 *   @return : 
