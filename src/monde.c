@@ -2,17 +2,17 @@
 
 
 /* génère texture à partir d'un chemin en paramètres */
-GLuint generateID(char *chemin){
+GLuint *generateID(char *chemin){
 	SDL_Surface* texture_img;
 		texture_img= IMG_Load(chemin);
 		if(texture_img==NULL){
 			fprintf(stderr, "Le pointeur est NULL, déso.\n");
-		        return EXIT_FAILURE;
+		        return NULL;
 		}
-	GLuint textureID;
-	glGenTextures(1,&textureID);
+	GLuint *textureID = malloc(sizeof(GLuint));
+	glGenTextures(1,textureID);
 	
-	glBindTexture(GL_TEXTURE_2D, textureID);
+	glBindTexture(GL_TEXTURE_2D, *textureID);
 	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
 	
 	glTexImage2D(
@@ -30,7 +30,6 @@ GLuint generateID(char *chemin){
 	SDL_FreeSurface(texture_img);
 	return textureID;
 }
-
 
 /* 
 *	Malloc un monde 
@@ -56,5 +55,6 @@ void creerBackground(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-	afficheJoueur(m->joueur);
+	glColor3f(1.,0,0);
+	afficheElement(m->joueur);
 }

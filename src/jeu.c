@@ -47,20 +47,10 @@ int launch(){
 *   Boucle d'affichage
 */
 void loop(){
-    char *filename = "./img/0.png";
-    GLuint textureID = generateID(filename);
     int loop = 1;
     Monde *monde = creerMonde();
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
-
-        glClear(GL_COLOR_BUFFER_BIT);
-        glEnable(GL_TEXTURE_2D);
-        
-       // Bind la texture sur un carré puis débind et désactive la texture
-        glBindTexture(GL_TEXTURE_2D, textureID);
-        glBindTexture(GL_TEXTURE_2D,0);
-        glDisable(GL_TEXTURE_2D); 
 
         //Detection des évènements
         SDL_Event e;
@@ -85,7 +75,11 @@ void loop(){
             }
         }
         handle_inputs(monde);
+
+        glClear(GL_COLOR_BUFFER_BIT);
+        glEnable(GL_TEXTURE_2D);
         afficherMonde(monde);
+        glDisable(GL_TEXTURE_2D); 
 
         //Buffer
         SDL_GL_SwapBuffers();
@@ -94,7 +88,7 @@ void loop(){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
-    glDeleteTextures(1,&textureID);
+    // glDeleteTextures(1,&textureID);
 }
 
 /*
@@ -102,13 +96,13 @@ void loop(){
 */
 void handle_inputs(Monde *monde){
     if(KEYS[SDLK_DOWN] == 1)
-        deplacer(monde->joueur, 0, -1); 
+        moving(monde->joueur, 0, -1); 
     if(KEYS[SDLK_UP] == 1)
-        deplacer(monde->joueur, 0, 1); 
+        moving(monde->joueur, 0, 1); 
     if(KEYS[SDLK_RIGHT] == 1)
-        deplacer(monde->joueur, 1, 0); 
+        moving(monde->joueur, 1, 0); 
     if(KEYS[SDLK_LEFT] == 1)
-        deplacer(monde->joueur, -1, 0); 
+        moving(monde->joueur, -1, 0); 
 }
 
 /*
