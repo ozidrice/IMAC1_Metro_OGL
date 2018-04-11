@@ -77,11 +77,17 @@ void loop(){
         }
         handle_inputs(monde);
 
+<<<<<<< HEAD
        
  	glClear(GL_COLOR_BUFFER_BIT);
 	glEnable(GL_TEXTURE_2D);
         afficherMonde(monde);
 	//afficheElement(monde->joueur->e);
+=======
+        glClear(GL_COLOR_BUFFER_BIT);
+        glEnable(GL_TEXTURE_2D);
+        afficherMonde(monde);
+>>>>>>> 296767f831ef38fe47a29c14bf4f9af24b37365c
         glDisable(GL_TEXTURE_2D); 
 
         //Buffer
@@ -99,13 +105,13 @@ void loop(){
 */
 void handle_inputs(Monde *monde){
     if(KEYS[SDLK_DOWN] == 1)
-        deplacer(monde->joueur, 0, -1); 
+        moving(monde->joueur, 0, -1); 
     if(KEYS[SDLK_UP] == 1)
-        deplacer(monde->joueur, 0, 1); 
+        moving(monde->joueur, 0, 1); 
     if(KEYS[SDLK_RIGHT] == 1)
-        deplacer(monde->joueur, 1, 0); 
+        moving(monde->joueur, 1, 0); 
     if(KEYS[SDLK_LEFT] == 1)
-        deplacer(monde->joueur, -1, 0); 
+        moving(monde->joueur, -1, 0); 
 }
 
 /*

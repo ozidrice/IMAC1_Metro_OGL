@@ -55,5 +55,6 @@ void creerBackground(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-	afficheJoueur(m->joueur);
+	glColor3f(1.,0,0);
+	afficheElement(m->joueur);
 }

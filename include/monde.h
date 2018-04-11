@@ -9,7 +9,10 @@
 #include <stdio.h>
 
 #include "element.h"
+<<<<<<< HEAD
 #include "joueur.h"
+=======
+>>>>>>> 296767f831ef38fe47a29c14bf4f9af24b37365c
 #include "forme.h"
 
 typedef struct monde
