@@ -14,7 +14,8 @@
 typedef struct monde
 {
 	Joueur *joueur;
-	Ennemi **liste_ennemis; 
+	Ennemi *liste_ennemis; 
+	float defilement_x;
 }Monde;
 
 

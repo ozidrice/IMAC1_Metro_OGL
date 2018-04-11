@@ -11,28 +11,33 @@ typedef struct Element {
 	float vit_deplacement_x;
 	float vit_deplacement_y;
 	GLuint *texture;
+	struct Element *next;
 }Joueur, Ennemi, Bonus, Obstacle;
 
 
 /* Malloc un element */
 struct Element *initElement(int pv, float x, float y, float taille, float vit_deplacement_x, float vit_deplacement_y,char * path_texture);
 
-/*Déplace l'élement passé en paramètre */
+
+/*Ajoute un élément à la liste*/
+void addElementToList(struct Element *list, struct Element *elem);
+
+/* Déplace un élement */
 void moving(struct Element* e, float x, float y);
 
 /* Affiche un element sur la fenetre*/
 void afficheElement(struct Element *e);
 
-/*malloc un joueur*/
+/* Malloc un joueur */
 Joueur *creerJoueur();
 
-/*malloc un Ennemi*/
+/* Malloc un Ennemi */
 Ennemi *creerEnnemi();
 
-/*malloc un Bonus*/
+/* Malloc un Bonus */
 Bonus *creerBonus();
 
-/*malloc un Obstacle*/
+/* Malloc un Obstacle */
 Obstacle *creerObstacle();
 
 #endif

@@ -18,6 +18,23 @@ struct Element *initElement(int pv, float x, float y, float taille, float vit_de
 	return element;
 }
 
+/*
+*	Ajoute un élément à la liste
+*/
+void addElementToList(struct Element *list, struct Element *elem){
+	if(list == NULL)
+		list = elem;
+	else{
+		struct Element *tmp = list;
+		while(tmp->next != NULL)
+			tmp = tmp->next;
+		tmp->next = elem;		
+	}
+}
+
+/*
+*	Déplace un élement
+*/
 void moving(struct Element *e, float x, float y){
 	e->posx += x*e->vit_deplacement_x;
 	e->posy += y*e->vit_deplacement_y;
