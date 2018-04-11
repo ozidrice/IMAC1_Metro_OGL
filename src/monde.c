@@ -45,7 +45,7 @@ Monde *creerMonde(){
 *	Créé un fond à la fenetre
 */
 void creerBackground(){
-	glColor3f(.9,.9,.9);
+	glColor3f(.5,.5,.5);
 	traceRectanglePlein(-1.,1.,1.,-1.);
 }
 
@@ -55,6 +55,6 @@ void creerBackground(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-	glColor3f(1.,0,0);
+	glColor3f(1,1,1);
 	afficheElement(m->joueur);
 }
