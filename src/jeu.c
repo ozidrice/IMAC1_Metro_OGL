@@ -48,6 +48,7 @@ int launch(){
 */
 void loop(){
     int loop = 1;
+    glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
@@ -76,9 +77,11 @@ void loop(){
         }
         handle_inputs(monde);
 
-        glClear(GL_COLOR_BUFFER_BIT);
-        glEnable(GL_TEXTURE_2D);
+       
+ 	glClear(GL_COLOR_BUFFER_BIT);
+	glEnable(GL_TEXTURE_2D);
         afficherMonde(monde);
+	//afficheElement(monde->joueur->e);
         glDisable(GL_TEXTURE_2D); 
 
         //Buffer
