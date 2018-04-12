@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include "forme.h"
+#include <png.h>
 
 typedef struct Element {
 	int pv; //-1 si inf

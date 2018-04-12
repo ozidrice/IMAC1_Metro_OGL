@@ -39,7 +39,7 @@ void afficheElement(struct Element *e){
 *	malloc un joueur
 */ 
 Joueur *creerJoueur(){
-	return (Joueur*) initElement(5,-.9,0,.05,1/100.,1/100.,"img/0.png");
+	return (Joueur*) initElement(5,-.9,0,.05,1/100.,1/100.,"img/mario.png");
 }
 
 

@@ -79,8 +79,12 @@ void loop(){
 
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_TEXTURE_2D);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
         afficherMonde(monde);
-        glDisable(GL_TEXTURE_2D); 
+        glDisable(GL_TEXTURE_2D);
+	glDisable(GL_BLEND);
+
 
         //Buffer
         SDL_GL_SwapBuffers();
