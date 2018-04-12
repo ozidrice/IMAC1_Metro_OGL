@@ -1,5 +1,5 @@
 #include "monde.h"
-
+static float VIT_DEFILEMENT_DEFAUT = .005;
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -37,7 +37,10 @@ GLuint *generateID(char *chemin){
 Monde *creerMonde(){
 	Monde *m = (Monde *)malloc(sizeof(Monde));
 	m->joueur = creerJoueur();
+	m->liste_projectiles = NULL;
 	m->liste_ennemis = NULL;
+	m->defilement_x = 0;
+	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
 
@@ -56,5 +59,47 @@ void creerBackground(){
 void afficherMonde(Monde *m){
 	creerBackground();
 	glColor3f(1,1,1);
+
+	//Affichage joueur
 	afficheElement(m->joueur);
+	
+	//Affichage des projectile
+	Projectile *p_tmp = m->liste_projectiles;
+	while(p_tmp != NULL){
+		afficheElement(p_tmp);
+		p_tmp = p_tmp->next;
+	}
+
+	//Affichage des element qui défilent
+	glLoadIdentity();
+	glPushMatrix();
+	glTranslatef(m->defilement_x,0,0);
+	glPopMatrix();
+}
+
+/*
+*	Fait lancer et déplacer les projectiles necessaires
+*/
+void action(Monde *m){
+	//Deplacement projectiles
+	if(m->liste_projectiles != NULL){
+		Projectile *p_tmp = m->liste_projectiles;
+		do{
+			moving(p_tmp,1,1);
+			p_tmp = p_tmp->next;
+		}while(p_tmp != NULL);
+	}
+
+	//Creation des projectiles
+	if(m->joueur != NULL){
+		Projectile *p = lance_projectile(m->joueur);
+		if(p != NULL){
+			addElementToList(&m->liste_projectiles, p);
+		}
+	}
+}
+
+void defilerMonde(Monde *m){
+	m->defilement_x -= m->vit_defilement_x;
+	action(m);
 }

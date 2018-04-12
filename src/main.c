@@ -5,9 +5,7 @@
 
 int main(int argc, char const *argv[])
 {	
-	launch();
-	//if(launch() == 1)
-	//	return EXIT_SUCCESS;
-	//return EXIT_FAILURE;
-	return 0;
+	if(launch() == 1)
+		return EXIT_SUCCESS;
+	return EXIT_FAILURE;
 }

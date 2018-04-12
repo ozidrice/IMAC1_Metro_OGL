@@ -1,11 +1,11 @@
 CC = gcc 
-CFLAGS = -Wall -O2 -g `libpng12-config --cflags`
+CFLAGS = -Wall -O2 -g
 LDFLAGS = -lSDL -lm 
 
 
 APP_BIN = minimetro
 
-LIB = -lSDL -lGLU -lGL -lSDL_image `libpng12-config --libs`
+LIB = -lSDL -lGLU -lGL -lSDL_image
 SRC_PATH = src
 OBJ_PATH = obj
 INC_PATH = -I include

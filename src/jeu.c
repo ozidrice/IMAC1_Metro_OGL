@@ -34,6 +34,7 @@ int launch(){
        KEYS[i] = 0;
     }
 
+    preload_texture();
     loop();
 
     // Liberation des ressources associÃ©es Ã  la SDL
@@ -76,6 +77,7 @@ void loop(){
             }
         }
         handle_inputs(monde);
+        defilerMonde(monde);
 
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_TEXTURE_2D);
