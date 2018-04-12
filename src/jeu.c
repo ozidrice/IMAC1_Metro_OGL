@@ -34,6 +34,7 @@ int launch(){
        KEYS[i] = 0;
     }
 
+    preload_texture();
     loop();
 
     // Liberation des ressources associÃ©es Ã  la SDL

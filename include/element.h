@@ -17,8 +17,11 @@ typedef struct Element {
 	float vit_deplacement_y;
 	
 	//Projectile
-	float frequence_projectile;
+	Uint32 intervalle_projectile; //en ms
+	Uint32 last_launch; //Timer du dernier projectile lancé 
 	float taille_projectile;
+	float vit_deplacement_projectile_x;
+	float vit_deplacement_projectile_y;
 
 	//Texture
 	GLuint *texture;
@@ -27,19 +30,33 @@ typedef struct Element {
 	struct Element *next;
 }Joueur, Ennemi, Bonus, Obstacle, Projectile;
 
+void preload_texture();
 
 /* Malloc un element */
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	float frequence_projectile, float taille_projectile,
-	char * path_texture);
+	Uint32 intervalle_projectile, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	GLuint *texture);
 
 
 /*Ajoute un élément à la liste*/
-void addElementToList(struct Element *list, struct Element *elem);
+void addElementToList(struct Element **list, struct Element *elem);
 
-/* Déplace un élement */
+/*	Attaque la cible,
+*	return 1 si la cible meurt
+*	0 sinon 
+*/
+int attaque(struct Element *attanquant, struct Element *cible);
+
+/*
+*	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
+*	Return le projectile si a été lancé
+*	NULL sinon
+*/
+Projectile *lance_projectile(struct Element *e);
+
+/* Déplace un élement en prenant compte de sa vitesse de déplacement*/
 void moving(struct Element* e, float x, float y);
 
 /* Affiche un element sur la fenetre*/
@@ -58,6 +75,6 @@ Bonus *creerBonus(float x, float y);
 Obstacle *creerObstacle(float x, float y);
 
 /* Malloc un Projectile */
-Projectile *creerProjectile(float x, float y);
+Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y);
 
 #endif
