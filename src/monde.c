@@ -1,5 +1,5 @@
 #include "monde.h"
-
+static float VIT_DEFILEMENT_DEFAUT = .005;
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -38,6 +38,8 @@ Monde *creerMonde(){
 	Monde *m = (Monde *)malloc(sizeof(Monde));
 	m->joueur = creerJoueur();
 	m->liste_ennemis = NULL;
+	m->defilement_x = 0;
+	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
 
@@ -56,5 +58,18 @@ void creerBackground(){
 void afficherMonde(Monde *m){
 	creerBackground();
 	glColor3f(1,1,1);
+
+	//Affichage joueur
 	afficheElement(m->joueur);
+
+	//Affichage des element qui défilent
+	glLoadIdentity();
+	glPushMatrix();
+	glTranslatef(m->defilement_x,0,0);
+	glPopMatrix();
+}
+
+
+void defilerMonde(Monde *m){
+	m->defilement_x -= m->vit_defilement_x;
 }

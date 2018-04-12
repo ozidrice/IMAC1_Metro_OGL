@@ -14,8 +14,10 @@
 typedef struct monde
 {
 	Joueur *joueur;
+	Projectile *liste_projectiles;
 	Ennemi *liste_ennemis; 
 	float defilement_x;
+	float vit_defilement_x;
 }Monde;
 
 
@@ -28,7 +30,7 @@ Monde *creerMonde();
 /* Initialise texture */
 GLuint *generateID(char *chemin);
 
-/* Dessine carré */
-void drawSquare();
+void defilerMonde(Monde *m);
+
 
 #endif

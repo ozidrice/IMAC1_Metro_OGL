@@ -76,6 +76,7 @@ void loop(){
             }
         }
         handle_inputs(monde);
+        defilerMonde(monde);
 
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_TEXTURE_2D);
