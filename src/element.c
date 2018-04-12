@@ -84,20 +84,6 @@ void afficheElement(struct Element *e){
 	glBindTexture(GL_TEXTURE_2D,0);
 }
 
-/*
-*	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
-*	Return le projectile si a été lancé
-*	NULL sinon
-*/
-Projectile *lance_projectile(struct Element *e){
-	Uint32 now = SDL_GetTicks();
-	if(now - e->last_launch > e->intervalle_projectile){
-		e->last_launch = SDL_GetTicks();
-		return creerProjectile(e->posx+(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
-	}
-	return NULL;
-}
-
 
 /*___________________JOUEUR_____________________*/
 
@@ -114,7 +100,7 @@ Joueur *creerJoueur(){
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
 	float taille_projectile = .03;
-	float vit_deplacement_projectile_x = 1/20.;
+	float vit_deplacement_projectile_x = -1/20.;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_JOUEUR;
 	return (Joueur*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
@@ -194,6 +180,28 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_PROJECTILE;
 	return (Projectile*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+}
+
+/*
+*	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
+*	Return le projectile si a été lancé
+*	NULL sinon
+*/
+Projectile *lance_projectile(struct Element *e){
+	if(e == NULL || e->vit_deplacement_projectile_x == 0)
+		return NULL;
+
+	Uint32 now = SDL_GetTicks();
+	if(now - e->last_launch > e->intervalle_projectile){
+		e->last_launch = SDL_GetTicks();
+		if(e->vit_deplacement_projectile_x > 0){
+			return creerProjectile(e->posx+(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+		}else{
+			return creerProjectile(e->posx-(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+
+		}
+	}
+	return NULL;
 }
 
 
