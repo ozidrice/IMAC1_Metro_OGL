@@ -8,6 +8,8 @@
 #include <GL/glu.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <png.h>
+
 #include "monde.h"
 #include "element.h"
 /*

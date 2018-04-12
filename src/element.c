@@ -5,7 +5,7 @@ static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 
 void preload_texture(){
-	TEXTURE_JOUEUR = generateID("img/perso.png");
+	TEXTURE_JOUEUR = generateID("img/player.png");
 	TEXTURE_PROJECTILE = generateID("img/projectile.png");
 
 }

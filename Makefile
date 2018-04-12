@@ -1,6 +1,6 @@
-CC = gcc
+CC = gcc 
 CFLAGS = -Wall -O2 -g
-LDFLAGS = -lSDL -lm
+LDFLAGS = -lSDL -lm 
 
 
 APP_BIN = minimetro
