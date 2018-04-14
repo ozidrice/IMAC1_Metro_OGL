@@ -1,5 +1,5 @@
 #include "monde.h"
-static float VIT_DEFILEMENT_DEFAUT = 0; //n fois la vitesse de déplacement définie de l'élement
+static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -94,17 +94,16 @@ void action(Monde *m){
 	if(m->liste_projectiles != NULL){	
 		Projectile *p_tmp = m->liste_projectiles;
 		do{
-			if(estEnColision(m->joueur,p_tmp))
-				printf("");
+			// if(estEnColision(m->joueur,p_tmp))
 				//TODO
+			p_tmp = p_tmp->next;
 		}while(p_tmp != NULL);
 	}
 	//Avec un obstacle
 	if(m->liste_obstacle != NULL){	
 		Obstacle *o_tmp = m->liste_obstacle;
 		do{
-			if(estEnColision(m->joueur,o_tmp))
-				printf("");
+			// if(estEnColision(m->joueur,o_tmp))
 				//TODO
 			o_tmp = o_tmp->next;
 		}while(o_tmp != NULL);
