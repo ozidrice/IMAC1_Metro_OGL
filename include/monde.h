@@ -34,10 +34,16 @@ void chargerMonde(Monde *m);
 /* Malloc un monde */
 Monde *creerMonde();
 
+/* free tous les élements du monde */
+void freeMonde(Monde *m);
+
 /* Initialise texture */
 GLuint *generateID(char *chemin);
 
 void defilerMonde(Monde *m);
+
+/*Fait lancer et déplacer les élements necessaires*/
+void action(Monde *m);
 
 
 #endif

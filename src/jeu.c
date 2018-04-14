@@ -48,7 +48,7 @@ int launch(){
 *   Boucle d'affichage
 */
 void loop(){
-    int loop = 1;
+    int loop = 0;
     glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
     chargerMonde(monde); //A REMPLIR
@@ -97,7 +97,8 @@ void loop(){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
-    // glDeleteTextures(1,&textureID);
+    freeMonde(monde);
+    free_texture();
 }
 
 /*

@@ -32,6 +32,7 @@ typedef struct Element {
 }Joueur, Ennemi, Bonus, Obstacle, Projectile;
 
 void preload_texture();
+void free_texture();
 
 /* Malloc un element */
 struct Element *initElement(int pv, int pa, 
@@ -40,6 +41,8 @@ struct Element *initElement(int pv, int pa,
 	Uint32 intervalle_projectile, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
 	GLuint *texture);
 
+/*	Free la liste d'éléments */
+void freeElement(struct Element *e);
 
 /*Ajoute un élément à la liste*/
 void addElementToList(struct Element **list, struct Element *elem);

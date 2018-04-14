@@ -12,6 +12,11 @@ void preload_texture(){
 
 }
 
+void free_texture(){
+	glDeleteTextures(1,TEXTURE_JOUEUR);
+	glDeleteTextures(1,TEXTURE_PROJECTILE);
+	glDeleteTextures(1,TEXTURE_OBSTACLE);
+}
 /* 
 *	Malloc un element 
 */
@@ -39,6 +44,16 @@ struct Element *initElement(int pv, int pa,
 	element->texture = texture;
 	element->next = 0;
 	return element;
+}
+
+/*
+*	Free la liste d'éléments
+*/
+void freeElement(struct Element *e){
+	if(e != NULL){
+		freeElement(e->next);
+		free(e);
+	}
 }
 
 /*

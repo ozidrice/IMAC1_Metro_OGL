@@ -132,3 +132,13 @@ void chargerMonde(Monde *m){
 	Obstacle *o = creerObstacle(.8,0);
 	ajouterObstacle(m,o);
 }
+
+/*
+*	free tous les élements du monde
+*/
+void freeMonde(Monde *m){
+	freeElement(m->joueur);
+	freeElement(m->liste_obstacle);
+	freeElement(m->liste_projectiles);
+	freeElement(m->liste_ennemis);
+}
