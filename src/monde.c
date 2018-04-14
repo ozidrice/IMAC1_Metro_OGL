@@ -95,6 +95,7 @@ void action(Monde *m){
 		Projectile *p_tmp = m->liste_projectiles;
 		do{
 			if(estEnColision(m->joueur,p_tmp))
+				printf("");
 				//TODO
 		}while(p_tmp != NULL);
 	}
@@ -103,6 +104,7 @@ void action(Monde *m){
 		Obstacle *o_tmp = m->liste_obstacle;
 		do{
 			if(estEnColision(m->joueur,o_tmp))
+				printf("");
 				//TODO
 			o_tmp = o_tmp->next;
 		}while(o_tmp != NULL);
