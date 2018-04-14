@@ -51,6 +51,7 @@ void loop(){
     int loop = 1;
     glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
+    chargerMonde(monde); //A REMPLIR
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
 
@@ -78,6 +79,7 @@ void loop(){
         }
         handle_inputs(monde);
         defilerMonde(monde);
+        action(monde);
 
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_TEXTURE_2D);

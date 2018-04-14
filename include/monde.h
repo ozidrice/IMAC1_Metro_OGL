@@ -17,13 +17,19 @@ typedef struct monde
 	Joueur *joueur;
 	Projectile *liste_projectiles;
 	Ennemi *liste_ennemis; 
-	float defilement_x;
+	Obstacle *liste_obstacle;
 	float vit_defilement_x;
 }Monde;
 
 
 /*	Affiche le monde et ses parametre dans la fenetre */
 void afficherMonde(Monde *m);
+
+/*	Ajoute l'obstacle o au Monde */
+void ajouterObstacle(Monde *m, Obstacle *o);
+
+/*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
+void chargerMonde(Monde *m);
 
 /* Malloc un monde */
 Monde *creerMonde();

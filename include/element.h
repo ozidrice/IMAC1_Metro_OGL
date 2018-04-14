@@ -50,17 +50,10 @@ void addElementToList(struct Element **list, struct Element *elem);
 */
 int attaque(struct Element *attanquant, struct Element *cible);
 
-/*
-*	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
-*	Return le projectile si a été lancé
-*	NULL sinon
-*/
-Projectile *lance_projectile(struct Element *e);
-
-/* Déplace un élement en prenant compte de sa vitesse de déplacement*/
+/* Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement*/
 void moving(struct Element* e, float x, float y);
 
-/* Affiche un element sur la fenetre*/
+/* Affiche la liste d'élément e sur la fenetre*/
 void afficheElement(struct Element *e);
 
 /* Malloc un joueur */
@@ -77,5 +70,17 @@ Obstacle *creerObstacle(float x, float y);
 
 /* Malloc un Projectile */
 Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y);
+
+/*	Renvoie 1 si les elements sont en colision
+*	0 sinon
+*/
+int estEnColision(struct Element *e1, struct Element *e2);
+
+/*
+*	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
+*	Return le projectile si a été lancé
+*	NULL sinon
+*/
+Projectile *lance_projectile(struct Element *e);
 
 #endif

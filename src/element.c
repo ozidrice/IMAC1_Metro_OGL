@@ -3,10 +3,12 @@
 
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
+static GLuint *TEXTURE_OBSTACLE;
 
 void preload_texture(){
 	TEXTURE_JOUEUR = generateID("img/player.png");
 	TEXTURE_PROJECTILE = generateID("img/projectile.png");
+	TEXTURE_OBSTACLE = generateID("img/0.png");
 
 }
 
@@ -68,20 +70,39 @@ int attaque(struct Element *attanquant, struct Element *cible){
 
 
 /*
-*	Déplace un élement en prenant compte de sa vitesse de déplacement
+*	Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement
 */
 void moving(struct Element *e, float x, float y){
-	e->posx += x*e->vit_deplacement_x;
-	e->posy += y*e->vit_deplacement_y;
+	if(e != NULL){
+		e->posx += x*e->vit_deplacement_x;
+		e->posy += y*e->vit_deplacement_y;
+		moving(e->next,x,y);
+	}
+}
+
+/*
+*	Renvoie 1 si les elements sont en colision
+*	0 sinon
+*/
+int estEnColision(struct Element *e1, struct Element *e2){
+	if(e1 == NULL || e2 == NULL)
+		return 0;
+	if(e1->posx >= e2->posx - e2->taille && e1->posx <= e2->posx + e2->taille &&
+		e1->posy >= e2->posy - e2->taille && e1->posy <= e2->posy + e2->taille)
+		return 1;
+	return 0;
 }
 
 /* 
-*	Affiche un element sur la fenetre
+*	Affiche la liste d'élément e sur la fenetre
 */
 void afficheElement(struct Element *e){
-	glBindTexture(GL_TEXTURE_2D, *(e->texture));
-	traceRectanglePlein(e->posx-(e->taille/2), e->posy-(e->taille/2), e->posx+(e->taille/2), e->posy+(e->taille/2));
-	glBindTexture(GL_TEXTURE_2D,0);
+	if(e != NULL){
+		glBindTexture(GL_TEXTURE_2D, *(e->texture));
+		traceRectanglePlein(e->posx-(e->taille/2), e->posy-(e->taille/2), e->posx+(e->taille/2), e->posy+(e->taille/2));
+		glBindTexture(GL_TEXTURE_2D,0);
+		afficheElement(e->next);
+	}
 }
 
 
@@ -100,7 +121,7 @@ Joueur *creerJoueur(){
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
 	float taille_projectile = .03;
-	float vit_deplacement_projectile_x = -1/20.;
+	float vit_deplacement_projectile_x = 1/20.;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_JOUEUR;
 	return (Joueur*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
@@ -162,7 +183,7 @@ Obstacle *creerObstacle(float x, float y){
 	float taille_projectile = 0;
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
-	GLuint *texture = NULL;
+	GLuint *texture = TEXTURE_OBSTACLE;
 	return (Obstacle*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
