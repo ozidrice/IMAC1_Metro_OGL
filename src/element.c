@@ -5,6 +5,9 @@ static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
 
+/*
+*	Précharge les textures pour pouvoir les utiliser plus tard
+*/
 void preload_texture(){
 	TEXTURE_JOUEUR = generateID("img/player.png");
 	TEXTURE_PROJECTILE = generateID("img/projectile.png");
@@ -12,11 +15,15 @@ void preload_texture(){
 
 }
 
+/*
+*	Free les textures chargés
+*/
 void free_texture(){
 	glDeleteTextures(1,TEXTURE_JOUEUR);
 	glDeleteTextures(1,TEXTURE_PROJECTILE);
 	glDeleteTextures(1,TEXTURE_OBSTACLE);
 }
+
 /* 
 *	Malloc un element 
 */

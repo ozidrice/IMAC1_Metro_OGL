@@ -48,7 +48,7 @@ int launch(){
 *   Boucle d'affichage
 */
 void loop(){
-    int loop = 0;
+    int loop = 1;
     glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
     chargerMonde(monde); //A REMPLIR
