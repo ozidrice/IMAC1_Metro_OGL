@@ -118,6 +118,13 @@ void ajouterObstacle(Monde *m, Obstacle *o){
 }
 
 /*
+*	Ajoute l'ennemi en au monde
+*/
+void ajouterEnnemi(Monde *m, Ennemi *en){
+	addElementToList(&m->liste_ennemis,en);
+}
+
+/*
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
@@ -127,11 +134,69 @@ void defilerMonde(Monde *m){
 /*
 *	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
 */
-void chargerMonde(Monde *m){
-	//JUSTE POUR TEST
-	Obstacle *o = creerObstacle(.8,0);
-	ajouterObstacle(m,o);
+
+
+Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
+{
+    /*nbOctetsParPixel représente le nombre d'octets utilisés pour stocker un pixel.
+    En multipliant ce nombre d'octets par 8 (un octet = 8 bits), on obtient la profondeur de couleur
+    de l'image : 8, 16, 24 ou 32 bits.*/
+    int nbOctetsParPixel = surface->format->BytesPerPixel;
+    /* Ici p est l'adresse du pixel que l'on veut connaitre */
+    /*surface->pixels contient l'adresse du premier pixel de l'image*/
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * nbOctetsParPixel;
+
+    /*Gestion différente suivant le nombre d'octets par pixel de l'image*/
+    switch(nbOctetsParPixel)
+    {
+        case 1:
+            return *p;
+
+        case 2:
+            return *(Uint16 *)p;
+        case 3:
+	     /*Suivant l'architecture de la machine*/
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                return p[0] << 16 | p[1] << 8 | p[2];
+            else
+                return p[0] | p[1] << 8 | p[2] << 16;
+
+        case 4:
+            return *(Uint32 *)p;
+        default:
+            return 0; 
+    }
 }
+
+void chargerMonde(Monde *m){
+
+	SDL_Surface *map = NULL;
+	map = SDL_LoadBMP("img/2.bmp");
+	
+	int x,y;
+	Uint8 r, g,b,a;
+	
+	for(y=0; y<map->h; y++)
+	{
+		for(x=0; x<map->w; x++)
+		{
+			Uint32 pixel = obtenirPixel(map,x,y);
+			SDL_GetRGBA(pixel, map->format, &r, &g, &b, &a);
+			if(r==255 && g==165 && b==0) /* Orange == obstacle */
+			{
+				Obstacle *o = creerObstacle(.8,0.4);
+				ajouterObstacle(m,o);
+			}
+			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
+			{
+				Ennemi *en = creerEnnemi(.4,0.4); 
+				ajouterEnnemi(m,en);
+			}	
+		}
+	}
+	SDL_FreeSurface(map);
+}
+
 
 /*
 *	free tous les élements du monde
