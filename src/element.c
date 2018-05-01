@@ -1,5 +1,6 @@
 #include "element.h"
 #include "monde.h"
+#include "jeu.h"
 
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
@@ -79,6 +80,17 @@ void addElementToList(struct Element **list, struct Element *elem){
 }
 
 /*
+*	Retire et free l'élément de la liste
+*/
+void removeElementFromList(struct Element **elem){
+	if(*elem != NULL){	
+		struct Element *fils = (*elem)->next;
+		free(*elem);
+		*elem = fils;
+	}	
+}
+
+/*
 *	Attaque la cible,
 *	return 1 si la cible meurt
 *	0 sinon
@@ -93,12 +105,18 @@ int attaque(struct Element *attanquant, struct Element *cible){
 
 /*
 *	Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement
+*	Si free = 1 : Free l'élément si il sort de l'écran
 */
-void moving(struct Element *e, float x, float y){
-	if(e != NULL){
-		e->posx += x*e->vit_deplacement_x;
-		e->posy += y*e->vit_deplacement_y;
-		moving(e->next,x,y);
+void moving(struct Element **e, float x, float y, int free){
+	if(*e != NULL){
+		(*e)->posx += x*(*e)->vit_deplacement_x;
+		(*e)->posy += y*(*e)->vit_deplacement_y;
+		if(free == 1 && ( (*e)->posx > 1 || (*e)->posy > 1 || (*e)->posx < -1 || (*e)->posy < -1 ) ){
+			removeElementFromList(e);
+			moving(e,x,y,free);
+		}else{
+			moving(&((*e)->next),x,y,free);
+		}
 	}
 }
 

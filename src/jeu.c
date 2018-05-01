@@ -2,9 +2,10 @@
 void resizeViewport();
 void handle_inputs();
 
-static char *WINDOW_TITLE = "Jeu -- OpenGL";
+
 static unsigned int WINDOW_WIDTH = 800;
 static unsigned int WINDOW_HEIGHT = 800;
+static char *WINDOW_TITLE = "Jeu -- OpenGL";
 static const unsigned int BIT_PER_PIXEL = 32;
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
@@ -78,7 +79,6 @@ void loop(){
             }
         }
         handle_inputs(monde);
-        defilerMonde(monde);
         action(monde);
 
         glClear(GL_COLOR_BUFFER_BIT);
@@ -106,13 +106,13 @@ void loop(){
 */
 void handle_inputs(Monde *monde){
     if(KEYS[SDLK_DOWN] == 1)
-        moving(monde->joueur, 0, -1); 
+        moving(&(monde->joueur), 0, -1, 0); 
     if(KEYS[SDLK_UP] == 1)
-        moving(monde->joueur, 0, 1); 
+        moving(&(monde->joueur), 0, 1, 0); 
     if(KEYS[SDLK_RIGHT] == 1)
-        moving(monde->joueur, 1, 0); 
+        moving(&(monde->joueur), 1, 0, 0); 
     if(KEYS[SDLK_LEFT] == 1)
-        moving(monde->joueur, -1, 0); 
+        moving(&(monde->joueur), -1, 0, 0); 
 }
 
 /*

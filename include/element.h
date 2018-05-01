@@ -43,6 +43,9 @@ struct Element *initElement(int pv, int pa,
 /*Ajoute un élément à la liste*/
 void addElementToList(struct Element **list, struct Element *elem);
 
+/*Retire et free l'élément de la liste*/
+void removeElementFromList(struct Element **elem);
+
 /*	Attaque la cible,
 *	return 1 si la cible meurt
 *	0 sinon 
@@ -50,7 +53,7 @@ void addElementToList(struct Element **list, struct Element *elem);
 int attaque(struct Element *attanquant, struct Element *cible);
 
 /* Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement*/
-void moving(struct Element* e, float x, float y);
+void moving(struct Element** e, float x, float y, int free);
 
 /* Affiche la liste d'élément e sur la fenetre*/
 void afficheElement(struct Element *e);

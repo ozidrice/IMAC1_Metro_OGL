@@ -41,6 +41,7 @@ void freeMonde(Monde *m);
 GLuint *generateID(char *chemin);
 
 void defilerMonde(Monde *m);
+void defilerProjectiles(Monde *m);
 
 /*Fait lancer et déplacer les élements necessaires*/
 void action(Monde *m);

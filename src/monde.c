@@ -72,14 +72,9 @@ void afficherMonde(Monde *m){
 *	Fait lancer et déplacer les élements necessaires
 */
 void action(Monde *m){
-	//Deplacement projectiles
-	if(m->liste_projectiles != NULL){
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			moving(p_tmp,1,1);
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
+	defilerMonde(m);
+	defilerProjectiles(m);
+
 
 	//Creation des projectiles
 	if(m->joueur != NULL){
@@ -89,25 +84,25 @@ void action(Monde *m){
 		}
 	}
 
-	//Test colisions joueur
-	//Avec un projectile
-	if(m->liste_projectiles != NULL){	
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			// if(estEnColision(m->joueur,p_tmp))
-				//TODO
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
-	//Avec un obstacle
-	if(m->liste_obstacle != NULL){	
-		Obstacle *o_tmp = m->liste_obstacle;
-		do{
-			// if(estEnColision(m->joueur,o_tmp))
-				//TODO
-			o_tmp = o_tmp->next;
-		}while(o_tmp != NULL);
-	}
+	// //Test colisions joueur
+	// //Avec un projectile
+	// if(m->liste_projectiles != NULL){	
+	// 	Projectile *p_tmp = m->liste_projectiles;
+	// 	do{
+	// 		// if(estEnColision(m->joueur,p_tmp))
+	// 			//TODO
+	// 		p_tmp = p_tmp->next;
+	// 	}while(p_tmp != NULL);
+	// }
+	// //Avec un obstacle
+	// if(m->liste_obstacle != NULL){	
+	// 	Obstacle *o_tmp = m->liste_obstacle;
+	// 	do{
+	// 		// if(estEnColision(m->joueur,o_tmp))
+	// 			//TODO
+	// 		o_tmp = o_tmp->next;
+	// 	}while(o_tmp != NULL);
+	// }
 }
 
 /*
@@ -121,7 +116,14 @@ void ajouterObstacle(Monde *m, Obstacle *o){
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(m->liste_obstacle,-VIT_DEFILEMENT_DEFAUT ,0);
+	moving(&(m->liste_obstacle),-VIT_DEFILEMENT_DEFAUT ,0,1);
+}
+
+/*
+*	Fait défiler les projectiles à leur vitesse de déplacement
+*/
+void defilerProjectiles(Monde *m){
+	moving(&(m->liste_projectiles),1,1,1);
 }
 
 /*
