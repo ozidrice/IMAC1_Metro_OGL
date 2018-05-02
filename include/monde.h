@@ -28,8 +28,8 @@ void afficherMonde(Monde *m);
 /* Ajoute l'obstacle o au Monde */
 void ajouterObstacle(Monde *m, Obstacle *o);
 
-/* Ajoute l'ennemi e au Monde */
-void ajouterEnnemi(Monde *m, Ennemi *e);
+/* Ajoute l'ennemi en au Monde */
+void ajouterEnnemi(Monde *m, Ennemi *en);
 
 /* Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
 void chargerMonde(Monde *m);

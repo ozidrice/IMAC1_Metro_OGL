@@ -173,19 +173,6 @@ Ennemi *creerEnnemi(float x, float y){
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_ENNEMI;
 	return (Ennemi*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
-
-/*int pv = -1;
-	int pa = 1; 
-	float taille = .1; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
-	Uint32 intervalle_projectile = 0;
-	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
-	GLuint *texture = TEXTURE_OBSTACLE;
-	return (Obstacle*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);*/
-
 }
 
 

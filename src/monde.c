@@ -65,6 +65,8 @@ void afficherMonde(Monde *m){
 	afficheElement(m->liste_projectiles);
 
 	afficheElement(m->liste_obstacle);
+
+	afficheElement(m->liste_ennemis);
 		
 }
 
@@ -176,21 +178,27 @@ void chargerMonde(Monde *m){
 	int x,y;
 	Uint8 r, g,b,a;
 	
-	for(y=0; y<map->h; y++)
+	for(y=0; y<map->h; y+=100)
 	{
-		for(x=0; x<map->w; x++)
+		for(x=0; x<map->w; x+=100)
 		{
 			Uint32 pixel = obtenirPixel(map,x,y);
 			SDL_GetRGBA(pixel, map->format, &r, &g, &b, &a);
 			if(r==255 && g==165 && b==0) /* Orange == obstacle */
 			{
-				Obstacle *o = creerObstacle(.8,0.4);
+				Obstacle *o = creerObstacle(x/1000,y/1000);
+				printf("x : %f, y: %f\n", o->posx, o->posy); 
 				ajouterObstacle(m,o);
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
-				Ennemi *en = creerEnnemi(.4,0.4); 
+				Ennemi *en = creerEnnemi(0.9,y/1000);
+				printf("x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
+			}
+			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
+			{
+				/* TO DO */
 			}	
 		}
 	}
