@@ -78,6 +78,11 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 */
 int estEnColision(struct Element *e1, struct Element *e2);
 
+/*	Test colisions entre les listes d'elem
+*	Retire les elements mort des listes
+*/
+void colision(struct Element **liste1, struct Element **liste2);
+
 /*
 *	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
 *	Return le projectile si a été lancé

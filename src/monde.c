@@ -1,5 +1,5 @@
 #include "monde.h"
-static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
+static float VIT_DEFILEMENT_DEFAUT = 0; //n fois la vitesse de déplacement définie de l'élement
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -61,55 +61,55 @@ void afficherMonde(Monde *m){
 	creerBackground();
 
 	afficheElement(m->joueur);
-	
 	afficheElement(m->liste_projectiles);
-
+	afficheElement(m->liste_ennemis);
 	afficheElement(m->liste_obstacle);
-		
 }
 
 /*
-*	Fait lancer et déplacer les élements necessaires
+*	Fait les actions necessaires à la prochaine frame
 */
 void action(Monde *m){
 	defilerMonde(m);
 	defilerProjectiles(m);
-
-
-	//Creation des projectiles
-	if(m->joueur != NULL){
-		Projectile *p_tmp = lance_projectile(m->joueur);
-		if(p_tmp != NULL){
-			addElementToList(&m->liste_projectiles, p_tmp);
-		}
-	}
-
-	// //Test colisions joueur
-	// //Avec un projectile
-	// if(m->liste_projectiles != NULL){	
-	// 	Projectile *p_tmp = m->liste_projectiles;
-	// 	do{
-	// 		// if(estEnColision(m->joueur,p_tmp))
-	// 			//TODO
-	// 		p_tmp = p_tmp->next;
-	// 	}while(p_tmp != NULL);
-	// }
-	// //Avec un obstacle
-	// if(m->liste_obstacle != NULL){	
-	// 	Obstacle *o_tmp = m->liste_obstacle;
-	// 	do{
-	// 		// if(estEnColision(m->joueur,o_tmp))
-	// 			//TODO
-	// 		o_tmp = o_tmp->next;
-	// 	}while(o_tmp != NULL);
-	// }
+	generateNewProjectiles(m);
+	colisionsJoueur(m);
+	colisionsElement(m);
 }
+
+/*
+*	Fait les calculs necessaire avec les collisions entre les elem
+*/
+void colisionsElement(Monde *m){
+	Projectile **o_tmp = &(m->liste_obstacle);
+	Projectile **p_tmp = &(m->liste_projectiles);
+	Projectile **e_tmp = &(m->liste_ennemis);
+	colision(p_tmp, o_tmp);
+	colision(p_tmp, e_tmp);
+}
+
+/*
+*	Fait les calculs necessaire avec les collisions entre le joueurs et les elem
+*/
+void colisionsJoueur(Monde *m){
+	colision(&m->joueur, &(m->liste_projectiles));
+	colision(&m->joueur, &(m->liste_obstacle));
+	colision(&m->joueur, &(m->liste_ennemis));
+}
+
 
 /*
 *	Ajoute l'obstacle o au monde
 */
 void ajouterObstacle(Monde *m, Obstacle *o){
 	addElementToList(&m->liste_obstacle,o);
+}
+
+/*
+*	Ajoute l'ennemi e au monde
+*/
+void ajouterEnnemi(Monde *m, Ennemi *e){
+	addElementToList(&m->liste_ennemis,e);
 }
 
 /*
@@ -126,13 +126,26 @@ void defilerProjectiles(Monde *m){
 	moving(&(m->liste_projectiles),1,1,1);
 }
 
+
+/*
+*	Créé les projectiles necessaire
+*/
+void generateNewProjectiles(Monde *m){
+	if(m->joueur != NULL){
+		Projectile *p_tmp = lance_projectile(m->joueur);
+		if(p_tmp != NULL){
+			addElementToList(&m->liste_projectiles, p_tmp);
+		}
+	}
+}
+
 /*
 *	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
 */
 void chargerMonde(Monde *m){
 	//JUSTE POUR TEST
-	Obstacle *o = creerObstacle(.8,0);
-	ajouterObstacle(m,o);
+	Ennemi *e = creerEnnemi(.8,0);
+	ajouterEnnemi(m,e);
 }
 
 /*

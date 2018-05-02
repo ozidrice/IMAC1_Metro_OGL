@@ -1,10 +1,10 @@
 #include "element.h"
 #include "monde.h"
-#include "jeu.h"
 
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
+static GLuint *TEXTURE_ENNEMI;
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
@@ -13,7 +13,7 @@ void preload_texture(){
 	TEXTURE_JOUEUR = generateID("img/player.png");
 	TEXTURE_PROJECTILE = generateID("img/projectile.png");
 	TEXTURE_OBSTACLE = generateID("img/0.png");
-
+	TEXTURE_ENNEMI = generateID("img/0.png");
 }
 
 /*
@@ -133,6 +133,36 @@ int estEnColision(struct Element *e1, struct Element *e2){
 	return 0;
 }
 
+/*
+*	Test colisions entre les listes d'elem
+*	Retire les elements mort des listes
+*/
+void colision(struct Element **liste1, struct Element **liste2){
+	if(*liste1 != NULL && *liste2 != NULL){
+		//Foreach liste1
+		do{
+			int meurt_1 = 0, meurt_2 = 0;
+			//Foreach liste2
+			do{ 
+				if(estEnColision(*liste1,*liste2)){
+					meurt_1 = attaque(*liste1,*liste2);
+					meurt_2 = attaque(*liste2,*liste1);
+					if(meurt_1 == 1)
+						removeElementFromList(liste1);
+					if(meurt_2 == 1)
+						removeElementFromList(liste2);
+					else
+						liste2 = &((*liste2)->next); 
+				}else{
+					liste2 = &((*liste2)->next);
+				}
+			}while(*liste2 != NULL);
+			if(meurt_1 == 0)
+				liste1 = &((*liste1)->next);
+		}while(*liste1 != NULL);
+	}
+}
+
 /* 
 *	Affiche la liste d'élément e sur la fenetre
 */
@@ -164,7 +194,7 @@ Joueur *creerJoueur(){
 	float vit_deplacement_projectile_x = 1/20.;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_JOUEUR;
-	return (Joueur*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 
@@ -183,8 +213,8 @@ Ennemi *creerEnnemi(float x, float y){
 	float taille_projectile = .03;
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
-	GLuint *texture = NULL;
-	return (Ennemi*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	GLuint *texture = TEXTURE_ENNEMI;
+	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 
@@ -204,7 +234,7 @@ Bonus *creerBonus(float x, float y){
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = NULL;
-	return (Bonus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 
@@ -224,7 +254,7 @@ Obstacle *creerObstacle(float x, float y){
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_OBSTACLE;
-	return (Obstacle*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Obstacle*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 
@@ -234,13 +264,13 @@ Obstacle *creerObstacle(float x, float y){
 *	malloc un Projectile 
 */
 Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y){
-	int pv = -1;
+	int pv = 1;
 	Uint32 intervalle_projectile = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_PROJECTILE;
-	return (Projectile*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Projectile*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 /*

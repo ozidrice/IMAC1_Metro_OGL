@@ -28,6 +28,9 @@ void afficherMonde(Monde *m);
 /*	Ajoute l'obstacle o au Monde */
 void ajouterObstacle(Monde *m, Obstacle *o);
 
+/*	Ajoute l'ennemi e au monde*/
+void ajouterEnnemi(Monde *m, Ennemi *e);
+
 /*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
 void chargerMonde(Monde *m);
 
@@ -43,8 +46,15 @@ GLuint *generateID(char *chemin);
 void defilerMonde(Monde *m);
 void defilerProjectiles(Monde *m);
 
+/*Créé les projectiles si necessaire*/
+void generateNewProjectiles(Monde *m);
+
+
 /*Fait lancer et déplacer les élements necessaires*/
 void action(Monde *m);
+
+void colisionsElement(Monde *m);
+void colisionsJoueur(Monde *m);
 
 
 #endif
