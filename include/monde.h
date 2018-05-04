@@ -23,10 +23,10 @@ typedef struct monde
 }Monde;
 
 
-/*	Affiche le monde et ses parametre dans la fenetre */
+/* Affiche le monde et ses parametre dans la fenetre */
 void afficherMonde(Monde *m);
 
-/*	Ajoute l'obstacle o au Monde */
+/* Ajoute l'obstacle o au Monde */
 void ajouterObstacle(Monde *m, Obstacle *o);
 
 /*	Ajoute l'ennemi e au monde*/
@@ -34,6 +34,9 @@ void ajouterEnnemi(Monde *m, Ennemi *e);
 
 /*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
 void chargerMonde(Monde *m);
+
+/* obtient un pixel de la surface */
+Uint32 obtenirPixel(SDL_Surface *surface, int x, int y);
 
 /* Malloc un monde */
 Monde *creerMonde();

@@ -133,12 +133,74 @@ void defilerProjectiles(Monde *m){
 /*
 *	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
 */
-void chargerMonde(Monde *m){
-	//JUSTE POUR TEST
-	Ennemi *e = creerEnnemi(.8,0,0,0,2000.,7,-M_PI,1/100.,-1/1000.);
-	//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y
-	ajouterEnnemi(m,e);
+
+
+Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
+{
+    /*nbOctetsParPixel représente le nombre d'octets utilisés pour stocker un pixel.
+    En multipliant ce nombre d'octets par 8 (un octet = 8 bits), on obtient la profondeur de couleur
+    de l'image : 8, 16, 24 ou 32 bits.*/
+    int nbOctetsParPixel = surface->format->BytesPerPixel;
+    /* Ici p est l'adresse du pixel que l'on veut connaitre */
+    /*surface->pixels contient l'adresse du premier pixel de l'image*/
+    Uint8 *p = (Uint8 *)surface->pixels + y * surface->pitch + x * nbOctetsParPixel;
+
+    /*Gestion différente suivant le nombre d'octets par pixel de l'image*/
+    switch(nbOctetsParPixel)
+    {
+        case 1:
+            return *p;
+
+        case 2:
+            return *(Uint16 *)p;
+        case 3:
+	     /*Suivant l'architecture de la machine*/
+            if(SDL_BYTEORDER == SDL_BIG_ENDIAN)
+                return p[0] << 16 | p[1] << 8 | p[2];
+            else
+                return p[0] | p[1] << 8 | p[2] << 16;
+
+        case 4:
+            return *(Uint32 *)p;
+        default:
+            return 0; 
+    }
 }
+
+void chargerMonde(Monde *m){
+	SDL_Surface *map = NULL;
+	map = SDL_LoadBMP("img/2.bmp");
+	
+	int x,y;
+	Uint8 r, g,b,a;
+	
+	for(y=0; y<map->h; y+=100)
+	{
+		for(x=0; x<map->w; x+=100)
+		{
+			Uint32 pixel = obtenirPixel(map,x,y);
+			SDL_GetRGBA(pixel, map->format, &r, &g, &b, &a);
+			if(r==255 && g==165 && b==0) /* Orange == obstacle */
+			{
+				Obstacle *o = creerObstacle(x/1000,y/1000);
+				printf("x : %f, y: %f\n", o->posx, o->posy); 
+				ajouterObstacle(m,o);
+			}
+			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
+			{
+				Ennemi *en = creerEnnemi(0.9,y/1000);
+				printf("x : %f, y: %f\n", en->posx, en->posy); 
+				ajouterEnnemi(m,en);
+			}
+			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
+			{
+				/* TO DO */
+			}	
+		}
+	}
+	SDL_FreeSurface(map);
+}
+
 
 /*
 *	free tous les élements du monde
@@ -148,19 +210,4 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
-}
-
-/*
-*	Créé les projectiles necessaire
-*/
-void generateNewProjectiles(Monde *m, struct Element *liste_elem){;
-	if(liste_elem != NULL){
-		do{
-			Projectile *p_tmp = lance_projectile(liste_elem);
-			if(p_tmp != NULL){
-				addElementToList(&(m->liste_projectiles), p_tmp);
-			}
-			liste_elem = liste_elem->next;
-		}while(liste_elem != NULL);
-	}
 }

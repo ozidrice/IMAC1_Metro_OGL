@@ -6,15 +6,17 @@ static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
 static GLuint *TEXTURE_ENNEMI;
+/*static GLuint *TEXTURE_BONUS;
+static GLuint *TEXTURE_MALUS;*/
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
 */
 void preload_texture(){
 	TEXTURE_JOUEUR = generateID("img/player.png");
-	TEXTURE_PROJECTILE = generateID("img/projectile.png");
-	TEXTURE_OBSTACLE = generateID("img/0.png");
-	TEXTURE_ENNEMI = generateID("img/0.png");
+	TEXTURE_PROJECTILE = generateID("img/USB.png");
+	TEXTURE_OBSTACLE = generateID("img/wall.png");
+	TEXTURE_ENNEMI = generateID("img/old2.png");
 }
 
 /*
@@ -24,6 +26,7 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_JOUEUR);
 	glDeleteTextures(1,TEXTURE_PROJECTILE);
 	glDeleteTextures(1,TEXTURE_OBSTACLE);
+	glDeleteTextures(1,TEXTURE_ENNEMI);
 }
 
 /* 
