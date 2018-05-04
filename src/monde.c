@@ -1,6 +1,6 @@
 #include <math.h>
 #include "monde.h"
-static float VIT_DEFILEMENT_DEFAUT = 0; //n fois la vitesse de déplacement définie de l'élement
+static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -121,6 +121,8 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 */
 void defilerMonde(Monde *m){
 	moving(&(m->liste_obstacle),-VIT_DEFILEMENT_DEFAUT ,0,1);
+	moving(&(m->liste_ennemis),-VIT_DEFILEMENT_DEFAUT ,0,1);
+	moving(&(m->liste_bonus),-VIT_DEFILEMENT_DEFAUT ,0,1);
 }
 
 /*
@@ -188,7 +190,7 @@ void chargerMonde(Monde *m){
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
-				Ennemi *en = creerEnnemi(0.9,y/1000);
+				Ennemi *en = creerEnnemi(0.9,y/1000,1/1000.,0,2000.,7,-M_PI,1/100.,-1/1000.);
 				printf("x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
 			}
@@ -210,4 +212,19 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
+}
+
+/*
+*	Créé les projectiles necessaire
+*/
+void generateNewProjectiles(Monde *m, struct Element *liste_elem){
+	if(liste_elem != NULL){
+		do{
+			Projectile *p_tmp = lance_projectile(liste_elem);
+			if(p_tmp != NULL){
+				addElementToList(&(m->liste_projectiles), p_tmp);
+			}
+			liste_elem = liste_elem->next;
+		}while(liste_elem != NULL);
+	}
 }

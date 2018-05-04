@@ -131,10 +131,8 @@ void moving(struct Element **e, float x, float y, int free){
 int estEnColision(struct Element *e1, struct Element *e2){
 	if(e1 == NULL || e2 == NULL)
 		return 0;
-	if(e1->posx >= e2->posx - e2->taille && e1->posx <= e2->posx + e2->taille &&
-		e1->posy >= e2->posy - e2->taille && e1->posy <= e2->posy + e2->taille){
-		printf("1: %f;%f;%f\n",e1->posx,e1->posy,e1->taille );
-		printf("2: %f;%f;%f\n\n",e2->posx,e2->posy,e2->taille );
+	if(e1->posx > e2->posx - e2->taille && e1->posx < e2->posx + e2->taille &&
+		e1->posy > e2->posy - e2->taille && e1->posy < e2->posy + e2->taille){
 		return 1;
 	}
 	return 0;
@@ -233,7 +231,7 @@ Bonus *creerBonus(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	vit_deplacement_x = vit_deplacement_y = 1/1000.; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
 	float angleTir = 0;
@@ -254,7 +252,7 @@ Obstacle *creerObstacle(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	vit_deplacement_x = vit_deplacement_y = 1/1000.; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
 	float angleTir = 0;
@@ -325,20 +323,22 @@ Projectile *creerProjectileMultiple(struct Element *e){
 
 		}
 		float diag_lenght = (e->taille*sqrt(2))/2 +.1;
-		printf("%f\n",diag_lenght);
 		float ray = (e->taille/2)+diag_lenght;
-		float posx , posy;
+		float posx , posy, vit_parent_x, vit_parent_y;
 		if(e->angleTir > 0){
 			posx = e->posx+ray*dep_x;
 			posy = e->posy+ray*dep_y;
+			vit_parent_x = vit_parent_y = 0;
 		}
 		else {
 			posx = e->posx-ray*dep_x;
 			posy = e->posy-ray*dep_y;
+			vit_parent_x = -e->vit_deplacement_x;
+			vit_parent_y = -e->vit_deplacement_y;
 		}
 			
 
-		proj = creerProjectile(posx, posy, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile, dep_y*e->vit_deplacement_projectile);
+		proj = creerProjectile(posx, posy, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile+vit_parent_x, dep_y*e->vit_deplacement_projectile+vit_parent_y);
 		addElementToList(&liste_projectiles,proj);	
 	}
 	return liste_projectiles;
