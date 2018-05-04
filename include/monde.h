@@ -18,6 +18,7 @@ typedef struct monde
 	Projectile *liste_projectiles;
 	Ennemi *liste_ennemis; 
 	Obstacle *liste_obstacle;
+	Bonus *liste_bonus;
 	float vit_defilement_x;
 }Monde;
 
@@ -28,10 +29,10 @@ void afficherMonde(Monde *m);
 /* Ajoute l'obstacle o au Monde */
 void ajouterObstacle(Monde *m, Obstacle *o);
 
-/* Ajoute l'ennemi en au Monde */
-void ajouterEnnemi(Monde *m, Ennemi *en);
+/*	Ajoute l'ennemi e au monde*/
+void ajouterEnnemi(Monde *m, Ennemi *e);
 
-/* Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
+/*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
 void chargerMonde(Monde *m);
 
 /* obtient un pixel de la surface */
@@ -47,9 +48,17 @@ void freeMonde(Monde *m);
 GLuint *generateID(char *chemin);
 
 void defilerMonde(Monde *m);
+void defilerProjectiles(Monde *m);
+
+/*	Créé les projectiles necessaire*/
+void generateNewProjectiles(Monde *m, struct Element *liste_elem);
+
 
 /*Fait lancer et déplacer les élements necessaires*/
 void action(Monde *m);
+
+void colisionsElement(Monde *m);
+void colisionsJoueur(Monde *m);
 
 
 #endif

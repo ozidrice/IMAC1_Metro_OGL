@@ -1,5 +1,6 @@
+#include <math.h>
 #include "monde.h"
-static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
+static float VIT_DEFILEMENT_DEFAUT = 0; //n fois la vitesse de déplacement définie de l'élement
 
 /* génère texture à partir d'un chemin en paramètres */
 GLuint *generateID(char *chemin){
@@ -40,6 +41,7 @@ Monde *creerMonde(){
 	m->liste_projectiles = NULL;
 	m->liste_ennemis = NULL;
 	m->liste_obstacle = NULL;
+	m->liste_bonus = NULL;
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -59,58 +61,46 @@ void creerBackground(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-
 	afficheElement(m->joueur);
-	
 	afficheElement(m->liste_projectiles);
-
-	afficheElement(m->liste_obstacle);
-
 	afficheElement(m->liste_ennemis);
-		
+	afficheElement(m->liste_obstacle);
 }
 
 /*
-*	Fait lancer et déplacer les élements necessaires
+*	Fait les actions necessaires à la prochaine frame
 */
 void action(Monde *m){
-	//Deplacement projectiles
-	if(m->liste_projectiles != NULL){
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			moving(p_tmp,1,1);
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
-
-	//Creation des projectiles
-	if(m->joueur != NULL){
-		Projectile *p_tmp = lance_projectile(m->joueur);
-		if(p_tmp != NULL){
-			addElementToList(&m->liste_projectiles, p_tmp);
-		}
-	}
-
-	//Test colisions joueur
-	//Avec un projectile
-	if(m->liste_projectiles != NULL){	
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			// if(estEnColision(m->joueur,p_tmp))
-				//TODO
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
-	//Avec un obstacle
-	if(m->liste_obstacle != NULL){	
-		Obstacle *o_tmp = m->liste_obstacle;
-		do{
-			// if(estEnColision(m->joueur,o_tmp))
-				//TODO
-			o_tmp = o_tmp->next;
-		}while(o_tmp != NULL);
-	}
+	defilerMonde(m);
+	defilerProjectiles(m);
+	
+	generateNewProjectiles(m,m->joueur);
+	generateNewProjectiles(m,m->liste_ennemis);
+	
+	colisionsJoueur(m);
+	colisionsElement(m);
 }
+
+/*
+*	Fait les calculs necessaire avec les collisions entre les elem
+*/
+void colisionsElement(Monde *m){
+	Projectile **o_tmp = &(m->liste_obstacle);
+	Projectile **p_tmp = &(m->liste_projectiles);
+	Projectile **e_tmp = &(m->liste_ennemis);
+	colision(p_tmp, o_tmp);
+	colision(p_tmp, e_tmp);
+}
+
+/*
+*	Fait les calculs necessaire avec les collisions entre le joueurs et les elem
+*/
+void colisionsJoueur(Monde *m){
+	colision(&m->joueur, &(m->liste_projectiles));
+	colision(&m->joueur, &(m->liste_obstacle));
+	colision(&m->joueur, &(m->liste_ennemis));
+}
+
 
 /*
 *	Ajoute l'obstacle o au monde
@@ -120,17 +110,24 @@ void ajouterObstacle(Monde *m, Obstacle *o){
 }
 
 /*
-*	Ajoute l'ennemi en au monde
+*	Ajoute l'ennemi e au monde
 */
-void ajouterEnnemi(Monde *m, Ennemi *en){
-	addElementToList(&m->liste_ennemis,en);
+void ajouterEnnemi(Monde *m, Ennemi *e){
+	addElementToList(&m->liste_ennemis,e);
 }
 
 /*
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(m->liste_obstacle,-VIT_DEFILEMENT_DEFAUT ,0);
+	moving(&(m->liste_obstacle),-VIT_DEFILEMENT_DEFAUT ,0,1);
+}
+
+/*
+*	Fait défiler les projectiles à leur vitesse de déplacement
+*/
+void defilerProjectiles(Monde *m){
+	moving(&(m->liste_projectiles),1,1,1);
 }
 
 /*
@@ -171,7 +168,6 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
 }
 
 void chargerMonde(Monde *m){
-
 	SDL_Surface *map = NULL;
 	map = SDL_LoadBMP("img/2.bmp");
 	
