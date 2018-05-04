@@ -1,3 +1,4 @@
+#include <math.h>
 #include "element.h"
 #include "monde.h"
 
@@ -31,7 +32,7 @@ void free_texture(){
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, 
 	GLuint *texture){
 	
 	struct Element* element = malloc(sizeof(struct Element));
@@ -47,9 +48,9 @@ struct Element *initElement(int pv, int pa,
 	element->last_launch = 0;
 	element->intervalle_projectile = intervalle_projectile;
 	element->nombreProjectileParTir = nombreProjectileParTir;
+	element->angleTir = angleTir;
 	element->taille_projectile = taille_projectile;
-	element->vit_deplacement_projectile_x = vit_deplacement_projectile_x;
-	element->vit_deplacement_projectile_y = vit_deplacement_projectile_y;
+	element->vit_deplacement_projectile = vit_deplacement_projectile;
 	element->texture = texture;
 	element->next = 0;
 	return element;
@@ -193,12 +194,12 @@ Joueur *creerJoueur(){
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
-	int nombreProjectileParTir = 1;
+	int nombreProjectileParTir = 10;
+	float angleTir = M_PI*2;
 	float taille_projectile = .03;
-	float vit_deplacement_projectile_x = 1/20.;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 1/20.;
 	GLuint *texture = TEXTURE_JOUEUR;
-	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -207,12 +208,12 @@ Joueur *creerJoueur(){
 /*
 *	malloc un Ennemi 
 */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y){
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile){
 	int pv = 5;
 	int pa = 1;
 	float taille = .1; 
 	GLuint *texture = TEXTURE_ENNEMI;
-	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -229,11 +230,11 @@ Bonus *creerBonus(float x, float y){
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = NULL;
-	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -250,11 +251,11 @@ Obstacle *creerObstacle(float x, float y){
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = TEXTURE_OBSTACLE;
-	return (Obstacle*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Obstacle*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -267,11 +268,11 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 	int pv = 1;
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = TEXTURE_PROJECTILE;
-	return (Projectile*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Projectile*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 /*
@@ -280,18 +281,45 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 *	NULL sinon
 */
 Projectile *lance_projectile(struct Element *e){
-	if(e == NULL || e->vit_deplacement_projectile_x == 0)
+	if(e == NULL || e->vit_deplacement_projectile == 0)
 		return NULL;
 
 	Uint32 now = SDL_GetTicks();
 	if(now - e->last_launch > e->intervalle_projectile){
 		e->last_launch = SDL_GetTicks();
-		if(e->vit_deplacement_projectile_x >= 0){
-			return creerProjectile(e->posx+(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+		if(e->vit_deplacement_projectile >= 0){
+			return creerProjectileMultiple(e);
 		}else{
-			return creerProjectile(.5, e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
-
+			return creerProjectileMultiple(e);
 		}
 	}
 	return NULL;
+}
+
+/*
+*	Créé les projectiles necessaire à un tir 
+*	en prenant en compte le nombreProjectileParTir
+*/
+Projectile *creerProjectileMultiple(struct Element *e){
+	int i;
+	Projectile *liste_projectiles = NULL;
+
+	for (i = 0; i < e->nombreProjectileParTir; ++i)
+	{
+		Projectile *proj;
+		float dep_y,dep_x;
+		if(e->nombreProjectileParTir == 1){
+			dep_y = 0;
+			dep_x = 1.;
+		}else{
+			float angle = i/((e->nombreProjectileParTir-1)*1.)-0.5;
+			angle *= e->angleTir;
+			dep_x = cos(angle);
+			dep_y = sin(angle);
+		}
+		float ray = (e->taille/2);
+		proj = creerProjectile(e->posx+ray*dep_x, e->posy+ray*dep_y, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile, dep_y*e->vit_deplacement_projectile);
+		addElementToList(&liste_projectiles,proj);	
+	}
+	return liste_projectiles;
 }

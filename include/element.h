@@ -21,9 +21,9 @@ typedef struct Element {
 	Uint32 intervalle_projectile; //en ms
 	Uint32 last_launch; //Timer du dernier projectile lancé 
 	float taille_projectile;
-	float nombreProjectileParTir;
-	float vit_deplacement_projectile_x;
-	float vit_deplacement_projectile_y;
+	int nombreProjectileParTir;
+	float angleTir;
+	float vit_deplacement_projectile;
 
 	//Texture
 	GLuint *texture;
@@ -38,7 +38,7 @@ typedef struct Element {
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, 
 	GLuint *texture);
 
 /*Ajoute un élément à la liste*/
@@ -63,7 +63,7 @@ void afficheElement(struct Element *e);
 Joueur *creerJoueur();
 
 /* Malloc un Ennemi */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y);
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
 
 /* Malloc un Bonus */
 Bonus *creerBonus(float x, float y);
@@ -90,6 +90,12 @@ void colision(struct Element **liste1, struct Element **liste2);
 *	NULL sinon
 */
 Projectile *lance_projectile(struct Element *e);
+
+/*	Créé les projectiles necessaire à un tir 
+*	en prenant en compte le nombreProjectileParTir
+*/
+Projectile *creerProjectileMultiple(struct Element *e);
+
 
 /*	Free la liste d'éléments */
 void freeElement(struct Element *e);

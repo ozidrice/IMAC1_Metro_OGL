@@ -1,3 +1,4 @@
+#include <math.h>
 #include "monde.h"
 static float VIT_DEFILEMENT_DEFAUT = 0; //n fois la vitesse de déplacement définie de l'élement
 
@@ -134,7 +135,7 @@ void defilerProjectiles(Monde *m){
 */
 void chargerMonde(Monde *m){
 	//JUSTE POUR TEST
-	Ennemi *e = creerEnnemi(.8,0,0,0,2000.,1,1/100.,-1/100.,0);
+	Ennemi *e = creerEnnemi(.8,0,0,0,2000.,1,M_PI,1/100.,-1/100.);
 	//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y
 	ajouterEnnemi(m,e);
 }
