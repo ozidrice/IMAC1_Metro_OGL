@@ -129,8 +129,11 @@ int estEnColision(struct Element *e1, struct Element *e2){
 	if(e1 == NULL || e2 == NULL)
 		return 0;
 	if(e1->posx >= e2->posx - e2->taille && e1->posx <= e2->posx + e2->taille &&
-		e1->posy >= e2->posy - e2->taille && e1->posy <= e2->posy + e2->taille)
+		e1->posy >= e2->posy - e2->taille && e1->posy <= e2->posy + e2->taille){
+		printf("1: %f;%f;%f\n",e1->posx,e1->posy,e1->taille );
+		printf("2: %f;%f;%f\n\n",e2->posx,e2->posy,e2->taille );
 		return 1;
+	}
 	return 0;
 }
 
@@ -194,7 +197,7 @@ Joueur *creerJoueur(){
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
-	int nombreProjectileParTir = 10;
+	int nombreProjectileParTir = 1;
 	float angleTir = M_PI*2;
 	float taille_projectile = .03;
 	float vit_deplacement_projectile = 1/20.;
@@ -312,13 +315,27 @@ Projectile *creerProjectileMultiple(struct Element *e){
 			dep_y = 0;
 			dep_x = 1.;
 		}else{
-			float angle = i/((e->nombreProjectileParTir-1)*1.)-0.5;
+			float angle = i/((e->nombreProjectileParTir-1)*1.)-.5;
 			angle *= e->angleTir;
 			dep_x = cos(angle);
 			dep_y = sin(angle);
+
 		}
-		float ray = (e->taille/2);
-		proj = creerProjectile(e->posx+ray*dep_x, e->posy+ray*dep_y, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile, dep_y*e->vit_deplacement_projectile);
+		float diag_lenght = (e->taille*sqrt(2))/2 +.1;
+		printf("%f\n",diag_lenght);
+		float ray = (e->taille/2)+diag_lenght;
+		float posx , posy;
+		if(e->angleTir > 0){
+			posx = e->posx+ray*dep_x;
+			posy = e->posy+ray*dep_y;
+		}
+		else {
+			posx = e->posx-ray*dep_x;
+			posy = e->posy-ray*dep_y;
+		}
+			
+
+		proj = creerProjectile(posx, posy, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile, dep_y*e->vit_deplacement_projectile);
 		addElementToList(&liste_projectiles,proj);	
 	}
 	return liste_projectiles;

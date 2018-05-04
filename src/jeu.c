@@ -114,7 +114,6 @@ void handle_inputs(Monde *monde){
         moving(&(monde->joueur), 1, 0, 0); 
     if(KEYS[SDLK_LEFT] == 1)
         moving(&(monde->joueur), -1, 0, 0); 
-
 }
 
 /*
