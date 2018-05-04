@@ -21,6 +21,7 @@ typedef struct Element {
 	Uint32 intervalle_projectile; //en ms
 	Uint32 last_launch; //Timer du dernier projectile lancé 
 	float taille_projectile;
+	float nombreProjectileParTir;
 	float vit_deplacement_projectile_x;
 	float vit_deplacement_projectile_y;
 
@@ -37,7 +38,7 @@ typedef struct Element {
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	Uint32 intervalle_projectile, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
 	GLuint *texture);
 
 /*Ajoute un élément à la liste*/
@@ -62,7 +63,7 @@ void afficheElement(struct Element *e);
 Joueur *creerJoueur();
 
 /* Malloc un Ennemi */
-Ennemi *creerEnnemi(float x, float y);
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y);
 
 /* Malloc un Bonus */
 Bonus *creerBonus(float x, float y);

@@ -18,6 +18,7 @@ typedef struct monde
 	Projectile *liste_projectiles;
 	Ennemi *liste_ennemis; 
 	Obstacle *liste_obstacle;
+	Bonus *liste_bonus;
 	float vit_defilement_x;
 }Monde;
 
@@ -46,8 +47,8 @@ GLuint *generateID(char *chemin);
 void defilerMonde(Monde *m);
 void defilerProjectiles(Monde *m);
 
-/*Créé les projectiles si necessaire*/
-void generateNewProjectiles(Monde *m);
+/*	Créé les projectiles necessaire*/
+void generateNewProjectiles(Monde *m, struct Element *liste_elem);
 
 
 /*Fait lancer et déplacer les élements necessaires*/

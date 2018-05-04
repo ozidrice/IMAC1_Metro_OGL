@@ -53,6 +53,7 @@ void loop(){
     glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
     chargerMonde(monde); //A REMPLIR
+
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
 
@@ -113,6 +114,7 @@ void handle_inputs(Monde *monde){
         moving(&(monde->joueur), 1, 0, 0); 
     if(KEYS[SDLK_LEFT] == 1)
         moving(&(monde->joueur), -1, 0, 0); 
+
 }
 
 /*

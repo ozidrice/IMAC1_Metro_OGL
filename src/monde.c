@@ -40,6 +40,7 @@ Monde *creerMonde(){
 	m->liste_projectiles = NULL;
 	m->liste_ennemis = NULL;
 	m->liste_obstacle = NULL;
+	m->liste_bonus = NULL;
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -59,7 +60,6 @@ void creerBackground(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-
 	afficheElement(m->joueur);
 	afficheElement(m->liste_projectiles);
 	afficheElement(m->liste_ennemis);
@@ -72,7 +72,10 @@ void afficherMonde(Monde *m){
 void action(Monde *m){
 	defilerMonde(m);
 	defilerProjectiles(m);
-	generateNewProjectiles(m);
+	
+	generateNewProjectiles(m,m->joueur);
+	generateNewProjectiles(m,m->liste_ennemis);
+	
 	colisionsJoueur(m);
 	colisionsElement(m);
 }
@@ -126,25 +129,13 @@ void defilerProjectiles(Monde *m){
 	moving(&(m->liste_projectiles),1,1,1);
 }
 
-
-/*
-*	Créé les projectiles necessaire
-*/
-void generateNewProjectiles(Monde *m){
-	if(m->joueur != NULL){
-		Projectile *p_tmp = lance_projectile(m->joueur);
-		if(p_tmp != NULL){
-			addElementToList(&m->liste_projectiles, p_tmp);
-		}
-	}
-}
-
 /*
 *	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
 */
 void chargerMonde(Monde *m){
 	//JUSTE POUR TEST
-	Ennemi *e = creerEnnemi(.8,0);
+	Ennemi *e = creerEnnemi(.8,0,0,0,2000.,1,1/100.,-1/100.,0);
+	//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y
 	ajouterEnnemi(m,e);
 }
 
@@ -156,4 +147,19 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
+}
+
+/*
+*	Créé les projectiles necessaire
+*/
+void generateNewProjectiles(Monde *m, struct Element *liste_elem){;
+	if(liste_elem != NULL){
+		do{
+			Projectile *p_tmp = lance_projectile(liste_elem);
+			if(p_tmp != NULL){
+				addElementToList(&(m->liste_projectiles), p_tmp);
+			}
+			liste_elem = liste_elem->next;
+		}while(liste_elem != NULL);
+	}
 }
