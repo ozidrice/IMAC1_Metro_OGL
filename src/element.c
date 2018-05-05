@@ -6,8 +6,9 @@ static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
 static GLuint *TEXTURE_ENNEMI;
 static GLuint *TEXTURE_FOND;
-/*static GLuint *TEXTURE_BONUS;
-static GLuint *TEXTURE_MALUS;*/
+static GLuint *TEXTURE_BONUS;
+
+/*static GLuint *TEXTURE_MALUS;*/
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
@@ -18,6 +19,7 @@ void preload_texture(){
 	TEXTURE_OBSTACLE = generateID("img/wall.png");
 	TEXTURE_ENNEMI = generateID("img/old2.png");
 	TEXTURE_FOND = generateID("img/wall.png");
+	TEXTURE_BONUS = generateID("img/bonus.png");
 }
 
 /*
@@ -29,6 +31,7 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_OBSTACLE);
 	glDeleteTextures(1,TEXTURE_ENNEMI);
 	glDeleteTextures(1,TEXTURE_FOND);
+	glDeleteTextures(1,TEXTURE_BONUS);
 }
 
 /* 
@@ -192,8 +195,8 @@ Bonus *creerBonus(float x, float y){
 	Uint32 intervalle_projectile = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
-	GLuint *texture = NULL;
+	float vit_deplacement_projectile_y= 0;
+	GLuint *texture = TEXTURE_BONUS;
 	return (Bonus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 

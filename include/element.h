@@ -29,7 +29,7 @@ typedef struct Element {
 	
 	//Liste chainée
 	struct Element *next;
-}Joueur, Ennemi, Bonus, Obstacle, Projectile;
+}Joueur, Ennemi, Obstacle, Projectile, Bonus;
 
 
 

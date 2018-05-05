@@ -40,6 +40,7 @@ Monde *creerMonde(){
 	m->liste_projectiles = NULL;
 	m->liste_ennemis = NULL;
 	m->liste_obstacle = NULL;
+	m->liste_bonus = NULL;
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -57,7 +58,8 @@ void afficherMonde(Monde *m){
 	afficheElement(m->liste_obstacle);
 
 	afficheElement(m->liste_ennemis);
-		
+	
+	afficheElement(m->liste_bonus);
 }
 
 
@@ -65,10 +67,10 @@ void afficherMonde(Monde *m){
 /* lance la map correspondant au niveau */
 
 void LancerMonde(Monde *m, int niveau){
-	char * MAP;
+	char * MAP = NULL;
  	switch(niveau) {
             case 1:
-                MAP = "img/map5.bmp";
+                MAP = "img/map6.bmp";
                   break;
             case 2:
 		MAP = "img/map5.bmp";
@@ -123,7 +125,24 @@ void action(Monde *m){
 			o_tmp = o_tmp->next;
 		}while(o_tmp != NULL);
 	}
+	//Avec un bonus
+	if(m->liste_bonus != NULL){	
+		Bonus *b_tmp = m->liste_bonus;
+		do{
+			// if(estEnColision(m->joueur,o_tmp))
+				//TODO
+			b_tmp = b_tmp->next;
+		}while(b_tmp != NULL);
+	}
 }
+
+/*
+*	 Ajoute le Bonus b au monde 
+*/
+void ajouterBonus(Monde *m, Bonus *b){
+	addElementToList(&m->liste_bonus,b);
+}
+
 
 /*
 *	Ajoute l'obstacle o au monde
@@ -145,11 +164,8 @@ void ajouterEnnemi(Monde *m, Ennemi *en){
 void defilerMonde(Monde *m){
 	moving(m->liste_obstacle,-VIT_DEFILEMENT_DEFAUT ,0);
 	moving(m->liste_ennemis,-VIT_DEFILEMENT_DEFAUT ,0);
+	moving(m->liste_bonus,-VIT_DEFILEMENT_DEFAUT ,0);
 }
-
-/*
-*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
-*/
 
 
 Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
@@ -184,6 +200,11 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
     }
 }
 
+
+/*
+*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
+*/
+
 void chargerMonde(Monde *m, char * MAP){
 
 	SDL_Surface *map = NULL;
@@ -201,18 +222,19 @@ void chargerMonde(Monde *m, char * MAP){
 			if(r==255 && g==165 && b==0) /* Orange == obstacle */
 			{
 				Obstacle *o = creerObstacle(x*0.001,((map->h - y)*0.001)-0.4);
-				printf(" obstacle : x : %f, y: %f\n", o->posx, o->posy); 
+				//printf(" obstacle : x : %f, y: %f\n", o->posx, o->posy); 
 				ajouterObstacle(m,o);
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
 				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4);
-				printf(" Ennemi : x : %f, y: %f\n", en->posx, en->posy); 
+				//printf(" Ennemi : x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
 			}
 			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
 			{
-				/* TO DO */
+				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4);
+				ajouterBonus(m,b);			
 			}	
 		}
 	}
@@ -228,4 +250,5 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
+	freeElement(m->liste_bonus);
 }

@@ -18,12 +18,16 @@ typedef struct monde
 	Projectile *liste_projectiles;
 	Ennemi *liste_ennemis; 
 	Obstacle *liste_obstacle;
+	Bonus *liste_bonus;
 	float vit_defilement_x;
 }Monde;
 
 
 /* Affiche le monde et ses parametre dans la fenetre */
 void afficherMonde(Monde *m);
+
+/* Ajoute le bonus b au Monde */
+void ajouterBonus(Monde *m, Bonus *b);
 
 /* Ajoute l'obstacle o au Monde */
 void ajouterObstacle(Monde *m, Obstacle *o);
