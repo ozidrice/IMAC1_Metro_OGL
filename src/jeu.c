@@ -51,7 +51,7 @@ void loop(){
     int loop = 1;
     glClearColor(0.1,0.1,0.1,1.0);
     Monde *monde = creerMonde();
-    chargerMonde(monde); //A REMPLIR
+    LancerMonde(monde, 1);
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
 

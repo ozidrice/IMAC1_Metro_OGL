@@ -4,15 +4,20 @@
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
+static GLuint *TEXTURE_ENNEMI;
+static GLuint *TEXTURE_FOND;
+/*static GLuint *TEXTURE_BONUS;
+static GLuint *TEXTURE_MALUS;*/
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
 */
 void preload_texture(){
 	TEXTURE_JOUEUR = generateID("img/player.png");
-	TEXTURE_PROJECTILE = generateID("img/projectile.png");
-	TEXTURE_OBSTACLE = generateID("img/0.png");
-
+	TEXTURE_PROJECTILE = generateID("img/USB.png");
+	TEXTURE_OBSTACLE = generateID("img/wall.png");
+	TEXTURE_ENNEMI = generateID("img/old2.png");
+	TEXTURE_FOND = generateID("img/wall.png");
 }
 
 /*
@@ -22,6 +27,8 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_JOUEUR);
 	glDeleteTextures(1,TEXTURE_PROJECTILE);
 	glDeleteTextures(1,TEXTURE_OBSTACLE);
+	glDeleteTextures(1,TEXTURE_ENNEMI);
+	glDeleteTextures(1,TEXTURE_FOND);
 }
 
 /* 
@@ -165,8 +172,9 @@ Ennemi *creerEnnemi(float x, float y){
 	float taille_projectile = .03;
 	float vit_deplacement_projectile_x = 0;
 	float vit_deplacement_projectile_y = 0;
-	GLuint *texture = NULL;
+	GLuint *texture = TEXTURE_ENNEMI;
 	return (Ennemi*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+
 }
 
 
@@ -208,6 +216,17 @@ Obstacle *creerObstacle(float x, float y){
 	GLuint *texture = TEXTURE_OBSTACLE;
 	return (Obstacle*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
+
+/*
+* Image de fond
+*/
+void creerBackground(){
+	glBindTexture(GL_TEXTURE_2D, *TEXTURE_FOND);
+	traceRectanglePlein(-1.,1.,1.,-1.);
+	glBindTexture(GL_TEXTURE_2D,0);
+
+}
+
 
 
 /*___________________PROJECTILE_____________________*/

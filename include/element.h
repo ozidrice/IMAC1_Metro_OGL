@@ -82,6 +82,9 @@ int estEnColision(struct Element *e1, struct Element *e2);
 */
 Projectile *lance_projectile(struct Element *e);
 
+/* image de fond */
+void creerBackground();
+
 /*	Free la liste d'éléments */
 void freeElement(struct Element *e);
 
