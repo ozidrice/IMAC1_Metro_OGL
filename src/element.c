@@ -185,10 +185,14 @@ void colision(struct Element **liste1, struct Element **liste2){
 */
 void afficheElement(struct Element *e){
 	if(e != NULL){
-		float ratio = windowRatio();
-		glBindTexture(GL_TEXTURE_2D, *(e->texture));
-		traceRectanglePlein(e->posx-(e->taille/ratio), e->posy-(e->taille), e->posx+(e->taille/ratio), e->posy+(e->taille));
-		glBindTexture(GL_TEXTURE_2D,0);
+		if(!e->texture)
+			printf("");// fprintf(stderr, "afficheElement : TEXTURE NULL\n");
+		else{
+			float ratio = windowRatio();
+			glBindTexture(GL_TEXTURE_2D, *(e->texture));
+			traceRectanglePlein(e->posx-(e->taille/ratio), e->posy-(e->taille), e->posx+(e->taille/ratio), e->posy+(e->taille));
+			glBindTexture(GL_TEXTURE_2D,0);
+		}
 		afficheElement(e->next);
 	}
 }
@@ -239,7 +243,7 @@ Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplace
 Bonus *creerBonus(float x, float y){
 	int pv = -1;
 	int pa = 1; 
-	float taille = .1; 
+	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = -1/1000.; 
 	Uint32 intervalle_projectile = 0;
@@ -247,7 +251,7 @@ Bonus *creerBonus(float x, float y){
 	float angleTir = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile = 0;
-	GLuint *texture = NULL;
+	GLuint *texture = TEXTURE_BONUS;
 	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -259,7 +263,7 @@ Bonus *creerBonus(float x, float y){
 Malus *creerMalus(float x, float y){
 	int pv = -1;
 	int pa = 1; 
-	float taille = .1; 
+	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = -1/100.; 
 	Uint32 intervalle_projectile = 0;

@@ -57,8 +57,8 @@ void afficherMonde(Monde *m){
 	afficheElement(m->liste_ennemis);
 	afficheElement(m->liste_obstacle);
 	afficheElement(m->liste_ennemis);	
-	// afficheElement(m->liste_bonus);
-	// afficheElement(m->liste_malus);
+	afficheElement(m->liste_bonus);
+	afficheElement(m->liste_malus);
 }
 
 
