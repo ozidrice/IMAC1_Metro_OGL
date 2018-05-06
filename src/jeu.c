@@ -1,13 +1,11 @@
 #include "jeu.h"
-void resizeViewport();
+#include "windows.h"
+
+void loop(Monde *monde);
+void initKeys();
+void displayText();
 void handle_inputs();
 
-
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 800;
-static char *WINDOW_TITLE = "Jeu -- OpenGL";
-static const unsigned int BIT_PER_PIXEL = 32;
-static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 
 /*
@@ -17,29 +15,20 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 *       1 si success
 */
 int launch(){
-    // Initialisation de la SDL
-    if(-1 == SDL_Init(SDL_INIT_VIDEO)) {
-        fprintf(stderr, "Impossible d'initialiser la SDL. Fin du programme.\n");
+    if(0 == initWindow())
         return 0;
-    }
+    initKeys(); //Initialisation touches clavier
+    preload_texture(); //Initialisation des textures
+    Monde *monde = creerMonde(); //Creation du monde
+    chargerMonde(monde);
 
-    // Ouverture d'une fenêtre et création d'un contexte OpenGL
-    if(NULL == SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE)) {
-        fprintf(stderr, "Impossible d'ouvrir la fenetre. Fin du programme.\n");
-        return 0;
-    }
-    SDL_WM_SetCaption(WINDOW_TITLE, NULL);
-
-    //Set toutes les touches
-    for(int i = 0; i < 322; i++) {
-       KEYS[i] = 0;
-    }
-
-    preload_texture();
-    loop();
-
-    // Liberation des ressources associÃ©es Ã  la SDL
-    SDL_Quit();
+    //Lancement de la boucle d'affichage
+    loop(monde);
+    
+    //Free
+    freeWindow();
+    freeMonde(monde);
+    free_texture();
     return 1;
 }
 
@@ -48,12 +37,8 @@ int launch(){
 /*
 *   Boucle d'affichage
 */
-void loop(){
-    int loop = 1;
-    glClearColor(0.1,0.1,0.1,1.0);
-    Monde *monde = creerMonde();
-    chargerMonde(monde); //A REMPLIR
-
+void loop(Monde *monde){
+    int loop = 1;    
     while(loop) {
         Uint32 startTime = SDL_GetTicks();
 
@@ -90,7 +75,8 @@ void loop(){
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
 
-
+        displayText("Coucou c'est moi",0,0,18,"font/04B_30__.TTF",255,255,255);
+        
         //Buffer
         SDL_GL_SwapBuffers();
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
@@ -98,8 +84,15 @@ void loop(){
             SDL_Delay(FRAMERATE_MILLISECONDS - elapsedTime);
         }
     }
-    freeMonde(monde);
-    free_texture();
+}
+
+
+/*
+*   Initialise toutes les touches à relachée 
+*/
+void initKeys(){
+    for(int i = 0; i < 322; i++)
+       KEYS[i] = 0;
 }
 
 /*
@@ -115,21 +108,3 @@ void handle_inputs(Monde *monde){
     if(KEYS[SDLK_LEFT] == 1)
         moving(&(monde->joueur), -1, 0, 0); 
 }
-
-/*
-*   Changement de viewport
-*/
-void resizeViewport() {
-    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    gluOrtho2D(-1., 1., -1., 1.);
-    SDL_SetVideoMode(WINDOW_WIDTH, WINDOW_HEIGHT, BIT_PER_PIXEL, SDL_OPENGL | SDL_RESIZABLE);
-}
-
-
-
-
-
-
-

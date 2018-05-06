@@ -1,11 +1,11 @@
 CC = gcc 
 CFLAGS = -Wall -O2 -g
-LDFLAGS = -lSDL -lm 
+LDFLAGS = -lSDL -lm -lSDL_image -lSDL_ttf  
 
 
 APP_BIN = minimetro
 
-LIB = -lSDL -lGLU -lGL -lSDL_image
+LIB = -lSDL -lGLU -lGL -lSDL_image -lSDL_ttf  
 SRC_PATH = src
 OBJ_PATH = obj
 INC_PATH = -I include
