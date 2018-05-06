@@ -212,6 +212,7 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
+	free(m);
 }
 
 /*
