@@ -10,7 +10,6 @@
 #include <stdio.h>
 #include <png.h>
 
-#include "windows.h"
 #include "monde.h"
 #include "element.h"
 /*

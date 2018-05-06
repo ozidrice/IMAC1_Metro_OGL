@@ -1,6 +1,8 @@
 #include "jeu.h"
 #include "windows.h"
 
+static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;  
+
 void loop(Monde *monde);
 void initKeys();
 void displayText();

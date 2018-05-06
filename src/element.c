@@ -186,7 +186,7 @@ void colision(struct Element **liste1, struct Element **liste2){
 void afficheElement(struct Element *e){
 	if(e != NULL){
 		if(!e->texture)
-			printf("");// fprintf(stderr, "afficheElement : TEXTURE NULL\n");
+			fprintf(stderr, "afficheElement : TEXTURE NULL\n");
 		else{
 			float ratio = windowRatio();
 			glBindTexture(GL_TEXTURE_2D, *(e->texture));
