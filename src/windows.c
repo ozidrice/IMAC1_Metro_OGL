@@ -22,6 +22,7 @@ int initWindow(){
     }
     SDL_WM_SetCaption(WINDOW_TITLE, NULL);
     
+
     TTF_Init();
     return 1;
 }
@@ -92,4 +93,8 @@ void displayText(const char *text, int x, int y, int size, char *font_path, int 
 	TTF_CloseFont(font);
     glDeleteTextures(1, &texture);
 	SDL_FreeSurface(surface);
+}
+
+float windowRatio(){
+    return (WINDOW_WIDTH*1.) / WINDOW_HEIGHT;
 }

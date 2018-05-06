@@ -1,6 +1,7 @@
 #include <math.h>
 #include "element.h"
 #include "monde.h"
+#include "windows.h"
 
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
@@ -184,8 +185,9 @@ void colision(struct Element **liste1, struct Element **liste2){
 */
 void afficheElement(struct Element *e){
 	if(e != NULL){
+		float ratio = windowRatio();
 		glBindTexture(GL_TEXTURE_2D, *(e->texture));
-		traceRectanglePlein(e->posx-(e->taille/3), e->posy-(e->taille), e->posx+(e->taille/3), e->posy+(e->taille));
+		traceRectanglePlein(e->posx-(e->taille/ratio), e->posy-(e->taille), e->posx+(e->taille/ratio), e->posy+(e->taille));
 		glBindTexture(GL_TEXTURE_2D,0);
 		afficheElement(e->next);
 	}

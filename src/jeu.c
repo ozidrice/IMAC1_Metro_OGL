@@ -17,6 +17,7 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 int launch(){
     if(0 == initWindow())
         return 0;
+
     initKeys(); //Initialisation touches clavier
     preload_texture(); //Initialisation des textures
     Monde *monde = creerMonde(); //Creation du monde

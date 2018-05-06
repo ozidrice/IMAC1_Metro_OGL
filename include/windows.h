@@ -11,9 +11,8 @@
 
 
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 800;
-
+static unsigned int WINDOW_WIDTH = 1000;
+static unsigned int WINDOW_HEIGHT = 800;  
 
 /*	Init la fenetre
 *	Return 1 if ok
@@ -28,4 +27,6 @@ void resizeViewport();
 
 /*	Print text*/
 void displayText(const char *text, int x, int y, int size, char *font_path, int r, int g, int b);
+
+float windowRatio();
 #endif
