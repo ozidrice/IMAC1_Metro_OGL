@@ -132,7 +132,7 @@ int estEnColision(struct Element *e1, struct Element *e2){
 void afficheElement(struct Element *e){
 	if(e != NULL){
 		glBindTexture(GL_TEXTURE_2D, *(e->texture));
-		traceRectanglePlein(e->posx-(e->taille/2), e->posy-(e->taille/2), e->posx+(e->taille/2), e->posy+(e->taille/2));
+		traceRectanglePlein(e->posx-(e->taille/3), e->posy-(e->taille), e->posx+(e->taille/3), e->posy+(e->taille));
 		glBindTexture(GL_TEXTURE_2D,0);
 		afficheElement(e->next);
 	}
@@ -280,9 +280,9 @@ Projectile *lance_projectile(struct Element *e){
 	if(now - e->last_launch > e->intervalle_projectile){
 		e->last_launch = SDL_GetTicks();
 		if(e->vit_deplacement_projectile_x > 0){
-			return creerProjectile(e->posx+(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+			return creerProjectile(e->posx+(e->taille), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
 		}else{
-			return creerProjectile(e->posx-(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+			return creerProjectile(e->posx-(e->taille), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
 
 		}
 	}

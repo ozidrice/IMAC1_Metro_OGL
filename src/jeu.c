@@ -3,8 +3,8 @@ void resizeViewport();
 void handle_inputs();
 
 static char *WINDOW_TITLE = "Jeu -- OpenGL";
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 800;
+static unsigned int WINDOW_WIDTH = 1200;
+static unsigned int WINDOW_HEIGHT = 400;
 static const unsigned int BIT_PER_PIXEL = 32;
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
