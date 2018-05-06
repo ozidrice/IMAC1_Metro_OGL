@@ -1,3 +1,4 @@
+#include <math.h>
 #include "monde.h"
 static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
@@ -51,18 +52,13 @@ Monde *creerMonde(){
 */
 void afficherMonde(Monde *m){
 	creerBackground();
-
 	afficheElement(m->joueur);
-	
 	afficheElement(m->liste_projectiles);
-
-	afficheElement(m->liste_obstacle);
-
 	afficheElement(m->liste_ennemis);
-	
-	afficheElement(m->liste_bonus);
-
-	afficheElement(m->liste_malus);
+	afficheElement(m->liste_obstacle);
+	afficheElement(m->liste_ennemis);	
+	// afficheElement(m->liste_bonus);
+	// afficheElement(m->liste_malus);
 }
 
 
@@ -89,83 +85,54 @@ void LancerMonde(Monde *m, int niveau){
 
 
 /*
-*	Fait lancer et déplacer les élements necessaires
+*	Fait les actions necessaires à la prochaine frame
 */
 void action(Monde *m){
-	//Deplacement projectiles
-	if(m->liste_projectiles != NULL){
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			moving(p_tmp,1,1);
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
-
-	//Creation des projectiles
-	if(m->joueur != NULL){
-		Projectile *p_tmp = lance_projectile(m->joueur);
-		if(p_tmp != NULL){
-			addElementToList(&m->liste_projectiles, p_tmp);
-		}
-	}
-
-	//Test colisions joueur
-	//Avec un projectile
-	if(m->liste_projectiles != NULL){	
-		Projectile *p_tmp = m->liste_projectiles;
-		do{
-			// if(estEnColision(m->joueur,p_tmp))
-				//TODO
-			p_tmp = p_tmp->next;
-		}while(p_tmp != NULL);
-	}
-	//Avec un obstacle
-	if(m->liste_obstacle != NULL){	
-		Obstacle *o_tmp = m->liste_obstacle;
-		do{
-			// if(estEnColision(m->joueur,o_tmp))
-				//TODO
-			o_tmp = o_tmp->next;
-		}while(o_tmp != NULL);
-	}
-	//Avec un bonus
-	if(m->liste_bonus != NULL){	
-		Bonus *b_tmp = m->liste_bonus;
-		do{
-			/*if(estEnColision(m->joueur,b_tmp)){
-			m->joueur->pv+= 1;
-			VIT_DEFILEMENT_DEFAUT= VIT_DEFILEMENT_DEFAUT/2;
-			joueur->intervalle_projectile = 0.1;*/			
-			b_tmp = b_tmp->next;
-		}while(b_tmp != NULL);
-	}
-	//Avec un malus
-	if(m->liste_malus != NULL){	
-		Malus *m_tmp = m->liste_malus;
-		do{
-			/* if(estEnColision(m->joueur,m_tmp))
-			m->joueur->pv-= 1;
-			VIT_DEFILEMENT_DEFAUT= VIT_DEFILEMENT_DEFAUT*2;
-			joueur->intervalle_projectile = 0.01;*/
-				//TODO
-			m_tmp = m_tmp->next;
-		}while(m_tmp != NULL);
-	}
+	defilerMonde(m);
+	defilerProjectiles(m);
+	
+	generateNewProjectiles(m,m->joueur);
+	generateNewProjectiles(m,m->liste_ennemis);
+	
+	colisionsJoueur(m);
+	colisionsElement(m);
 }
 
 /*
-*	 Ajoute le Bonus b au monde 
+*	Fait les calculs necessaire avec les collisions entre les elem
+*/
+void colisionsElement(Monde *m){
+	Projectile **o_tmp = &(m->liste_obstacle);
+	Projectile **p_tmp = &(m->liste_projectiles);
+	Projectile **e_tmp = &(m->liste_ennemis);
+	colision(p_tmp, o_tmp);
+	colision(p_tmp, e_tmp);
+}
+
+
+/*
+*	 Ajoute le Malus ma au monde 
 */
 
 void ajouterMalus(Monde *m, Malus *ma){
 	addElementToList(&m->liste_malus,ma);
 }
 
-
+/*
+*	 Ajoute le Bonus b au monde 
+*/
 void ajouterBonus(Monde *m, Bonus *b){
 	addElementToList(&m->liste_bonus,b);
 }
 
+/*
+*	Fait les calculs necessaire avec les collisions entre le joueurs et les elem
+*/
+void colisionsJoueur(Monde *m){
+	colision(&m->joueur, &(m->liste_projectiles));
+	colision(&m->joueur, &(m->liste_obstacle));
+	colision(&m->joueur, &(m->liste_ennemis));
+}
 
 /*
 *	Ajoute l'obstacle o au monde
@@ -175,20 +142,30 @@ void ajouterObstacle(Monde *m, Obstacle *o){
 }
 
 /*
-*	Ajoute l'ennemi en au monde
+*	Ajoute l'ennemi e au monde
 */
-void ajouterEnnemi(Monde *m, Ennemi *en){
-	addElementToList(&m->liste_ennemis,en);
+void ajouterEnnemi(Monde *m, Ennemi *e){
+	addElementToList(&m->liste_ennemis,e);
 }
 
 /*
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(m->liste_obstacle,-VIT_DEFILEMENT_DEFAUT ,0);
-	moving(m->liste_ennemis,-VIT_DEFILEMENT_DEFAUT ,0);
-	moving(m->liste_bonus,-VIT_DEFILEMENT_DEFAUT ,0);
-	moving(m->liste_malus,-VIT_DEFILEMENT_DEFAUT ,0);
+	moving(&(m->liste_obstacle), m->vit_defilement_x, 0, 1);
+	moving(&(m->liste_ennemis), m->vit_defilement_x, 0, 1);
+	moving(&(m->liste_bonus), m->vit_defilement_x, 0, 1);
+	moving(&(m->liste_malus), m->vit_defilement_x, 0, 1);
+}
+
+
+
+
+/*
+*	Fait défiler les projectiles à leur vitesse de déplacement
+*/
+void defilerProjectiles(Monde *m){
+	moving(&(m->liste_projectiles),1,1,1);
 }
 
 
@@ -225,10 +202,8 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
 }
 
 
-/*
-*	Charge le monde (ajouter lien vers le fichier de la map en parametre ?)
-*/
 
+/* Charge le monde (ajouter lien vers le fichier de la map en parametre ?) */
 void chargerMonde(Monde *m, char * MAP){
 
 	SDL_Surface *map = NULL;
@@ -251,7 +226,8 @@ void chargerMonde(Monde *m, char * MAP){
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
-				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4);
+				//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
+				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,3,-M_PI,1/100.,-1/100.);
 				//printf(" Ennemi : x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
 			}
@@ -282,4 +258,20 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_ennemis);
 	freeElement(m->liste_bonus);
 	freeElement(m->liste_malus);
+	free(m);
+}
+
+/*
+*	Créé les projectiles necessaire
+*/
+void generateNewProjectiles(Monde *m, struct Element *liste_elem){
+	if(liste_elem != NULL){
+		do{
+			Projectile *p_tmp = lance_projectile(liste_elem);
+			if(p_tmp != NULL){
+				addElementToList(&(m->liste_projectiles), p_tmp);
+			}
+			liste_elem = liste_elem->next;
+		}while(liste_elem != NULL);
+	}
 }

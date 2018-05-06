@@ -21,8 +21,9 @@ typedef struct Element {
 	Uint32 intervalle_projectile; //en ms
 	Uint32 last_launch; //Timer du dernier projectile lancé 
 	float taille_projectile;
-	float vit_deplacement_projectile_x;
-	float vit_deplacement_projectile_y;
+	int nombreProjectileParTir;
+	float angleTir;
+	float vit_deplacement_projectile;
 
 	//Texture
 	GLuint *texture;
@@ -37,11 +38,14 @@ typedef struct Element {
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	Uint32 intervalle_projectile, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, 
 	GLuint *texture);
 
 /*Ajoute un élément à la liste*/
 void addElementToList(struct Element **list, struct Element *elem);
+
+/*Retire et free l'élément de la liste*/
+void removeElementFromList(struct Element **elem);
 
 /*	Attaque la cible,
 *	return 1 si la cible meurt
@@ -50,7 +54,7 @@ void addElementToList(struct Element **list, struct Element *elem);
 int attaque(struct Element *attanquant, struct Element *cible);
 
 /* Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement*/
-void moving(struct Element* e, float x, float y);
+void moving(struct Element** e, float x, float y, int free);
 
 /* Affiche la liste d'élément e sur la fenetre*/
 void afficheElement(struct Element *e);
@@ -59,7 +63,7 @@ void afficheElement(struct Element *e);
 Joueur *creerJoueur();
 
 /* Malloc un Ennemi */
-Ennemi *creerEnnemi(float x, float y);
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
 
 /* Malloc un Bonus */
 Bonus *creerBonus(float x, float y);
@@ -78,6 +82,11 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 */
 int estEnColision(struct Element *e1, struct Element *e2);
 
+/*	Test colisions entre les listes d'elem
+*	Retire les elements mort des listes
+*/
+void colision(struct Element **liste1, struct Element **liste2);
+
 /*
 *	Lance un projectile si le délai depuis la dernier lancement est suffisement grand
 *	Return le projectile si a été lancé
@@ -87,6 +96,12 @@ Projectile *lance_projectile(struct Element *e);
 
 /* image de fond */
 void creerBackground();
+
+/*	Créé les projectiles necessaire à un tir 
+*	en prenant en compte le nombreProjectileParTir
+*/
+Projectile *creerProjectileMultiple(struct Element *e);
+
 
 /*	Free la liste d'éléments */
 void freeElement(struct Element *e);
