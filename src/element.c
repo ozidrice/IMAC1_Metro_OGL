@@ -185,7 +185,7 @@ void colision(struct Element **liste1, struct Element **liste2){
 void afficheElement(struct Element *e){
 	if(e != NULL){
 		glBindTexture(GL_TEXTURE_2D, *(e->texture));
-		traceRectanglePlein(e->posx-(e->taille/2), e->posy-(e->taille/2), e->posx+(e->taille/2), e->posy+(e->taille/2));
+		traceRectanglePlein(e->posx-(e->taille/3), e->posy-(e->taille), e->posx+(e->taille/3), e->posy+(e->taille));
 		glBindTexture(GL_TEXTURE_2D,0);
 		afficheElement(e->next);
 	}
