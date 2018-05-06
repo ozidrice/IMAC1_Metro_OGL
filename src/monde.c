@@ -41,6 +41,7 @@ Monde *creerMonde(){
 	m->liste_ennemis = NULL;
 	m->liste_obstacle = NULL;
 	m->liste_bonus = NULL;
+	m->liste_malus = NULL;
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -60,6 +61,8 @@ void afficherMonde(Monde *m){
 	afficheElement(m->liste_ennemis);
 	
 	afficheElement(m->liste_bonus);
+
+	afficheElement(m->liste_malus);
 }
 
 
@@ -70,10 +73,10 @@ void LancerMonde(Monde *m, int niveau){
 	char * MAP = NULL;
  	switch(niveau) {
             case 1:
-                MAP = "img/map6.bmp";
+                MAP = "img/map7.bmp";
                   break;
             case 2:
-		MAP = "img/map5.bmp";
+		MAP = "img/map6.bmp";
                   break;
             case 3:
 		MAP = "img/map5.bmp"; 
@@ -129,16 +132,36 @@ void action(Monde *m){
 	if(m->liste_bonus != NULL){	
 		Bonus *b_tmp = m->liste_bonus;
 		do{
-			// if(estEnColision(m->joueur,o_tmp))
-				//TODO
+			/*if(estEnColision(m->joueur,b_tmp)){
+			m->joueur->pv+= 1;
+			VIT_DEFILEMENT_DEFAUT= VIT_DEFILEMENT_DEFAUT/2;
+			joueur->intervalle_projectile = 0.1;*/			
 			b_tmp = b_tmp->next;
 		}while(b_tmp != NULL);
+	}
+	//Avec un malus
+	if(m->liste_malus != NULL){	
+		Malus *m_tmp = m->liste_malus;
+		do{
+			/* if(estEnColision(m->joueur,m_tmp))
+			m->joueur->pv-= 1;
+			VIT_DEFILEMENT_DEFAUT= VIT_DEFILEMENT_DEFAUT*2;
+			joueur->intervalle_projectile = 0.01;*/
+				//TODO
+			m_tmp = m_tmp->next;
+		}while(m_tmp != NULL);
 	}
 }
 
 /*
 *	 Ajoute le Bonus b au monde 
 */
+
+void ajouterMalus(Monde *m, Malus *ma){
+	addElementToList(&m->liste_malus,ma);
+}
+
+
 void ajouterBonus(Monde *m, Bonus *b){
 	addElementToList(&m->liste_bonus,b);
 }
@@ -165,6 +188,7 @@ void defilerMonde(Monde *m){
 	moving(m->liste_obstacle,-VIT_DEFILEMENT_DEFAUT ,0);
 	moving(m->liste_ennemis,-VIT_DEFILEMENT_DEFAUT ,0);
 	moving(m->liste_bonus,-VIT_DEFILEMENT_DEFAUT ,0);
+	moving(m->liste_malus,-VIT_DEFILEMENT_DEFAUT ,0);
 }
 
 
@@ -235,6 +259,12 @@ void chargerMonde(Monde *m, char * MAP){
 			{
 				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4);
 				ajouterBonus(m,b);			
+			}
+
+			if(r==165 && g==0 && b==255) /* Violet => Malus */
+			{
+				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4);
+				ajouterMalus(m,ma);			
 			}	
 		}
 	}
@@ -251,4 +281,5 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
 	freeElement(m->liste_bonus);
+	freeElement(m->liste_malus);
 }

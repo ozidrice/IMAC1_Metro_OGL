@@ -7,8 +7,7 @@ static GLuint *TEXTURE_OBSTACLE;
 static GLuint *TEXTURE_ENNEMI;
 static GLuint *TEXTURE_FOND;
 static GLuint *TEXTURE_BONUS;
-
-/*static GLuint *TEXTURE_MALUS;*/
+static GLuint *TEXTURE_MALUS;
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
@@ -20,6 +19,7 @@ void preload_texture(){
 	TEXTURE_ENNEMI = generateID("img/old2.png");
 	TEXTURE_FOND = generateID("img/wall.png");
 	TEXTURE_BONUS = generateID("img/bonus.png");
+	TEXTURE_MALUS = generateID("img/malus.png");
 }
 
 /*
@@ -32,6 +32,7 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_ENNEMI);
 	glDeleteTextures(1,TEXTURE_FOND);
 	glDeleteTextures(1,TEXTURE_BONUS);
+	glDeleteTextures(1,TEXTURE_MALUS);
 }
 
 /* 
@@ -198,6 +199,25 @@ Bonus *creerBonus(float x, float y){
 	float vit_deplacement_projectile_y= 0;
 	GLuint *texture = TEXTURE_BONUS;
 	return (Bonus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+}
+
+/*___________________MALUS_____________________*/
+
+/*
+*	malloc malus
+*/
+Malus *creerMalus(float x, float y){
+	int pv = -1;
+	int pa = 1; 
+	float taille = .1; 
+	float vit_deplacement_x, vit_deplacement_y;
+	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	Uint32 intervalle_projectile = 0;
+	float taille_projectile = 0;
+	float vit_deplacement_projectile_x = 0;
+	float vit_deplacement_projectile_y= 0;
+	GLuint *texture = TEXTURE_MALUS;
+	return (Malus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
 }
 
 

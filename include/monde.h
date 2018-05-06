@@ -19,12 +19,16 @@ typedef struct monde
 	Ennemi *liste_ennemis; 
 	Obstacle *liste_obstacle;
 	Bonus *liste_bonus;
+	Malus *liste_malus;
 	float vit_defilement_x;
 }Monde;
 
 
 /* Affiche le monde et ses parametre dans la fenetre */
 void afficherMonde(Monde *m);
+
+/* Ajoute le malus m au Monde */
+void ajouterMalus(Monde *m, Malus *ma);
 
 /* Ajoute le bonus b au Monde */
 void ajouterBonus(Monde *m, Bonus *b);
@@ -40,7 +44,6 @@ void chargerMonde(Monde *m, char * MAP);
 
 /* Gestion des niveaux */
 void LancerMonde(Monde *m, int niveau);
-
 
 /* obtient un pixel de la surface */
 Uint32 obtenirPixel(SDL_Surface *surface, int x, int y);

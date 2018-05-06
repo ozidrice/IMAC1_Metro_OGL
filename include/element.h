@@ -29,7 +29,7 @@ typedef struct Element {
 	
 	//Liste chainée
 	struct Element *next;
-}Joueur, Ennemi, Obstacle, Projectile, Bonus;
+}Joueur, Ennemi, Obstacle, Projectile, Bonus, Malus;
 
 
 
@@ -63,6 +63,9 @@ Ennemi *creerEnnemi(float x, float y);
 
 /* Malloc un Bonus */
 Bonus *creerBonus(float x, float y);
+
+/* Malloc un Malus */
+Malus *creerMalus(float x, float y);
 
 /* Malloc un Obstacle */
 Obstacle *creerObstacle(float x, float y);
