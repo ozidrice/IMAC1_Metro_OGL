@@ -11,6 +11,9 @@
 
 
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;
+static unsigned int WINDOW_WIDTH = 800;
+static unsigned int WINDOW_HEIGHT = 800;
+
 
 /*	Init la fenetre
 *	Return 1 if ok
