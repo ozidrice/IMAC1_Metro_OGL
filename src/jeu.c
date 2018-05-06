@@ -20,7 +20,7 @@ int launch(){
     initKeys(); //Initialisation touches clavier
     preload_texture(); //Initialisation des textures
     Monde *monde = creerMonde(); //Creation du monde
-    chargerMonde(monde);
+    LancerMonde(monde, 1);
 
     //Lancement de la boucle d'affichage
     loop(monde);

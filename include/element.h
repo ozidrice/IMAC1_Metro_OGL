@@ -30,7 +30,7 @@ typedef struct Element {
 	
 	//Liste chainée
 	struct Element *next;
-}Joueur, Ennemi, Bonus, Obstacle, Projectile;
+}Joueur, Ennemi, Obstacle, Projectile, Bonus, Malus;
 
 
 
@@ -68,6 +68,9 @@ Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplace
 /* Malloc un Bonus */
 Bonus *creerBonus(float x, float y);
 
+/* Malloc un Malus */
+Malus *creerMalus(float x, float y);
+
 /* Malloc un Obstacle */
 Obstacle *creerObstacle(float x, float y);
 
@@ -90,6 +93,9 @@ void colision(struct Element **liste1, struct Element **liste2);
 *	NULL sinon
 */
 Projectile *lance_projectile(struct Element *e);
+
+/* image de fond */
+void creerBackground();
 
 /*	Créé les projectiles necessaire à un tir 
 *	en prenant en compte le nombreProjectileParTir

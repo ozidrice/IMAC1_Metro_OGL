@@ -2,8 +2,6 @@
 #define glVertex2px(x,y) glVertex2d((double)(x) * 2.0 / (double)WINDOW_WIDTH - 1.0, 1.0 - (double)(y) * 2.0 / (double)WINDOW_HEIGHT);
 
 static const unsigned int BIT_PER_PIXEL = 32;
-static unsigned int WINDOW_WIDTH = 800;
-static unsigned int WINDOW_HEIGHT = 800;
 static char *WINDOW_TITLE = "Jeu -- OpenGL"; 
 
 /*
