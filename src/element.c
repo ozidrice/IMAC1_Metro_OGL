@@ -1,3 +1,4 @@
+#include <math.h>
 #include "element.h"
 #include "monde.h"
 
@@ -8,6 +9,7 @@ static GLuint *TEXTURE_ENNEMI;
 static GLuint *TEXTURE_FOND;
 static GLuint *TEXTURE_BONUS;
 static GLuint *TEXTURE_MALUS;
+
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
@@ -41,7 +43,7 @@ void free_texture(){
 struct Element *initElement(int pv, int pa, 
 	float x, float y, float taille, 
 	float vit_deplacement_x, float vit_deplacement_y, 
-	Uint32 intervalle_projectile, float taille_projectile, float vit_deplacement_projectile_x, float vit_deplacement_projectile_y,
+	Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, 
 	GLuint *texture){
 	
 	struct Element* element = malloc(sizeof(struct Element));
@@ -56,9 +58,10 @@ struct Element *initElement(int pv, int pa,
 	element->vit_deplacement_y = vit_deplacement_y;
 	element->last_launch = 0;
 	element->intervalle_projectile = intervalle_projectile;
+	element->nombreProjectileParTir = nombreProjectileParTir;
+	element->angleTir = angleTir;
 	element->taille_projectile = taille_projectile;
-	element->vit_deplacement_projectile_x = vit_deplacement_projectile_x;
-	element->vit_deplacement_projectile_y = vit_deplacement_projectile_y;
+	element->vit_deplacement_projectile = vit_deplacement_projectile;
 	element->texture = texture;
 	element->next = 0;
 	return element;
@@ -81,12 +84,22 @@ void addElementToList(struct Element **list, struct Element *elem){
 	if(*list == NULL){
 		*list = elem;
 	}else{
-		struct Element *tmp = *list;
-		while(tmp->next != NULL){
-			tmp = tmp->next;
+		while((*list)->next != NULL){
+			list = &((*list)->next);
 		}
-		tmp->next = elem;
+		(*list)->next = elem;
 	}
+}
+
+/*
+*	Retire et free l'élément de la liste
+*/
+void removeElementFromList(struct Element **elem){
+	if(*elem != NULL){	
+		struct Element *fils = (*elem)->next;
+		free(*elem);
+		*elem = fils;
+	}	
 }
 
 /*
@@ -104,12 +117,18 @@ int attaque(struct Element *attanquant, struct Element *cible){
 
 /*
 *	Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement
+*	Si free = 1 : Free l'élément si il sort de l'écran
 */
-void moving(struct Element *e, float x, float y){
-	if(e != NULL){
-		e->posx += x*e->vit_deplacement_x;
-		e->posy += y*e->vit_deplacement_y;
-		moving(e->next,x,y);
+void moving(struct Element **e, float x, float y, int free){
+	if(*e != NULL){
+		(*e)->posx += x*(*e)->vit_deplacement_x;
+		(*e)->posy += y*(*e)->vit_deplacement_y;
+		if(free == 1 && ( (*e)->posx > 1 || (*e)->posy > 1 || (*e)->posx < -1 || (*e)->posy < -1 ) ){
+			removeElementFromList(e);
+			moving(e,x,y,free);
+		}else{
+			moving(&((*e)->next),x,y,free);
+		}
 	}
 }
 
@@ -120,10 +139,44 @@ void moving(struct Element *e, float x, float y){
 int estEnColision(struct Element *e1, struct Element *e2){
 	if(e1 == NULL || e2 == NULL)
 		return 0;
-	if(e1->posx >= e2->posx - e2->taille && e1->posx <= e2->posx + e2->taille &&
-		e1->posy >= e2->posy - e2->taille && e1->posy <= e2->posy + e2->taille)
+	if(e1->posx > e2->posx - e2->taille && e1->posx < e2->posx + e2->taille &&
+		e1->posy > e2->posy - e2->taille && e1->posy < e2->posy + e2->taille){
 		return 1;
+	}
 	return 0;
+}
+
+/*
+*	Test colisions entre les listes d'elem
+*	Retire les elements mort des listes
+*/
+void colision(struct Element **liste1, struct Element **liste2){
+	if(*liste1 != NULL && *liste2 != NULL){
+		//Foreach liste1
+		do{
+			int meurt_1 = 0, meurt_2 = 0;
+			if(*liste2 != NULL){
+				//Foreach liste2
+				struct Element **liste2_tmp = liste2;
+				do{
+					meurt_2 = 0; 
+					if(estEnColision(*liste1,*liste2_tmp)){
+						meurt_1 = attaque(*liste2_tmp,*liste1);
+						meurt_2 = attaque(*liste1,*liste2_tmp);
+						if(meurt_1 == 1)
+							removeElementFromList(liste1);
+						if(meurt_2 == 1)
+							removeElementFromList(liste2_tmp);
+						else
+							liste2_tmp = &((*liste2_tmp)->next);
+					}else
+						liste2_tmp = &((*liste2_tmp)->next);
+				}while(*liste2_tmp != NULL);
+			}
+			if(meurt_1 == 0)
+				liste1 = &((*liste1)->next);
+		}while(*liste1 != NULL);
+	}
 }
 
 /* 
@@ -153,11 +206,12 @@ Joueur *creerJoueur(){
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
+	int nombreProjectileParTir = 1;
+	float angleTir = M_PI*2;
 	float taille_projectile = .03;
-	float vit_deplacement_projectile_x = 1/20.;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 1/20.;
 	GLuint *texture = TEXTURE_JOUEUR;
-	return (Joueur*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -166,19 +220,12 @@ Joueur *creerJoueur(){
 /*
 *	malloc un Ennemi 
 */
-Ennemi *creerEnnemi(float x, float y){
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile){
 	int pv = 5;
 	int pa = 1;
 	float taille = .1; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
-	Uint32 intervalle_projectile = 0;
-	float taille_projectile = .03;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
 	GLuint *texture = TEXTURE_ENNEMI;
-	return (Ennemi*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
-
+	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -192,13 +239,14 @@ Bonus *creerBonus(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	vit_deplacement_x = vit_deplacement_y = -1/1000.; 
 	Uint32 intervalle_projectile = 0;
+	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y= 0;
-	GLuint *texture = TEXTURE_BONUS;
-	return (Bonus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	float vit_deplacement_projectile = 0;
+	GLuint *texture = NULL;
+	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 /*___________________MALUS_____________________*/
@@ -211,13 +259,14 @@ Malus *creerMalus(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	vit_deplacement_x = vit_deplacement_y = -1/100.; 
 	Uint32 intervalle_projectile = 0;
+	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y= 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = TEXTURE_MALUS;
-	return (Malus*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Malus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
@@ -231,13 +280,14 @@ Obstacle *creerObstacle(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = 1/100.; 
+	vit_deplacement_x = vit_deplacement_y = -1/1000.; 
 	Uint32 intervalle_projectile = 0;
+	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = TEXTURE_OBSTACLE;
-	return (Obstacle*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Obstacle*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 /*
@@ -258,13 +308,14 @@ void creerBackground(){
 *	malloc un Projectile 
 */
 Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y){
-	int pv = -1;
+	int pv = 1;
 	Uint32 intervalle_projectile = 0;
+	int nombreProjectileParTir = 0;
+	float angleTir = 0;
 	float taille_projectile = 0;
-	float vit_deplacement_projectile_x = 0;
-	float vit_deplacement_projectile_y = 0;
+	float vit_deplacement_projectile = 0;
 	GLuint *texture = TEXTURE_PROJECTILE;
-	return (Projectile*) initElement(pa,pv,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,taille_projectile,vit_deplacement_projectile_x,vit_deplacement_projectile_y,texture);
+	return (Projectile*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 /*
@@ -273,20 +324,61 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 *	NULL sinon
 */
 Projectile *lance_projectile(struct Element *e){
-	if(e == NULL || e->vit_deplacement_projectile_x == 0)
+	if(e == NULL || e->vit_deplacement_projectile == 0)
 		return NULL;
 
 	Uint32 now = SDL_GetTicks();
 	if(now - e->last_launch > e->intervalle_projectile){
 		e->last_launch = SDL_GetTicks();
-		if(e->vit_deplacement_projectile_x > 0){
-			return creerProjectile(e->posx+(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
+		if(e->vit_deplacement_projectile >= 0){
+			return creerProjectileMultiple(e);
 		}else{
-			return creerProjectile(e->posx-(e->taille/2), e->posy, e->taille_projectile, e->pa, e->vit_deplacement_projectile_x, e->vit_deplacement_projectile_y);
-
+			return creerProjectileMultiple(e);
 		}
 	}
 	return NULL;
 }
 
+/*
+*	Créé les projectiles necessaire à un tir 
+*	en prenant en compte le nombreProjectileParTir
+*/
+Projectile *creerProjectileMultiple(struct Element *e){
+	int i;
+	Projectile *liste_projectiles = NULL;
 
+	for (i = 0; i < e->nombreProjectileParTir; ++i)
+	{
+		Projectile *proj;
+		float dep_y,dep_x;
+		if(e->nombreProjectileParTir == 1){
+			dep_y = 0;
+			dep_x = 1.;
+		}else{
+			float angle = i/((e->nombreProjectileParTir-1)*1.)-.5;
+			angle *= e->angleTir;
+			dep_x = cos(angle);
+			dep_y = sin(angle);
+
+		}
+		float diag_lenght = (e->taille*sqrt(2))/2 +.1;
+		float ray = (e->taille/2)+diag_lenght;
+		float posx , posy, vit_parent_x, vit_parent_y;
+		if(e->angleTir > 0){
+			posx = e->posx+ray*dep_x;
+			posy = e->posy+ray*dep_y;
+			vit_parent_x = vit_parent_y = 0;
+		}
+		else {
+			posx = e->posx-ray*dep_x;
+			posy = e->posy-ray*dep_y;
+			vit_parent_x = -e->vit_deplacement_x;
+			vit_parent_y = -e->vit_deplacement_y;
+		}
+			
+
+		proj = creerProjectile(posx, posy, e->taille_projectile, e->pa, dep_x*e->vit_deplacement_projectile+vit_parent_x, dep_y*e->vit_deplacement_projectile+vit_parent_y);
+		addElementToList(&liste_projectiles,proj);	
+	}
+	return liste_projectiles;
+}
