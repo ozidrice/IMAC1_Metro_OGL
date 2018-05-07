@@ -155,8 +155,10 @@ void moving(struct Element **e, float x, float y, int freeOnTop, int freeOnRight
 int estEnColision(struct Element *e1, struct Element *e2){
 	if(e1 == NULL || e2 == NULL)
 		return 0;
-	if(e1->posx > e2->posx - e2->taille && e1->posx < e2->posx + e2->taille &&
-		e1->posy > e2->posy - e2->taille && e1->posy < e2->posy + e2->taille){
+	float ratio = windowRatio();
+	if(e1->posx+(e1->taille/ratio) > e2->posx-(e2->taille/ratio) && e1->posx-(e1->taille/ratio) < e2->posx+(e2->taille/ratio) &&
+		e1->posy-e1->taille < e2->posy+e2->taille && e1->posy+e1->taille > e2->posy-e2->taille
+		){
 		return 1;
 	}
 	return 0;
@@ -204,9 +206,11 @@ void afficheElement(struct Element *e){
 			fprintf(stderr, "afficheElement : TEXTURE NULL\n");
 		else{
 			float ratio = windowRatio();
+			// glColor3f(1,1,0);
 			glBindTexture(GL_TEXTURE_2D, *(e->texture));
 			traceRectanglePlein(e->posx-(e->taille/ratio), e->posy-(e->taille), e->posx+(e->taille/ratio), e->posy+(e->taille));
 			glBindTexture(GL_TEXTURE_2D,0);
+			// glColor3f(0,0,0);
 		}
 		afficheElement(e->next);
 	}
@@ -354,11 +358,7 @@ Projectile *lance_projectile(struct Element *e){
 	Uint32 now = SDL_GetTicks();
 	if(now - e->last_launch > e->intervalle_projectile){
 		e->last_launch = SDL_GetTicks();
-		if(e->vit_deplacement_projectile >= 0){
-			return creerProjectileMultiple(e);
-		}else{
-			return creerProjectileMultiple(e);
-		}
+		return creerProjectileMultiple(e);
 	}
 	return NULL;
 }
@@ -385,7 +385,7 @@ Projectile *creerProjectileMultiple(struct Element *e){
 			dep_y = sin(angle);
 
 		}
-		float diag_lenght = (e->taille*sqrt(2))/2 +.1;
+		float diag_lenght = (e->taille*sqrt(2))/2;
 		float ray = (e->taille/2)+diag_lenght;
 		float posx , posy, vit_parent_x, vit_parent_y;
 		if(e->angleTir > 0){

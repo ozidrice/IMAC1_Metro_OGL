@@ -121,9 +121,9 @@ void afficheHUD_Vie(int pv){
 
     int i;
     float posX = -.95;
-    float posY = .96;
-    float taille = .1;
-    float ecart = .1;
+    float posY = .95;
+    float taille = .05;
+    float ecart = .05;
     glBindTexture(GL_TEXTURE_2D, *TEXTURE_COEUR);
     for(i=0;i<pv;i++)
         traceRectanglePlein(posX+taille+i*ecart,posY-taille,posX+i*ecart,posY);
