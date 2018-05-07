@@ -7,6 +7,7 @@ void loop(Monde *monde);
 void initKeys();
 void displayText();
 void handle_inputs();
+void affichageHUD(Monde *m);
 
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 
@@ -74,7 +75,7 @@ void loop(Monde *monde){
     	glEnable(GL_BLEND);
     	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
             afficherMonde(monde);
-            // affichageHUD(monde);
+            affichageHUD(monde);
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
 
@@ -113,22 +114,26 @@ void handle_inputs(Monde *monde){
 
 
 
-// static GLuint *TEXTURE_COEUR = NULL;
-// void afficheHUD_Vie(int pv){
-//     if(TEXTURE_COEUR == NULL)
-//         TEXTURE_COEUR = generateID("img/coeur.png");
+static GLuint *TEXTURE_COEUR = NULL;
+void afficheHUD_Vie(int pv){
+    if(TEXTURE_COEUR == NULL)
+        TEXTURE_COEUR = generateID("img/coeur.png");
 
+    int i;
+    float posX = -.95;
+    float posY = .96;
+    float taille = .1;
+    float ecart = .1;
+    glBindTexture(GL_TEXTURE_2D, *TEXTURE_COEUR);
+    for(i=0;i<pv;i++)
+        traceRectanglePlein(posX+taille+i*ecart,posY-taille,posX+i*ecart,posY);
+    glBindTexture(GL_TEXTURE_2D,0);
+}
 
-//     glBindTexture(GL_TEXTURE_2D, TEXTURE_COEUR);
-//     traceRectanglePlein(0,0,1,1);
-//     glBindTexture(GL_TEXTURE_2D, 0);
-// }
+void affichageHUD(Monde *m){
 
-// void affichageHUD(Monde *m){
-
-//     Joueur *j = m->joueur;
-//     if(j != NULL){
-//         afficheHUD_Vie(j->pv); 
-//         // displayText(pv,0,0,18,"font/04B_30__.TTF",255,255,255);
-//     }
-// }
+    Joueur *j = m->joueur;
+    if(j != NULL){
+        afficheHUD_Vie(j->pv); 
+    }
+}
