@@ -74,10 +74,10 @@ void loop(Monde *monde){
     	glEnable(GL_BLEND);
     	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
             afficherMonde(monde);
+            // affichageHUD(monde);
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
 
-        displayText("Coucou c'est moi",0,0,18,"font/04B_30__.TTF",255,255,255);
         
         //Buffer
         SDL_GL_SwapBuffers();
@@ -102,11 +102,33 @@ void initKeys(){
 */
 void handle_inputs(Monde *monde){
     if(KEYS[SDLK_DOWN] == 1)
-        moving(&(monde->joueur), 0, -1, 0); 
+        moving(&(monde->joueur), 0, -1, 0, 0, 0, 0); 
     if(KEYS[SDLK_UP] == 1)
-        moving(&(monde->joueur), 0, 1, 0); 
+        moving(&(monde->joueur), 0, 1, 0, 0, 0, 0); 
     if(KEYS[SDLK_RIGHT] == 1)
-        moving(&(monde->joueur), 1, 0, 0); 
+        moving(&(monde->joueur), 1, 0, 0, 0, 0, 0); 
     if(KEYS[SDLK_LEFT] == 1)
-        moving(&(monde->joueur), -1, 0, 0); 
+        moving(&(monde->joueur), -1, 0, 0, 0, 0, 0); 
 }
+
+
+
+// static GLuint *TEXTURE_COEUR = NULL;
+// void afficheHUD_Vie(int pv){
+//     if(TEXTURE_COEUR == NULL)
+//         TEXTURE_COEUR = generateID("img/coeur.png");
+
+
+//     glBindTexture(GL_TEXTURE_2D, TEXTURE_COEUR);
+//     traceRectanglePlein(0,0,1,1);
+//     glBindTexture(GL_TEXTURE_2D, 0);
+// }
+
+// void affichageHUD(Monde *m){
+
+//     Joueur *j = m->joueur;
+//     if(j != NULL){
+//         afficheHUD_Vie(j->pv); 
+//         // displayText(pv,0,0,18,"font/04B_30__.TTF",255,255,255);
+//     }
+// }

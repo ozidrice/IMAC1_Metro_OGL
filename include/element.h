@@ -54,7 +54,7 @@ void removeElementFromList(struct Element **elem);
 int attaque(struct Element *attanquant, struct Element *cible);
 
 /* Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement*/
-void moving(struct Element** e, float x, float y, int free);
+void moving(struct Element** e, float x, float y,  int freeOnTop, int freeOnRight, int freeOnBottom, int freeOnLeft);
 
 /* Affiche la liste d'élément e sur la fenetre*/
 void afficheElement(struct Element *e);

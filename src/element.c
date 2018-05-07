@@ -120,15 +120,30 @@ int attaque(struct Element *attanquant, struct Element *cible){
 *	Déplace la liste d'élement e en prenant compte de sa vitesse de déplacement
 *	Si free = 1 : Free l'élément si il sort de l'écran
 */
-void moving(struct Element **e, float x, float y, int free){
+void moving(struct Element **e, float x, float y, int freeOnTop, int freeOnRight, int freeOnBottom, int freeOnLeft){
 	if(*e != NULL){
 		(*e)->posx += x*(*e)->vit_deplacement_x;
 		(*e)->posy += y*(*e)->vit_deplacement_y;
-		if(free == 1 && ( (*e)->posx > 1 || (*e)->posy > 1 || (*e)->posx < -1 || (*e)->posy < -1 ) ){
+		if(freeOnLeft == 1 && (*e)->posx < -1){
 			removeElementFromList(e);
-			moving(e,x,y,free);
+			moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
 		}else{
-			moving(&((*e)->next),x,y,free);
+			if(freeOnRight == 1 && (*e)->posx > 1){
+				removeElementFromList(e);
+				moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
+			}else{
+				if(freeOnTop == 1 && (*e)->posy > 1){
+					removeElementFromList(e);
+					moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
+				}else{
+					if(freeOnBottom == 1 && (*e)->posy < -1){
+						removeElementFromList(e);
+						moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
+					}else{
+						moving(&((*e)->next),x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
+					}
+				}
+			}
 		}
 	}
 }
@@ -245,7 +260,8 @@ Bonus *creerBonus(float x, float y){
 	int pa = 1; 
 	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = -1/1000.; 
+	vit_deplacement_x = -1/1000.;
+	vit_deplacement_y = 0; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
 	float angleTir = 0;
@@ -265,7 +281,8 @@ Malus *creerMalus(float x, float y){
 	int pa = 1; 
 	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = -1/100.; 
+	vit_deplacement_x = -1/100.;
+	vit_deplacement_y = 0; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
 	float angleTir = 0;
@@ -286,7 +303,8 @@ Obstacle *creerObstacle(float x, float y){
 	int pa = 1; 
 	float taille = .1; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = vit_deplacement_y = -1/1000.; 
+	vit_deplacement_x = -1/1000.;
+	vit_deplacement_y = 0; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
 	float angleTir = 0;

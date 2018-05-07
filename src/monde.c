@@ -152,10 +152,10 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(&(m->liste_obstacle), m->vit_defilement_x, 0, 1);
-	moving(&(m->liste_ennemis), m->vit_defilement_x, 0, 1);
-	moving(&(m->liste_bonus), m->vit_defilement_x, 0, 1);
-	moving(&(m->liste_malus), m->vit_defilement_x, 0, 1);
+	moving(&(m->liste_obstacle), 1., 1., 0,0,0,0);
+	moving(&(m->liste_ennemis), 1., 1., 0,0,0,0);
+	moving(&(m->liste_bonus), 1., 1., 0,0,0,0);
+	moving(&(m->liste_malus), 1., 1., 0,0,0,0);
 }
 
 
@@ -165,7 +165,7 @@ void defilerMonde(Monde *m){
 *	Fait défiler les projectiles à leur vitesse de déplacement
 */
 void defilerProjectiles(Monde *m){
-	moving(&(m->liste_projectiles),1,1,1);
+	moving(&(m->liste_projectiles),1,1,1,1,1,1);
 }
 
 
