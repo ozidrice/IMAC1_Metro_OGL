@@ -11,6 +11,7 @@
 
 #include "element.h"
 #include "forme.h"
+#include "background.h"
 
 typedef struct monde
 {
@@ -20,6 +21,7 @@ typedef struct monde
 	Obstacle *liste_obstacle;
 	Bonus *liste_bonus;
 	Malus *liste_malus;
+	Background *background;
 	float vit_defilement_x;
 }Monde;
 
@@ -64,8 +66,6 @@ Monde *creerMonde();
 /* free tous les élements du monde */
 void freeMonde(Monde *m);
 
-/* Initialise texture */
-GLuint *generateID(char *chemin);
 
 void defilerMonde(Monde *m);
 void defilerProjectiles(Monde *m);

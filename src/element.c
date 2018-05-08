@@ -3,41 +3,6 @@
 #include "monde.h"
 #include "windows.h"
 
-static GLuint *TEXTURE_JOUEUR;
-static GLuint *TEXTURE_PROJECTILE;
-static GLuint *TEXTURE_OBSTACLE;
-static GLuint *TEXTURE_ENNEMI;
-static GLuint *TEXTURE_FOND;
-static GLuint *TEXTURE_BONUS;
-static GLuint *TEXTURE_MALUS;
-
-
-/*
-*	Précharge les textures pour pouvoir les utiliser plus tard
-*/
-void preload_texture(){
-	TEXTURE_JOUEUR = generateID("img/player.png");
-	TEXTURE_PROJECTILE = generateID("img/USB.png");
-	TEXTURE_OBSTACLE = generateID("img/wall.png");
-	TEXTURE_ENNEMI = generateID("img/old2.png");
-	TEXTURE_FOND = generateID("img/wall.png");
-	TEXTURE_BONUS = generateID("img/bonus.png");
-	TEXTURE_MALUS = generateID("img/malus.png");
-}
-
-/*
-*	Free les textures chargés
-*/
-void free_texture(){
-	glDeleteTextures(1,TEXTURE_JOUEUR);
-	glDeleteTextures(1,TEXTURE_PROJECTILE);
-	glDeleteTextures(1,TEXTURE_OBSTACLE);
-	glDeleteTextures(1,TEXTURE_ENNEMI);
-	glDeleteTextures(1,TEXTURE_FOND);
-	glDeleteTextures(1,TEXTURE_BONUS);
-	glDeleteTextures(1,TEXTURE_MALUS);
-}
-
 /* 
 *	Malloc un element 
 */
@@ -222,7 +187,7 @@ void afficheElement(struct Element *e){
 /*
 *	malloc un joueur
 */ 
-Joueur *creerJoueur(){
+Joueur *creerJoueur(GLuint *texture){
 	int pv = 5;
 	int pa = 1; 
 	float x = -.9;
@@ -235,7 +200,6 @@ Joueur *creerJoueur(){
 	float angleTir = M_PI*2;
 	float taille_projectile = .03;
 	float vit_deplacement_projectile = 1/20.;
-	GLuint *texture = TEXTURE_JOUEUR;
 	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -245,11 +209,10 @@ Joueur *creerJoueur(){
 /*
 *	malloc un Ennemi 
 */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile){
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture){
 	int pv = 5;
 	int pa = 1;
-	float taille = .1; 
-	GLuint *texture = TEXTURE_ENNEMI;
+	float taille = .1;
 	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -259,7 +222,7 @@ Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplace
 /*
 *	malloc un Bonus 
 */
-Bonus *creerBonus(float x, float y){
+Bonus *creerBonus(float x, float y, GLuint *texture){
 	int pv = -1;
 	int pa = 1; 
 	float taille = .05; 
@@ -271,7 +234,6 @@ Bonus *creerBonus(float x, float y){
 	float angleTir = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile = 0;
-	GLuint *texture = TEXTURE_BONUS;
 	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -280,7 +242,7 @@ Bonus *creerBonus(float x, float y){
 /*
 *	malloc malus
 */
-Malus *creerMalus(float x, float y){
+Malus *creerMalus(float x, float y, GLuint *texture){
 	int pv = -1;
 	int pa = 1; 
 	float taille = .05; 
@@ -292,7 +254,6 @@ Malus *creerMalus(float x, float y){
 	float angleTir = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile = 0;
-	GLuint *texture = TEXTURE_MALUS;
 	return (Malus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -302,7 +263,7 @@ Malus *creerMalus(float x, float y){
 /*
 *	malloc un Obstacle 
 */
-Obstacle *creerObstacle(float x, float y){
+Obstacle *creerObstacle(float x, float y, GLuint *texture){
 	int pv = -1;
 	int pa = 1; 
 	float taille = .1; 
@@ -314,20 +275,8 @@ Obstacle *creerObstacle(float x, float y){
 	float angleTir = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile = 0;
-	GLuint *texture = TEXTURE_OBSTACLE;
 	return (Obstacle*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
-
-/*
-* Image de fond
-*/
-void creerBackground(){
-	glBindTexture(GL_TEXTURE_2D, *TEXTURE_FOND);
-	traceRectanglePlein(-1.,1.,1.,-1.);
-	glBindTexture(GL_TEXTURE_2D,0);
-
-}
-
 
 
 /*___________________PROJECTILE_____________________*/
@@ -342,7 +291,7 @@ Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_de
 	float angleTir = 0;
 	float taille_projectile = 0;
 	float vit_deplacement_projectile = 0;
-	GLuint *texture = TEXTURE_PROJECTILE;
+	GLuint *texture = get_texture("TEXTURE_PROJECTILE");
 	return (Projectile*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 

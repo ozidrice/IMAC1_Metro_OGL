@@ -3,8 +3,10 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include "forme.h"
 #include <png.h>
+
+#include "forme.h"
+#include "texture.h"
 
 typedef struct Element {
 	int pv; //Point de vie -- -1 si inf
@@ -60,19 +62,19 @@ void moving(struct Element** e, float x, float y,  int freeOnTop, int freeOnRigh
 void afficheElement(struct Element *e);
 
 /* Malloc un joueur */
-Joueur *creerJoueur();
+Joueur *creerJoueur(GLuint *texture);
 
 /* Malloc un Ennemi */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture);
 
 /* Malloc un Bonus */
-Bonus *creerBonus(float x, float y);
+Bonus *creerBonus(float x, float y, GLuint *texture);
 
 /* Malloc un Malus */
-Malus *creerMalus(float x, float y);
+Malus *creerMalus(float x, float y, GLuint *texture);
 
 /* Malloc un Obstacle */
-Obstacle *creerObstacle(float x, float y);
+Obstacle *creerObstacle(float x, float y, GLuint *texture);
 
 /* Malloc un Projectile */
 Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y);
@@ -94,8 +96,6 @@ void colision(struct Element **liste1, struct Element **liste2);
 */
 Projectile *lance_projectile(struct Element *e);
 
-/* image de fond */
-void creerBackground();
 
 /*	Créé les projectiles necessaire à un tir 
 *	en prenant en compte le nombreProjectileParTir
@@ -105,11 +105,5 @@ Projectile *creerProjectileMultiple(struct Element *e);
 
 /*	Free la liste d'éléments */
 void freeElement(struct Element *e);
-
-/*	Free les textures chargés */
-void free_texture();
-
-/*	Précharge les textures pour pouvoir les utiliser plus tard */
-void preload_texture();
 
 #endif

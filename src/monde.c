@@ -2,42 +2,12 @@
 #include "monde.h"
 static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
-/* génère texture à partir d'un chemin en paramètres */
-GLuint *generateID(char *chemin){
-	SDL_Surface* texture_img;
-		texture_img= IMG_Load(chemin);
-		if(texture_img==NULL){
-			fprintf(stderr, "Le pointeur est NULL, déso.\n");
-		        return NULL;
-		}
-	GLuint *textureID = malloc(sizeof(GLuint));
-	glGenTextures(1,textureID);
-	
-	glBindTexture(GL_TEXTURE_2D, *textureID);
-	glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);
-	
-	glTexImage2D(
-		GL_TEXTURE_2D,
-		0,
-		GL_RGBA,
-		texture_img->w,
-		texture_img->h,
-		0,
-		GL_RGBA,
-		GL_UNSIGNED_BYTE,
-		texture_img->pixels);
-
-	glBindTexture(GL_TEXTURE_2D,0);
-	SDL_FreeSurface(texture_img);
-	return textureID;
-}
-
 /* 
 *	Malloc un monde 
 */
 Monde *creerMonde(){
 	Monde *m = (Monde *)malloc(sizeof(Monde));
-	m->joueur = creerJoueur();
+	m->joueur = creerJoueur(get_texture("TEXTURE_JOUEUR"));
 	m->liste_projectiles = NULL;
 	m->liste_ennemis = NULL;
 	m->liste_obstacle = NULL;
@@ -51,7 +21,7 @@ Monde *creerMonde(){
 *	Affiche le monde et ses parametre dans la fenetre
 */
 void afficherMonde(Monde *m){
-	creerBackground();
+	afficheBackground();
 	afficheElement(m->joueur);
 	afficheElement(m->liste_projectiles);
 	afficheElement(m->liste_ennemis);
@@ -220,26 +190,26 @@ void chargerMonde(Monde *m, char * MAP){
 			SDL_GetRGBA(pixel, map->format, &r, &g, &b, &a);
 			if(r==255 && g==165 && b==0) /* Orange == obstacle */
 			{
-				Obstacle *o = creerObstacle(x*0.001,((map->h - y)*0.001)-0.4);
+				Obstacle *o = creerObstacle(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_OBSTACLE"));
 				//printf(" obstacle : x : %f, y: %f\n", o->posx, o->posy); 
 				ajouterObstacle(m,o);
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
 				//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
-				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,3,-M_PI,1/100.,-1/100.);
+				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,3,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
 				//printf(" Ennemi : x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
 			}
 			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
 			{
-				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4);
+				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_BONUS"));
 				ajouterBonus(m,b);			
 			}
 
 			if(r==165 && g==0 && b==255) /* Violet => Malus */
 			{
-				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4);
+				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_MALUS"));
 				ajouterMalus(m,ma);			
 			}	
 		}

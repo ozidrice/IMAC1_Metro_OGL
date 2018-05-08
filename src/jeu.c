@@ -8,8 +8,13 @@ void initKeys();
 void displayText();
 void handle_inputs();
 void affichageHUD(Monde *m);
+void freeHUD();
 
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
+
+
+
+
 
 /*
 *   Lance une partie
@@ -30,6 +35,7 @@ int launch(){
     
     //Free
     freeWindow();
+    freeHUD();
     freeMonde(monde);
     free_texture();
     return 1;
@@ -136,4 +142,9 @@ void affichageHUD(Monde *m){
     if(j != NULL){
         afficheHUD_Vie(j->pv); 
     }
+}
+
+void freeHUD(){
+    if(TEXTURE_COEUR != NULL)
+        glDeleteTextures(1,TEXTURE_COEUR);
 }
