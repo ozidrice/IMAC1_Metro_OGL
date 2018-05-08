@@ -4,7 +4,6 @@ static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;
 static GLuint *TEXTURE_OBSTACLE;
 static GLuint *TEXTURE_ENNEMI;
-static GLuint *TEXTURE_FOND;
 static GLuint *TEXTURE_BONUS;
 static GLuint *TEXTURE_MALUS;
 
@@ -17,7 +16,6 @@ void preload_texture(){
 	TEXTURE_PROJECTILE = generateID("img/USB.png");
 	TEXTURE_OBSTACLE = generateID("img/wall.png");
 	TEXTURE_ENNEMI = generateID("img/old2.png");
-	TEXTURE_FOND = generateID("img/wall.png");
 	TEXTURE_BONUS = generateID("img/bonus.png");
 	TEXTURE_MALUS = generateID("img/malus.png");
 }
@@ -30,7 +28,6 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_PROJECTILE);
 	glDeleteTextures(1,TEXTURE_OBSTACLE);
 	glDeleteTextures(1,TEXTURE_ENNEMI);
-	glDeleteTextures(1,TEXTURE_FOND);
 	glDeleteTextures(1,TEXTURE_BONUS);
 	glDeleteTextures(1,TEXTURE_MALUS);
 }
@@ -47,8 +44,6 @@ GLuint *get_texture(char *str){
 		return TEXTURE_PROJECTILE;
 	if(strcmp(str,"TEXTURE_ENNEMI") == 0)
 		return TEXTURE_ENNEMI;
-	if(strcmp(str,"TEXTURE_FOND") == 0)
-		return TEXTURE_FOND;
 	if(strcmp(str,"TEXTURE_BONUS") == 0)
 		return TEXTURE_BONUS;
 	if(strcmp(str,"TEXTURE_MALUS") == 0)

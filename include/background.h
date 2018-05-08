@@ -17,12 +17,15 @@
 typedef struct background
 {
 	GLuint *texture_background;
+	float hauteur;
+	float largeur;
+	float vitesse;
 	float posX;
 }Background;
 
 
 /* image de fond */
-void creerBackground();
+Background *creerBackground(char *path_texture, float largeur, float vitesse);
 
-void afficheBackground();
+void afficheBackground(Background *b);
 #endif
