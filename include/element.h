@@ -3,7 +3,6 @@
 
 #include <stdlib.h>
 #include <stdio.h>
-#include <png.h>
 
 #include "forme.h"
 #include "texture.h"

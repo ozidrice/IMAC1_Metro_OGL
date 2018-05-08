@@ -1,12 +1,6 @@
 #ifndef _MONDE_
 #define _MONDE_
 
-#include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
-#include <GL/gl.h>
-#include <GL/glu.h>
-#include <stdlib.h>
-#include <stdio.h>
 #include <png.h>
 
 #include "element.h"

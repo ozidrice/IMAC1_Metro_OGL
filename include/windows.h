@@ -2,12 +2,9 @@
 #define _WINDOWS_
 
 #include <SDL/SDL.h>
-#include <SDL/SDL_image.h>
 #include <SDL/SDL_ttf.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-#include <stdlib.h>
-#include <stdio.h>
 
 static unsigned int WINDOW_WIDTH = 1200;
 static unsigned int WINDOW_HEIGHT = 800;
