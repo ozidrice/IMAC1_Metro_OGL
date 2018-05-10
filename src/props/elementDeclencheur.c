@@ -36,12 +36,9 @@ void addElementDeclencheurToList(struct ElementDeclencheur **list, struct Elemen
 */
 void removeElementDeclencheurFromList(struct ElementDeclencheur **elemDec){
 	if(*elemDec != NULL){
-		printf("FREE : %p\n",	*elemDec);
-		fflush(stdout);	
 		struct ElementDeclencheur *fils = (*elemDec)->next;
-		// removeElementFromList(&((*elemDec)->elem));
 		free(*elemDec);
-		elemDec = &fils;
+		*elemDec = fils;
 	}	
 }
 
@@ -84,48 +81,72 @@ void movingElementDeclencheur(struct ElementDeclencheur **e, float x, float y, i
 }
 
 
-/*___________________BONUS_____________________*/
-
 /*
-*	malloc un Bonus 
-*	duree_effet : -1 --> inf
+*	Type: 
+*		1 --> Bonus 
+*		2 --> Malus
 */
-Bonus *creerBonus(float x, float y, GLuint *texture, Uint32 duree_effet, int type){
-	int pv = -1;
-	int pa = 1; 
-	float taille = .05; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = -1/1000.;
-	vit_deplacement_y = 0; 
-	Uint32 intervalle_projectile = 0;
-	int nombreProjectileParTir = 0;
-	float angleTir = 0;
-	float taille_projectile = 0;
-	float vit_deplacement_projectile = 0;
-	struct Element *elem = initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
-	return (Bonus*) creerElementDeclencheur(elem, duree_effet,type);
+int activerElementDeclencheur(int type, struct ElementDeclencheur **liste_elemDec, Monde *monde){
+	if(liste_elemDec != NULL && *liste_elemDec != NULL){
+		if((*liste_elemDec)->timer_debut != -1)
+			fprintf(stderr, "Malus already running\n");
+		else{
+			switch(type){
+				case 1:
+					actionBonus((*liste_elemDec)->type,monde);
+					break;
+				case 2: 
+					actionMalus((*liste_elemDec)->type,monde);
+					break;
+				default:
+					break;
+			}
+			if((*liste_elemDec)->duree_effet == 0){
+				removeElementDeclencheurFromList(liste_elemDec);
+				return 1;
+			}else{
+				removeElementFromList(&((*liste_elemDec)->elem));
+				(*liste_elemDec)->timer_debut = SDL_GetTicks();
+			}
+		}
+	}
+	return 0;
 }
 
 
 
-/*___________________MALUS_____________________*/
-
 /*
-*	malloc malus
-*	duree_effet : -1 --> inf
+*	Type: 
+*		1 --> Bonus 
+*		2 --> Malus
 */
-Malus *creerMalus(float x, float y, GLuint *texture, Uint32 duree_effet, int type){
-	int pv = -1;
-	int pa = 1; 
-	float taille = .05; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = -1/100.;
-	vit_deplacement_y = 0; 
-	Uint32 intervalle_projectile = 0;
-	int nombreProjectileParTir = 0;
-	float angleTir = 0;
-	float taille_projectile = 0;
-	float vit_deplacement_projectile = 0;
-	struct Element *elem = initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
-	return (Malus*) creerElementDeclencheur(elem, duree_effet,type);
+void gererElementDeclencheurActif(int type, struct ElementDeclencheur **liste_elemDec, Monde *monde){
+	if(liste_elemDec != NULL && *liste_elemDec != NULL){
+		int asBeenDeleted = 0;
+		if((*liste_elemDec)->timer_debut != -1){
+			Uint32 current = SDL_GetTicks();
+			if((*liste_elemDec)->timer_debut+(*liste_elemDec)->duree_effet < current){
+				switch(type){
+					case 1:
+						undoActionBonus((*liste_elemDec)->type,monde);
+						break;
+					case 2: 
+						undoActionMalus((*liste_elemDec)->type,monde);
+						break;
+					default:
+						break;
+				}
+				removeElementDeclencheurFromList(liste_elemDec);
+				asBeenDeleted = 1;
+			}
+		}
+		if(asBeenDeleted == 1){
+			gererElementDeclencheurActif(type,liste_elemDec,monde);
+		}else{
+			gererElementDeclencheurActif(type,&((*liste_elemDec)->next),monde);
+		}
+	}
 }
+
+
+

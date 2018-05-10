@@ -6,8 +6,13 @@
 #include <GL/gl.h>
 #include <GL/glu.h>
 
+typedef struct ElementDeclencheur Bonus, Malus;
+#include "props/element.h"
+#include "monde/monde.h"
+#include "props/bonus.h"
+#include "props/malus.h"
 
-#include "element.h"
+
 typedef struct ElementDeclencheur{
 	struct Element *elem;
 	int type;
@@ -15,7 +20,6 @@ typedef struct ElementDeclencheur{
 	Uint32 timer_debut; //-1 = pas encore démaré 
 	struct ElementDeclencheur *next;
 }Bonus, Malus;
-#include "monde/monde.h"
 
 
 /*	Malloc un élément déclencheur d'action*/
@@ -32,13 +36,16 @@ void afficheElementDeclencheur(struct ElementDeclencheur *e);
 
 void movingElementDeclencheur(struct ElementDeclencheur **e, float x, float y, int freeOnTop, int freeOnRight, int freeOnBottom, int freeOnLeft);
 
-/* Malloc un Bonus */
-Bonus *creerBonus(float x, float y, GLuint *texture, Uint32 duree_effet, int type);
-
-/* Malloc un Malus */
-Malus *creerMalus(float x, float y, GLuint *texture, Uint32 duree_effet, int type);
-
 /*	Free la liste d'éléments*/
 void freeElementDeclencheur(struct ElementDeclencheur *e);
+
+
+/*
+*	Type: 
+*		1 --> Bonus 
+*		2 --> Malus
+*/
+int activerElementDeclencheur(int type, struct ElementDeclencheur **liste_elemDec, Monde *monde);
+void gererElementDeclencheurActif(int type, struct ElementDeclencheur **liste_elemDec, Monde *monde);
 
 #endif

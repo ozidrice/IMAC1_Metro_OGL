@@ -51,92 +51,25 @@ void collision(struct Element **liste1, struct Element **liste2){
 	}
 }
 
-
-void collisionBonus(Bonus *liste_b, Monde *m){
-	// Joueur *j = m->joueur;
-	// while(liste_b != NULL){
-	// 	int asBeenDeleted = 0;
-	// 	if(1 == estEncollision(liste_b->elem,j)){
-	// 		if(1 == activerBonus(&liste_b,m))
-	// 			asBeenDeleted = 1;
-	// 	}
-	// 	if(asBeenDeleted == 0)
-	// 		liste_b = liste_b->next;
-	// }
-}
-
-
-void collisionMalus(Malus *liste_m, Monde *m){
+/*
+*	Type: 
+*		1 --> Bonus 
+*		2 --> Malus
+*/
+void collisionElementDeclencheur(int type, struct ElementDeclencheur **liste_elemDec, Monde *m){
 	Joueur *j = m->joueur;
-	while(liste_m != NULL){
+	while(liste_elemDec != NULL && *liste_elemDec != NULL){
 		int asBeenDeleted = 0;
-		if(1 == estEncollision(liste_m->elem,j)){
-			if(1 == activerMalus(&liste_m,m))
+		if(1 == estEncollision((*liste_elemDec)->elem,j)){
+			if(1 == activerElementDeclencheur(type,&(*liste_elemDec),m)){
 				asBeenDeleted = 1;
+			}
 		}
 		if(asBeenDeleted == 0)
-			liste_m = liste_m->next;
-	}
-}
-
-void gererMalusActif(Malus **m, Monde *monde){
-	if(m != NULL && *m != NULL){
-		int asBeenDeleted = 0;
-		if((*m)->timer_debut != -1){
-			Uint32 current = SDL_GetTicks();
-			if((*m)->timer_debut+(*m)->duree_effet < current){
-				desactiverMalus((*m),monde);
-				Malus *fils = (*m)->next; 
-				free(*m);
-				*m = fils;
-				asBeenDeleted = 1;
-			}
-		}
-		if(asBeenDeleted == 1){
-			gererMalusActif(m,monde);
-		}else{
-			gererMalusActif(&((*m)->next),monde);
-		}
+			liste_elemDec = &((*liste_elemDec)->next);
 	}
 }
 
 
-/*
-*	Retorune 1 si m supprimé
-*/
-int activerMalus(Malus **m, Monde *monde){
-	if(m != NULL && *m != NULL){
-		if((*m)->timer_debut != -1)
-			fprintf(stderr, "Malus already running\n");
-		else{
-			//Action
-			switch((*m)->type){
-				case 1:
-					monde->joueur->pv++;
-				default :
-					break;
-			}
-			if((*m)->duree_effet == 0){
-				removeElementDeclencheurFromList(m);
-				return 1;
-			}else{
-				removeElementFromList(&((*m)->elem));
-				(*m)->timer_debut = SDL_GetTicks();
-			}
-		}
-	}
-	return 0;
-}
 
 
-void desactiverMalus(Malus *m, Monde *monde){
-	if(m != NULL){
-		//Action inverse (rétablissement du monde)
-		switch(m->type){
-			case 1: 
-				monde->joueur->pv--;
-			default :
-				break;
-		}
-	}
-}

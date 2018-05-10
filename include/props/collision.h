@@ -7,6 +7,8 @@
 #include "props/elementDeclencheur.h"
 #include "monde/monde.h"
 #include "props/element.h"
+#include "props/bonus.h"
+#include "props/malus.h"
 
 
 
@@ -20,13 +22,11 @@ int estEncollision(struct Element *e1, struct Element *e2);
 */
 void collision(struct Element **liste1, struct Element **liste2);
 
-void collisionBonus(Bonus *liste_b, Monde *m);
 
-void collisionMalus(Malus *liste_m, Monde *m);
-
-int activerMalus(Malus **m, Monde *monde);
-
-void gererMalusActif(Malus **m, Monde *monde);
-
-void desactiverMalus(Malus *m, Monde *monde);
+/*
+*	Type: 
+*		1 --> Bonus 
+*		2 --> Malus
+*/
+void collisionElementDeclencheur(int type, struct ElementDeclencheur **liste_elemDec, Monde *m);
 #endif

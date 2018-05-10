@@ -85,11 +85,12 @@ void collisionsElement(Monde *m){
 *	Fait les calculs necessaire avec les collisions entre les elem declencheurs
 */
 void collisionsElementDeclencheur(Monde *m){
-	Malus *b_tmp = m->liste_bonus;
-	Bonus *m_tmp = m->liste_malus;
+	Malus **b_tmp = &(m->liste_bonus);
+	Bonus **m_tmp = &(m->liste_malus);
 	collisionBonus(b_tmp,m);
 	collisionMalus(m_tmp,m);
-	gererMalusActif(&m_tmp,m);
+	gererElementDeclencheurActif(1,b_tmp,m);
+	gererElementDeclencheurActif(2,m_tmp,m);
 }
 
 /*

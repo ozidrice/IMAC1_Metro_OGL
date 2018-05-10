@@ -2,7 +2,7 @@
 #define _MONDE_
 
 #include <png.h>
-
+typedef struct monde Monde;
 #include "props/element.h"
 #include "props/elementDeclencheur.h"
 #include "affichage/forme.h"
