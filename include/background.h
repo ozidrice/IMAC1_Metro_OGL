@@ -27,5 +27,9 @@ typedef struct background
 /* image de fond */
 Background *creerBackground(char *path_texture, float largeur, float vitesse);
 
+void get_png_size(char *path, int *w, int *h);
+
+void *read_image(char *path);
+
 void afficheBackground(Background *b);
 #endif

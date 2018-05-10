@@ -3,6 +3,8 @@
 
 #include "monde.h"
 #include "element.h"
+#include "menu.h"
+
 /*
 *	Lance une partie
 *   @return : 

@@ -7,7 +7,6 @@ static GLuint *TEXTURE_ENNEMI;
 static GLuint *TEXTURE_BONUS;
 static GLuint *TEXTURE_MALUS;
 
-
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
 */
@@ -16,7 +15,7 @@ void preload_texture(){
 	TEXTURE_PROJECTILE = generateID("img/USB.png");
 	TEXTURE_OBSTACLE = generateID("img/wall.png");
 	TEXTURE_ENNEMI = generateID("img/old2.png");
-	TEXTURE_BONUS = generateID("img/bonus.png");
+	TEXTURE_BONUS = generateID("img/player.png");
 	TEXTURE_MALUS = generateID("img/malus.png");
 }
 

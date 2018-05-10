@@ -1,4 +1,5 @@
 #include "jeu.h"
+#include "menu.h"
 
 int main(int argc, char const *argv[])
 {

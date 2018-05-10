@@ -8,4 +8,9 @@
 */
 void traceRectanglePlein(float xTopLeft, float yTopLeft, float xBottomRigth, float yBottomRight);
 
+/*
+* Trace un cercle 
+*/
+void traceCercle(float xOrigine, float yOrigine, float ray);
+
 #endif
