@@ -1,5 +1,8 @@
-#include "windows.h"
+#include "affichage/windows.h"
 #define glVertex2px(x,y) glVertex2d((double)(x) * 2.0 / (double)WINDOW_WIDTH - 1.0, 1.0 - (double)(y) * 2.0 / (double)WINDOW_HEIGHT);
+
+static unsigned int WINDOW_WIDTH = 1200;
+static unsigned int WINDOW_HEIGHT = 800;
 
 static const unsigned int BIT_PER_PIXEL = 32;
 static char *WINDOW_TITLE = "Jeu -- OpenGL"; 
@@ -25,6 +28,25 @@ int initWindow(){
 
     TTF_Init();
     return 1;
+}
+
+unsigned int get_WINDOW_WIDTH(){
+    return WINDOW_WIDTH;
+}
+
+
+unsigned int get_WINDOW_HEIGHT(){
+    return WINDOW_HEIGHT;
+}
+
+
+void set_WINDOW_WIDTH(unsigned int w){
+    WINDOW_WIDTH = w;
+}
+
+
+void set_WINDOW_HEIGHT(unsigned int h){
+    WINDOW_HEIGHT = h;
 }
 
 /* 

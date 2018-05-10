@@ -28,4 +28,6 @@ typedef struct background
 Background *creerBackground(char *path_texture, float largeur, float vitesse);
 
 void afficheBackground(Background *b);
+
+void freeBackground(Background *b);
 #endif

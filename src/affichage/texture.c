@@ -1,4 +1,4 @@
-#include "texture.h"
+#include "affichage/texture.h"
 
 static GLuint *TEXTURE_JOUEUR;
 static GLuint *TEXTURE_PROJECTILE;

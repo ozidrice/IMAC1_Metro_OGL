@@ -1,5 +1,5 @@
-#include "jeu.h"
-#include "windows.h"
+#include "monde/jeu.h"
+#include "affichage/windows.h"
 
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;  
 
@@ -30,7 +30,7 @@ int launch(){
     Monde *monde = creerMonde(); //Creation du monde
     LancerMonde(monde, 1);
 
-    //Lancement de la boucle d'affichage
+    // Lancement de la boucle d'affichage
     loop(monde);
     
     //Free
@@ -59,8 +59,8 @@ void loop(Monde *monde){
                 loop = 0;
                     break;
                 case SDL_VIDEORESIZE:
-                WINDOW_WIDTH = e.resize.w;
-                WINDOW_HEIGHT = e.resize.h;
+                set_WINDOW_WIDTH(e.resize.w);
+                set_WINDOW_HEIGHT(e.resize.h);
                 resizeViewport();
                     break;
                 case SDL_KEYDOWN:
@@ -124,7 +124,6 @@ static GLuint *TEXTURE_COEUR = NULL;
 void afficheHUD_Vie(int pv){
     if(TEXTURE_COEUR == NULL)
         TEXTURE_COEUR = generateID("img/coeur.png");
-
     int i;
     float posX = -.95;
     float posY = .95;
