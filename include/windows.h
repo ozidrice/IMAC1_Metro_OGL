@@ -14,7 +14,7 @@ static unsigned int WINDOW_HEIGHT = 800;
 */
 int initWindow();
 
-/* Free la fenetre*/
+/*	Free la fenetre*/
 void freeWindow();
 
 /*   Changement de viewport*/
@@ -23,5 +23,7 @@ void resizeViewport();
 /*	Print text*/
 void displayText(const char *text, int x, int y, int size, char *font_path, int r, int g, int b);
 
+/*	 renvoie le ratio largeur/hauteur de l'image */
 float windowRatio();
+
 #endif

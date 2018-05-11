@@ -6,10 +6,11 @@
 
 static GLuint *TEXTURE_MENU;
 static GLuint *TEXTURE_TITRE;
+static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 
-
-
-
+/* 
+*  Gère l'action choisi par le joueur 
+*/
 int actionBouton(){
 	float x = 0;
 	float y = 0;
@@ -24,11 +25,11 @@ int actionBouton(){
 			if(e.type == SDL_MOUSEBUTTONUP){
 				if(x > -0.1*ratio && x < 0.1*ratio ){
 					if( y < -0.05*ratio && y > -0.2*ratio) {
-						printf("tu vas changer ton personnage\n");
+						printf("Let's go ! \n");
 						return 2;
 					}
 					else if( y < -0.25*ratio  && y > -0.4*ratio){
-						printf(" tu vas changer de niveau\n");	
+						printf("Tu nous quitte déjà ?!\n");	
 						return 1;
 					}
 				}
@@ -39,18 +40,70 @@ int actionBouton(){
 
 
 /*
-* Image Menu
+* Loop avec affichage du Menu et lancement du jeu 
 */
 int afficheMenu(){
-	char* path = "./img/menu.PNG";
-	TEXTURE_MENU = generateID(path);
+	Monde *monde = creerMonde();
+
+	int loop = 1;
+
+	if(0 == initWindow())
+	        return 0;
+
+	while(loop){
+
+		char* path = "./img/menu.PNG";
+		TEXTURE_MENU = generateID(path);
+	        Uint32 startTime2 = SDL_GetTicks();
+        	SDL_Event e;
+
+        	while(SDL_PollEvent(&e)) {
+        	    switch(e.type) {
+        	        case SDL_QUIT:
+        	        loop = 0;
+        	            break;
+        	        default:
+        	            break;
+        	    }
+        	}
+
+		
+		glClear(GL_COLOR_BUFFER_BIT);
+	        glEnable(GL_TEXTURE_2D);
+	       	glEnable(GL_BLEND);
+	    	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
+		ElementMenu();		
+
+		int choix = actionBouton();
+		if(choix == 2)
+			loop = 0;
+		if(choix == 1)
+			return 1;
+
+        	glDisable(GL_BLEND);
+	        glDisable(GL_TEXTURE_2D);
+
+        	SDL_GL_SwapBuffers();
+        	Uint32 elapsedTime2 = SDL_GetTicks() - startTime2;
+        	if(elapsedTime2 < FRAMERATE_MILLISECONDS2) {
+        	    SDL_Delay(FRAMERATE_MILLISECONDS2 - elapsedTime2);
+		}
+	}
+
+	if(launch(monde) == 1)
+		return 1;
+	return 1;
+}
+
+/* 
+* Permet affichage des différents éléments du menu
+*/
+void ElementMenu(){
 	glBindTexture(GL_TEXTURE_2D, *TEXTURE_MENU);
 	traceRectanglePlein(-1,-1, 1,1);
 	glBindTexture(GL_TEXTURE_2D,0);
 	afficheBouton();
-	afficheTitre();
-	/*actionBouton(monde);*/
-	return 1;
+	afficheTitre();	
 }
 
 
@@ -61,6 +114,9 @@ void freeMenu(){
 	glDeleteTextures(1,TEXTURE_MENU);
 }
 
+/*
+* chargement de la texture de fond
+*/
 void afficheTitre(){
 	TEXTURE_TITRE = generateID("img/minimetro.png");
 	glBindTexture(GL_TEXTURE_2D, *TEXTURE_TITRE);
@@ -71,7 +127,7 @@ void afficheTitre(){
 
 
 /*
-* Affichage boutons
+* Affichage boutons avec textes 
 */
 void afficheBouton(){
 	float ratio = windowRatio();
@@ -87,19 +143,23 @@ void afficheBouton(){
 	traceRectanglePlein(-0.1*ratio,-0.25*ratio,0.1*ratio,-0.4*ratio);
 
 	// textes 
-	char* CHOISIR = "choisir son";
+	/*char* CHOISIR = "choisir son";
 	char* NIVEAU = "   niveau";
-	char* PERSONNAGE = "personnage";
+	char* PERSONNAGE = "personnage";*/
 	char* font_path ="./font/04B_30__.TTF";
 
-	displayText(PERSONNAGE,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)-(WINDOW_HEIGHT/(ratio*9)) ,20,font_path,0,0,255);
+	char* JOUER = "JOUER";
+	char* QUITTER = "QUITTER";
+
+	/*displayText(PERSONNAGE,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)-(WINDOW_HEIGHT/(ratio*9)) ,20,font_path,0,0,255);
 	displayText(CHOISIR,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)-(WINDOW_HEIGHT/(ratio*6.5)),20,font_path, 0, 0,255);
 
 	displayText(NIVEAU,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*9)) ,20,font_path,255,0,0);
-	displayText(CHOISIR,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*13)),20,font_path, 255, 0,0);
+	displayText(CHOISIR,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*13)),20,font_path, 255, 0,0);*/
 
-	/*traceCercle(0.5,0.5,0.5);*/
-	/*traceCercle(x,y,ray);*/
+	displayText(JOUER,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)-(WINDOW_HEIGHT/(ratio*6.5)),20,font_path, 0, 0,255);
+
+	displayText(QUITTER,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*13)),20,font_path, 255, 0,0);
 }
 
 

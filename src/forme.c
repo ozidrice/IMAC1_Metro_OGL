@@ -1,6 +1,4 @@
 #include "forme.h"
-#include <math.h>
-
 
 #define NB_SEGMENTS 100
 
@@ -20,16 +18,3 @@ void traceRectanglePlein(float xTopLeft, float yTopLeft, float xBottomRigth, flo
 	glEnd();
 }
 
-void traceCercle(float xOrigine, float yOrigine, float ray){
-	int i;
-	glBegin(GL_POLYGON);
-	float delta = 2 * M_PI / (float) NB_SEGMENTS;
-	for(i=0; i<100; i++){
-        glColor3ub(255,255,255);
-		float x = ((cos(i * delta)))*xOrigine;// truc RATIO
-		float y = ((sin(i * delta)))*xOrigine; // truc RATIO
-		glVertex2f(x,y);
-	}
-	glEnd();
-}
-	

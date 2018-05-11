@@ -14,21 +14,15 @@ void freeHUD();
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 
 
-
-
-
 /*
 *   Lance une partie
 *   @return : 
 *       0 si fail 
 *       1 si success
 */
-int launch(){
-   if(0 == initWindow())
-        return 0;
+int launch(Monde * monde){
     initKeys(); //Initialisation touches clavier
     preload_texture(); //Initialisation des textures
-    Monde *monde = creerMonde(); //Creation du monde
     LancerMonde(monde, 1);
 
     //Lancement de la boucle d'affichage
@@ -51,7 +45,7 @@ int launch(){
 void loop(Monde *monde){
     int loop = 1; 
     while(loop) {
-        Uint32 startTime = SDL_GetTicks();
+     Uint32 startTime = SDL_GetTicks();
 
         //Detection des évènements
         SDL_Event e;
@@ -81,7 +75,6 @@ void loop(Monde *monde){
         glEnable(GL_TEXTURE_2D);
     	glEnable(GL_BLEND);
     	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	afficheMenu();
 	afficherMonde(monde);
 	affichageHUD(monde);
         glDisable(GL_BLEND);

@@ -19,20 +19,22 @@
 #include "element.h"
 
 
-/*#include "background.h"*/
-
+/* gère choix du joueur */
 int actionBouton();
+
+/* permet l'affichage de tout les éléments du menu */
+void ElementMenu();
 
 /* Affiche l'image du Menu */
 int afficheMenu();
 
+/* permet Affichage du titre */
 void afficheTitre();
 
+/* affiche bouton et texte du bouton */
 void afficheBouton();
 
 /* Libère la texture appliquée pour le menu */
 void freeMenu();
-
-
 
 #endif
