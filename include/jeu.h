@@ -11,6 +11,6 @@
 *       0 si fail 
 *       1 si success
 */
-int launch(Monde *monde);
+int launch();
 
 #endif

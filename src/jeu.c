@@ -20,9 +20,10 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 *       0 si fail 
 *       1 si success
 */
-int launch(Monde * monde){
+int launch(){
     initKeys(); //Initialisation touches clavier
     preload_texture(); //Initialisation des textures
+    Monde *monde = creerMonde(); //Creation du monde
     LancerMonde(monde, 1);
 
     //Lancement de la boucle d'affichage

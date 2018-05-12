@@ -28,7 +28,7 @@ Background *creerBackground(char *path_texture, float largeur, float vitesse){
 
 
 void afficheBackground(Background *b){
-	TEXTURE_FOND = generateID("img/fond_test.png");
+	TEXTURE_FOND = generateID("img/fondjeu.png");
 	glBindTexture(GL_TEXTURE_2D, *TEXTURE_FOND);
 	float demi_largeur = b->largeur/2;
 	float demi_hauteur = b->hauteur/2;

@@ -17,6 +17,7 @@ void preload_texture(){
 	TEXTURE_ENNEMI = generateID("img/old2.png");
 	TEXTURE_BONUS = generateID("img/player.png");
 	TEXTURE_MALUS = generateID("img/malus.png");
+
 }
 
 /*
@@ -29,6 +30,7 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_ENNEMI);
 	glDeleteTextures(1,TEXTURE_BONUS);
 	glDeleteTextures(1,TEXTURE_MALUS);
+
 }
 
 /* 

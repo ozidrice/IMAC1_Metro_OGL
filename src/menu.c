@@ -43,7 +43,7 @@ int actionBouton(){
 * Loop avec affichage du Menu et lancement du jeu 
 */
 int afficheMenu(){
-	Monde *monde = creerMonde();
+/*	Monde *monde = creerMonde();*/
 
 	int loop = 1;
 
@@ -90,7 +90,8 @@ int afficheMenu(){
 		}
 	}
 
-	if(launch(monde) == 1)
+
+	if(launch() == 1)
 		return 1;
 	return 1;
 }
@@ -112,16 +113,17 @@ void ElementMenu(){
 */
 void freeMenu(){
 	glDeleteTextures(1,TEXTURE_MENU);
+	glDeleteTextures(1,TEXTURE_TITRE);
 }
 
 /*
 * chargement de la texture de fond
 */
 void afficheTitre(){
-	TEXTURE_TITRE = generateID("img/minimetro.png");
+	TEXTURE_TITRE = generateID("img/littlejourney.png");
 	glBindTexture(GL_TEXTURE_2D, *TEXTURE_TITRE);
 	float ratio = windowRatio();
-	traceRectanglePlein(-0.3*ratio,0 ,0.3*ratio, ratio/2); 
+	traceRectanglePlein(-0.5*ratio,0 ,0.5*ratio, ratio/2); 
 	glBindTexture(GL_TEXTURE_2D,0);
 }
 
