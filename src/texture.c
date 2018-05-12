@@ -15,7 +15,7 @@ void preload_texture(){
 	TEXTURE_PROJECTILE = generateID("img/USB.png");
 	TEXTURE_OBSTACLE = generateID("img/wall.png");
 	TEXTURE_ENNEMI = generateID("img/old2.png");
-	TEXTURE_BONUS = generateID("img/player.png");
+	TEXTURE_BONUS = generateID("img/infinity.png");
 	TEXTURE_MALUS = generateID("img/malus.png");
 
 }
