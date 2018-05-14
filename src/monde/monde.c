@@ -154,8 +154,8 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 void defilerMonde(Monde *m){
 	moving(&(m->liste_obstacle), 1., 1., 0,0,0,1.);
 	moving(&(m->liste_ennemis), 1., 1., 0,0,0,1.);
-	movingElementDeclencheur(&(m->liste_bonus), 1., 1., 0,0,0,0);
-	movingElementDeclencheur(&(m->liste_malus), 1., 1., 0,0,0,0);
+	movingElementDeclencheur(&(m->liste_bonus), 1., 1., 0,0,0,1.);
+	movingElementDeclencheur(&(m->liste_malus), 1., 1., 0,0,0,1.);
 }
 
 
