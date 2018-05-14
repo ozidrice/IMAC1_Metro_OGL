@@ -43,7 +43,7 @@ int afficheMenu(){
         	    switch(e.type) {
         	        case SDL_QUIT:
         	        	loop = 0;
-        	            break;
+        	        	return 1;
         	        case SDL_MOUSEBUTTONUP:
 
 						ratio = windowRatio(); 
@@ -75,10 +75,7 @@ int afficheMenu(){
 		ElementMenu();		
 
 		int choix = actionBouton();
-		if(choix == 2)
-			loop = 0;
-		if(choix == 1)
-			return 1;
+			
 
         	glDisable(GL_BLEND);
 	        glDisable(GL_TEXTURE_2D);
