@@ -13,7 +13,7 @@ Monde *creerMonde(){
 	m->liste_obstacle = NULL;
 	m->liste_bonus = NULL;
 	m->liste_malus = NULL;
-	m->background = creerBackground("img/fondjeu.png",6.,.0005);
+	m->background = creerBackground("img/fondjeu.png",6.,.001);
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -39,18 +39,18 @@ void afficherMonde(Monde *m){
 void LancerMonde(Monde *m, int niveau){
 	char * MAP = NULL;
  	switch(niveau) {
-            case 1:
-                MAP = "img/map7.bmp";
-                  break;
-            case 2:
-		MAP = "img/map6.bmp";
-                  break;
-            case 3:
-		MAP = "img/map5.bmp"; 
-               	  break;
-            default:
-     	 	  break;
-            }
+        case 1:
+            MAP = "img/map7.bmp";
+              break;
+        case 2:
+			MAP = "img/map6.bmp";
+              break;
+        case 3:
+			MAP = "img/map5.bmp"; 
+           	  break;
+        default:
+ 	 	  break;
+    }
 	chargerMonde(m,MAP);
 }
 

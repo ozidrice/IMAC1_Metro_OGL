@@ -102,13 +102,15 @@ void initKeys(){
 *   Traite les entrées du clavier
 */
 void handle_inputs(Monde *monde){
-    if(KEYS[SDLK_DOWN] == 1)
+    Joueur *j = monde->joueur;
+    printf("%f\n", j->posy - j->taille/2.);
+    if(KEYS[SDLK_DOWN] == 1 && j->posy-(j->taille) > -1.)
         moving(&(monde->joueur), 0, -1, 0, 0, 0, 0); 
-    if(KEYS[SDLK_UP] == 1)
+    if(KEYS[SDLK_UP] == 1 && j->posy+(j->taille) < 1)
         moving(&(monde->joueur), 0, 1, 0, 0, 0, 0); 
-    if(KEYS[SDLK_RIGHT] == 1)
+    if(KEYS[SDLK_RIGHT] == 1 && j->posx+(j->taille)/2. < 1)
         moving(&(monde->joueur), 1, 0, 0, 0, 0, 0); 
-    if(KEYS[SDLK_LEFT] == 1)
+    if(KEYS[SDLK_LEFT] == 1 && j->posx-(j->taille)/2. > -1.)
         moving(&(monde->joueur), -1, 0, 0, 0, 0, 0); 
 }
 

@@ -117,8 +117,6 @@ void freeMenu(){
 */
 void afficheTitre(){
 	GLuint *texture_titre = get_texture("TEXTURE_TITRE");
-	printf("%d\n",*texture_titre);
-
 	glBindTexture(GL_TEXTURE_2D, *texture_titre);
 	float ratio = windowRatio();
 	traceRectanglePlein(-0.5*ratio,0 ,0.5*ratio, ratio/2); 
