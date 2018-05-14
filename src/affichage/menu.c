@@ -10,29 +10,12 @@ static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 *  Gère l'action choisi par le joueur 
 */
 int actionBouton(){
-	float x = 0;
-	float y = 0;
-        SDL_Event e;
+        // SDL_Event e;
 
-	float ratio = windowRatio();
    
-   		while(SDL_PollEvent(&e)) {
-			x = -1 + 2. * e.button.x / get_WINDOW_WIDTH();
-			y = -(-1 + 2. * e.button.y / get_WINDOW_HEIGHT());
-	
-			if(e.type == SDL_MOUSEBUTTONUP){
-				if(x > -0.1*ratio && x < 0.1*ratio ){
-					if( y < -0.05*ratio && y > -0.2*ratio) {
-						printf("Let's go ! \n");
-						return 2;
-					}
-					else if( y < -0.25*ratio  && y > -0.4*ratio){
-						printf("Tu nous quitte déjà ?!\n");	
-						return 1;
-					}
-				}
-			}	
-   		}
+   		// while(SDL_PollEvent(&e)) {
+				
+   		// }
 	return 0;
 }
 
@@ -54,11 +37,31 @@ int afficheMenu(){
 	        Uint32 startTime2 = SDL_GetTicks();
         	SDL_Event e;
 
+
+			float ratio, x = 0, y = 0;
         	while(SDL_PollEvent(&e)) {
         	    switch(e.type) {
         	        case SDL_QUIT:
-        	        loop = 0;
+        	        	loop = 0;
         	            break;
+        	        case SDL_MOUSEBUTTONUP:
+
+						ratio = windowRatio(); 
+        	        	x = -1 + 2. * e.button.x / get_WINDOW_WIDTH();
+						y = -(-1 + 2. * e.button.y / get_WINDOW_HEIGHT());
+				
+						if(x > -0.1*ratio && x < 0.1*ratio ){
+							if( y < -0.05*ratio && y > -0.2*ratio) {
+								printf("Let's go ! \n");
+								loop = 0;
+							}
+							else if( y < -0.25*ratio  && y > -0.4*ratio){
+								printf("Tu nous quitte déjà ?!\n");	
+								return 1;
+							}
+						}
+						
+						break;
         	        default:
         	            break;
         	    }
