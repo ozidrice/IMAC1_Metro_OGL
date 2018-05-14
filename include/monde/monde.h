@@ -61,8 +61,10 @@ Monde *creerMonde();
 /* free tous les élements du monde */
 void freeMonde(Monde *m);
 
-
+/* fait défiler le monde */
 void defilerMonde(Monde *m);
+
+/* Permet défilement des projectiles */
 void defilerProjectiles(Monde *m);
 
 /*	Créé les projectiles necessaire*/

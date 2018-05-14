@@ -13,7 +13,7 @@ Monde *creerMonde(){
 	m->liste_obstacle = NULL;
 	m->liste_bonus = NULL;
 	m->liste_malus = NULL;
-	m->background = creerBackground("img/fond_test.png",6.,.0005);
+	m->background = creerBackground("img/fondjeu.png",6.,.0005);
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }
@@ -205,14 +205,11 @@ void chargerMonde(Monde *m, char * MAP){
 			if(r==255 && g==165 && b==0) /* Orange == obstacle */
 			{
 				Obstacle *o = creerObstacle(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_OBSTACLE"));
-				//printf(" obstacle : x : %f, y: %f\n", o->posx, o->posy); 
 				ajouterObstacle(m,o);
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
-				//float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile);
 				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
-				//printf(" Ennemi : x : %f, y: %f\n", en->posx, en->posy); 
 				ajouterEnnemi(m,en);
 			}
 			if(r==255 && g==255 && b==165) /* Jaune => Bonus */

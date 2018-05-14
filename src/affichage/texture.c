@@ -6,18 +6,23 @@ static GLuint *TEXTURE_OBSTACLE;
 static GLuint *TEXTURE_ENNEMI;
 static GLuint *TEXTURE_BONUS;
 static GLuint *TEXTURE_MALUS;
+static GLuint *TEXTURE_TITRE;
+static GLuint *TEXTURE_MENU;
 
 
 /*
 *	Précharge les textures pour pouvoir les utiliser plus tard
 */
 void preload_texture(){
-	TEXTURE_JOUEUR = generateID("img/player.png");
+	TEXTURE_JOUEUR = generateID("img/joueur.png");
 	TEXTURE_PROJECTILE = generateID("img/USB.png");
 	TEXTURE_OBSTACLE = generateID("img/wall.png");
 	TEXTURE_ENNEMI = generateID("img/old2.png");
-	TEXTURE_BONUS = generateID("img/bonus.png");
+	TEXTURE_BONUS = generateID("img/infinity.png");
 	TEXTURE_MALUS = generateID("img/malus.png");
+	TEXTURE_TITRE = generateID("img/littlejourney.png");
+	printf("%d\n",*TEXTURE_MALUS);
+	TEXTURE_MENU = generateID("img/menu.PNG");
 }
 
 /*
@@ -30,6 +35,9 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_ENNEMI);
 	glDeleteTextures(1,TEXTURE_BONUS);
 	glDeleteTextures(1,TEXTURE_MALUS);
+	glDeleteTextures(1,TEXTURE_TITRE);
+	glDeleteTextures(1,TEXTURE_MENU);
+
 }
 
 /* 
@@ -48,6 +56,10 @@ GLuint *get_texture(char *str){
 		return TEXTURE_BONUS;
 	if(strcmp(str,"TEXTURE_MALUS") == 0)
 		return TEXTURE_MALUS;
+	if(strcmp(str,"TEXTURE_TITRE") == 0)
+		return TEXTURE_TITRE;
+	if(strcmp(str,"TEXTURE_MENU") == 0)
+		return TEXTURE_MENU;
 	return NULL;
 }
 

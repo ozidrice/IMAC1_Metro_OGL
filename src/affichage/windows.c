@@ -75,8 +75,7 @@ void resizeViewport() {
 */
 void displayText(const char *text, int x, int y, int size, char *font_path, int r, int g, int b) {
 	SDL_Color color = {r, g, b};
-	TTF_Font *font = TTF_OpenFont(font_path, size);
-
+	TTF_Font *font = TTF_OpenFont(font_path ,size);
     GLuint texture;
     SDL_Surface *surface;
     surface = TTF_RenderText_Blended(font,text,color);

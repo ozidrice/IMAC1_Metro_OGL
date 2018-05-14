@@ -1,5 +1,6 @@
 #include "monde/jeu.h"
 #include "affichage/windows.h"
+#include "affichage/menu.h"
 
 static const Uint32 FRAMERATE_MILLISECONDS = 1000 / 60;  
 
@@ -13,9 +14,6 @@ void freeHUD();
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 
 
-
-
-
 /*
 *   Lance une partie
 *   @return : 
@@ -23,10 +21,7 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 *       1 si success
 */
 int launch(){
-    if(0 == initWindow())
-        return 0;
     initKeys(); //Initialisation touches clavier
-    preload_texture(); //Initialisation des textures
     Monde *monde = creerMonde(); //Creation du monde
     LancerMonde(monde, 1);
 
@@ -38,6 +33,7 @@ int launch(){
     freeHUD();
     freeMonde(monde);
     free_texture();
+    freeMenu();
     return 1;
 }
 
@@ -47,9 +43,9 @@ int launch(){
 *   Boucle d'affichage
 */
 void loop(Monde *monde){
-    int loop = 1;    
+    int loop = 1; 
     while(loop) {
-        Uint32 startTime = SDL_GetTicks();
+     Uint32 startTime = SDL_GetTicks();
 
         //Detection des évènements
         SDL_Event e;
@@ -75,13 +71,12 @@ void loop(Monde *monde){
         }
         handle_inputs(monde);
         action(monde);
-
         glClear(GL_COLOR_BUFFER_BIT);
         glEnable(GL_TEXTURE_2D);
     	glEnable(GL_BLEND);
     	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-            afficherMonde(monde);
-            affichageHUD(monde);
+        	afficherMonde(monde);
+        	affichageHUD(monde);
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
 
@@ -94,7 +89,6 @@ void loop(Monde *monde){
         }
     }
 }
-
 
 /*
 *   Initialise toutes les touches à relachée 

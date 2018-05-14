@@ -1,5 +1,6 @@
 #include "affichage/forme.h"
 
+#define NB_SEGMENTS 100
 
 /*
 *   Trace le rectangle avec TopLeft le point en haut à gauche et BottomRight le point en bas à droite
@@ -16,3 +17,4 @@ void traceRectanglePlein(float xTopLeft, float yTopLeft, float xBottomRigth, flo
 	glVertex2f(xTopLeft,yBottomRight);
 	glEnd();
 }
+
