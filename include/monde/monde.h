@@ -24,6 +24,11 @@ typedef struct monde
 /* Affiche le monde et ses parametre dans la fenetre */
 void afficherMonde(Monde *m);
 
+/*
+*	Return 1 si est finit
+*	0 sinon
+*/
+int est_finit(Monde *m);
 
 /* Ajoute le malus m au Monde */
 void ajouterMalus(Monde *m, Malus *ma);

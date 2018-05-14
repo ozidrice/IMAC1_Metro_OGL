@@ -87,19 +87,19 @@ void moving(struct Element **e, float x, float y, int freeOnTop, int freeOnRight
 	if(e!= NULL && *e != NULL){
 		(*e)->posx += x*(*e)->vit_deplacement_x;
 		(*e)->posy += y*(*e)->vit_deplacement_y;
-		if(freeOnLeft == 1 && (*e)->posx < -1){
+		if(freeOnLeft == 1 && (*e)->posx+(*e)->taille < -1){
 			removeElementFromList(e);
 			moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
 		}else{
-			if(freeOnRight == 1 && (*e)->posx > 1){
+			if(freeOnRight == 1 && (*e)->posx-(*e)->taille > 1){
 				removeElementFromList(e);
 				moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
 			}else{
-				if(freeOnTop == 1 && (*e)->posy > 1){
+				if(freeOnTop == 1 && (*e)->posy-(*e)->taille > 1){
 					removeElementFromList(e);
 					moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
 				}else{
-					if(freeOnBottom == 1 && (*e)->posy < -1){
+					if(freeOnBottom == 1 && (*e)->posy+(*e)->taille < -1){
 						removeElementFromList(e);
 						moving(e,x,y,freeOnTop,freeOnRight,freeOnBottom,freeOnLeft);
 					}else{

@@ -32,7 +32,6 @@ void afficheBackground(Background *b){
 	float demi_hauteur = b->hauteur/2;
 	traceRectanglePlein(-demi_largeur+b->posX,-demi_hauteur,demi_largeur+b->posX,demi_hauteur);
 	glBindTexture(GL_TEXTURE_2D,0);
-	// printf("%f\n",b->largeur-2 + b->posX );
 	if(b->largeur-2 + b->posX > 2){
 		if(b->largeur-2 + b->posX < 4){
 			b->posX-=b->vitesse*(((b->posX+4)/4)-.5)*2;

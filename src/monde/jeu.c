@@ -81,6 +81,12 @@ void loop(Monde *monde){
         glDisable(GL_TEXTURE_2D);
 
         
+        if(1 == est_finit(monde)){
+            printf("LOL\n");
+            loop=0;
+        }
+
+
         //Buffer
         SDL_GL_SwapBuffers();
         Uint32 elapsedTime = SDL_GetTicks() - startTime;
@@ -90,9 +96,6 @@ void loop(Monde *monde){
     }
 }
 
-int is_ended(Monde *m){
-    
-}
 
 /*
 *   Initialise toutes les touches à relachée 

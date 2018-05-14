@@ -54,6 +54,22 @@ void LancerMonde(Monde *m, int niveau){
 	chargerMonde(m,MAP);
 }
 
+/*
+*	Return 1 si est finit
+*	0 sinon
+*/
+int est_finit(Monde *m){
+	if(m->joueur == NULL){
+		printf("1\n");
+		return 1;   
+	}
+	// printf("%p\n",m->liste_ennemis );
+	if(m->liste_ennemis == NULL){
+		printf("2\n");
+		return 1;
+	}
+	return 0;
+}
 
 /*
 *	Fait les actions necessaires à la prochaine frame
@@ -136,8 +152,8 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(&(m->liste_obstacle), 1., 1., 0,0,0,0);
-	moving(&(m->liste_ennemis), 1., 1., 0,0,0,0);
+	moving(&(m->liste_obstacle), 1., 1., 0,0,0,1.);
+	moving(&(m->liste_ennemis), 1., 1., 0,0,0,1.);
 	movingElementDeclencheur(&(m->liste_bonus), 1., 1., 0,0,0,0);
 	movingElementDeclencheur(&(m->liste_malus), 1., 1., 0,0,0,0);
 }
