@@ -16,10 +16,9 @@ Background *creerBackground(char *path_texture, float largeur, float vitesse){
 		b->texture_background = generateID(path_texture);
 		int w,h;
 		get_png_size(path_texture,&w,&h);
-		float ratio_texture = w/(h*1.);
+		float ratio_texture = (w/(h*1.))/2.;
 		b->largeur = largeur;
 		b->hauteur = largeur/ratio_texture;
-		printf("%f\n",ratio_texture);
 		b->vitesse = vitesse;  
 		b->posX = 0;
 	}
