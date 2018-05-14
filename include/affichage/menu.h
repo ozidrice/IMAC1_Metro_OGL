@@ -19,9 +19,6 @@
 #include "props/element.h"
 
 
-/* gère choix du joueur */
-int actionBouton();
-
 /* permet l'affichage de tout les éléments du menu */
 void ElementMenu();
 

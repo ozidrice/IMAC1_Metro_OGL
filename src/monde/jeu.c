@@ -103,7 +103,6 @@ void initKeys(){
 */
 void handle_inputs(Monde *monde){
     Joueur *j = monde->joueur;
-    printf("%f\n", j->posy - j->taille/2.);
     if(KEYS[SDLK_DOWN] == 1 && j->posy-(j->taille) > -1.)
         moving(&(monde->joueur), 0, -1, 0, 0, 0, 0); 
     if(KEYS[SDLK_UP] == 1 && j->posy+(j->taille) < 1)
@@ -132,7 +131,6 @@ void afficheHUD_Vie(int pv){
 }
 
 void affichageHUD(Monde *m){
-
     Joueur *j = m->joueur;
     if(j != NULL){
         afficheHUD_Vie(j->pv); 

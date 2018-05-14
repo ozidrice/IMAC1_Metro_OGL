@@ -6,20 +6,6 @@
 
 static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 
-/* 
-*  Gère l'action choisi par le joueur 
-*/
-int actionBouton(){
-        // SDL_Event e;
-
-   
-   		// while(SDL_PollEvent(&e)) {
-				
-   		// }
-	return 0;
-}
-
-
 /*
 * Loop avec affichage du Menu et lancement du jeu 
 */
@@ -73,8 +59,6 @@ int afficheMenu(){
 	       	glEnable(GL_BLEND);
 	    	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
 		ElementMenu();		
-
-		int choix = actionBouton();
 			
 
         	glDisable(GL_BLEND);
@@ -144,7 +128,7 @@ void afficheBouton(){
 	/*char* CHOISIR = "choisir son";
 	char* NIVEAU = "   niveau";
 	char* PERSONNAGE = "personnage";*/
-	char* font_path ="./font/04B_30__.TTF";
+	char* font_path ="bin/font/04B_30__.TTF";
 
 	char* JOUER = "JOUER";
 	char* QUITTER = "QUITTER";

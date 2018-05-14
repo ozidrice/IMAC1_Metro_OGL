@@ -64,7 +64,7 @@ void get_png_size(char *path, int *w, int *h){
 void *read_image(char *path) {
 	int fd = open(path, O_RDONLY);
 	if (fd < 0) {
-	return NULL;
+		return NULL;
 	}
 	size_t size = 1000;
 	size_t offset = 0;
