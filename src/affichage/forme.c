@@ -1,4 +1,4 @@
-#include "forme.h"
+#include "affichage/forme.h"
 
 #define NB_SEGMENTS 100
 

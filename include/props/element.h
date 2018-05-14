@@ -4,8 +4,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "forme.h"
-#include "texture.h"
+#include "affichage/forme.h"
+#include "affichage/texture.h"
+#include "affichage/windows.h"
+
 
 typedef struct Element {
 	int pv; //Point de vie -- -1 si inf
@@ -31,8 +33,7 @@ typedef struct Element {
 	
 	//Liste chainée
 	struct Element *next;
-}Joueur, Ennemi, Obstacle, Projectile, Bonus, Malus;
-
+}Joueur, Ennemi, Obstacle, Projectile;
 
 
 /* Malloc un element */
@@ -66,27 +67,12 @@ Joueur *creerJoueur(GLuint *texture);
 /* Malloc un Ennemi */
 Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture);
 
-/* Malloc un Bonus */
-Bonus *creerBonus(float x, float y, GLuint *texture);
-
-/* Malloc un Malus */
-Malus *creerMalus(float x, float y, GLuint *texture);
 
 /* Malloc un Obstacle */
 Obstacle *creerObstacle(float x, float y, GLuint *texture);
 
 /* Malloc un Projectile */
 Projectile *creerProjectile(float x, float y, float taille, int pa, float vit_deplacement_x, float vit_deplacement_y);
-
-/*	Renvoie 1 si les elements sont en colision
-*	0 sinon
-*/
-int estEnColision(struct Element *e1, struct Element *e2);
-
-/*	Test colisions entre les listes d'elem
-*	Retire les elements mort des listes
-*/
-void colision(struct Element **liste1, struct Element **liste2);
 
 /*
 *	Lance un projectile si le délai depuis la dernier lancement est suffisement grand

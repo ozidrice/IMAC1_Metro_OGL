@@ -11,8 +11,8 @@
 #include <stdio.h>
 #include <png.h>
 
-#include "forme.h"
-#include "texture.h"
+#include "affichage/forme.h"
+#include "affichage/texture.h"
 
 typedef struct background
 {
@@ -36,4 +36,5 @@ void *read_image(char *path);
 /* Affiche les éléments qui appartiennent au background*/
 void afficheBackground(Background *b);
 
+void freeBackground(Background *b);
 #endif

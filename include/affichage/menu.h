@@ -10,13 +10,13 @@
 #include <SDL/SDL_ttf.h>
 #include <png.h>
 
-#include "forme.h"
-#include "texture.h"
-#include "windows.h"
-#include "background.h"
-#include "monde.h"
-#include "jeu.h"
-#include "element.h"
+#include "affichage/forme.h"
+#include "affichage/texture.h"
+#include "affichage/windows.h"
+#include "affichage/background.h"
+#include "monde/monde.h"
+#include "monde/jeu.h"
+#include "props/element.h"
 
 
 /* gère choix du joueur */

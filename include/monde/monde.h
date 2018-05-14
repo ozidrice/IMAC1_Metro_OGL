@@ -2,11 +2,11 @@
 #define _MONDE_
 
 #include <png.h>
-
-#include "element.h"
-#include "forme.h"
-#include "background.h"
-
+typedef struct monde Monde;
+#include "props/element.h"
+#include "props/elementDeclencheur.h"
+#include "affichage/forme.h"
+#include "affichage/background.h"
 typedef struct monde
 {
 	Joueur *joueur;
@@ -18,6 +18,7 @@ typedef struct monde
 	Background *background;
 	float vit_defilement_x;
 }Monde;
+#include "props/collision.h"
 
 
 /* Affiche le monde et ses parametre dans la fenetre */
@@ -73,8 +74,11 @@ void generateNewProjectiles(Monde *m, struct Element *liste_elem);
 /*Fait lancer et déplacer les élements necessaires*/
 void action(Monde *m);
 
-void colisionsElement(Monde *m);
-void colisionsJoueur(Monde *m);
+void collisionsElement(Monde *m);
+void collisionsJoueur(Monde *m);
+
+/*	Fait les calculs necessaire avec les collisions entre les elem declencheurs*/
+void collisionsElementDeclencheur(Monde *m);
 
 
 #endif

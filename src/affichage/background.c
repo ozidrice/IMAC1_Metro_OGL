@@ -1,13 +1,12 @@
 #include<arpa/inet.h>
 #include <unistd.h>
 #include <fcntl.h>
-#include "background.h"
+#include "affichage/background.h"
 
 
 void get_png_size(char *path, int *w, int *h);
 void *read_image(char *path);
 
-static GLuint *TEXTURE_FOND;
 /*
 * Image de fond
 */
@@ -20,6 +19,7 @@ Background *creerBackground(char *path_texture, float largeur, float vitesse){
 		float ratio_texture = w/(h*1.);
 		b->largeur = largeur;
 		b->hauteur = largeur/ratio_texture;
+		printf("%f\n",ratio_texture);
 		b->vitesse = vitesse;  
 		b->posX = 0;
 	}
@@ -28,8 +28,7 @@ Background *creerBackground(char *path_texture, float largeur, float vitesse){
 
 
 void afficheBackground(Background *b){
-	TEXTURE_FOND = generateID("img/fondjeu.png");
-	glBindTexture(GL_TEXTURE_2D, *TEXTURE_FOND);
+	glBindTexture(GL_TEXTURE_2D, *b->texture_background);
 	float demi_largeur = b->largeur/2;
 	float demi_hauteur = b->hauteur/2;
 	traceRectanglePlein(-demi_largeur+b->posX,-demi_hauteur,demi_largeur+b->posX,demi_hauteur);
@@ -39,9 +38,8 @@ void afficheBackground(Background *b){
 }
 
 
-void freeBackground(){
-
-	glDeleteTextures(1,TEXTURE_FOND);
+void freeBackground(Background *b){
+	glDeleteTextures(1,b->texture_background);
 }
 
 

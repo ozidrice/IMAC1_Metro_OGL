@@ -1,5 +1,5 @@
 #include <math.h>
-#include "monde.h"
+#include "monde/monde.h"
 static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
 /* 
@@ -28,8 +28,8 @@ void afficherMonde(Monde *m){
 	afficheElement(m->liste_ennemis);
 	afficheElement(m->liste_obstacle);
 	afficheElement(m->liste_ennemis);	
-	afficheElement(m->liste_bonus);
-	afficheElement(m->liste_malus);
+	afficheElementDeclencheur(m->liste_bonus);
+	afficheElementDeclencheur(m->liste_malus);
 }
 
 
@@ -65,45 +65,58 @@ void action(Monde *m){
 	generateNewProjectiles(m,m->joueur);
 	generateNewProjectiles(m,m->liste_ennemis);
 	
-	colisionsJoueur(m);
-	colisionsElement(m);
+	collisionsJoueur(m);
+	collisionsElement(m);
+	collisionsElementDeclencheur(m);
 }
 
 /*
 *	Fait les calculs necessaire avec les collisions entre les elem
 */
-void colisionsElement(Monde *m){
-	Projectile **o_tmp = &(m->liste_obstacle);
+void collisionsElement(Monde *m){
+	Obstacle **o_tmp = &(m->liste_obstacle);
 	Projectile **p_tmp = &(m->liste_projectiles);
-	Projectile **e_tmp = &(m->liste_ennemis);
-	colision(p_tmp, o_tmp);
-	colision(p_tmp, e_tmp);
+	Ennemi **e_tmp = &(m->liste_ennemis);
+	collision(p_tmp, o_tmp);
+	collision(p_tmp, e_tmp);
 }
 
+/*
+*	Fait les calculs necessaire avec les collisions entre les elem declencheurs
+*/
+void collisionsElementDeclencheur(Monde *m){
+	Malus **b_tmp = &(m->liste_bonus);
+	Bonus **m_tmp = &(m->liste_malus);
+	collisionBonus(b_tmp,m);
+	collisionMalus(m_tmp,m);
+	gererElementDeclencheurActif(1,b_tmp,m);
+	gererElementDeclencheurActif(2,m_tmp,m);
+}
+
+/*
+*	Fait les calculs necessaire avec les collisions entre le joueurs et les elem
+*/
+void collisionsJoueur(Monde *m){
+	collision(&m->joueur, &(m->liste_projectiles));
+	collision(&m->joueur, &(m->liste_obstacle));
+	collision(&m->joueur, &(m->liste_ennemis));
+}
 
 /*
 *	 Ajoute le Malus ma au monde 
 */
 
 void ajouterMalus(Monde *m, Malus *ma){
-	addElementToList(&m->liste_malus,ma);
+	addElementDeclencheurToList(&m->liste_malus,ma);
 }
 
 /*
 *	 Ajoute le Bonus b au monde 
 */
 void ajouterBonus(Monde *m, Bonus *b){
-	addElementToList(&m->liste_bonus,b);
+	addElementDeclencheurToList(&m->liste_bonus,b);
 }
 
-/*
-*	Fait les calculs necessaire avec les collisions entre le joueurs et les elem
-*/
-void colisionsJoueur(Monde *m){
-	colision(&m->joueur, &(m->liste_projectiles));
-	colision(&m->joueur, &(m->liste_obstacle));
-	colision(&m->joueur, &(m->liste_ennemis));
-}
 
 /*
 *	Ajoute l'obstacle o au monde
@@ -125,8 +138,8 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 void defilerMonde(Monde *m){
 	moving(&(m->liste_obstacle), 1., 1., 0,0,0,0);
 	moving(&(m->liste_ennemis), 1., 1., 0,0,0,0);
-	moving(&(m->liste_bonus), 1., 1., 0,0,0,0);
-	moving(&(m->liste_malus), 1., 1., 0,0,0,0);
+	movingElementDeclencheur(&(m->liste_bonus), 1., 1., 0,0,0,0);
+	movingElementDeclencheur(&(m->liste_malus), 1., 1., 0,0,0,0);
 }
 
 
@@ -196,18 +209,18 @@ void chargerMonde(Monde *m, char * MAP){
 			}
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
 			{
-				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,3,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
+				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
 				ajouterEnnemi(m,en);
 			}
 			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
 			{
-				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_BONUS"));
+				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_BONUS"),0,1);
 				ajouterBonus(m,b);			
 			}
 
 			if(r==165 && g==0 && b==255) /* Violet => Malus */
 			{
-				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_MALUS"));
+				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_MALUS"),1000,1);
 				ajouterMalus(m,ma);			
 			}	
 		}
@@ -224,8 +237,9 @@ void freeMonde(Monde *m){
 	freeElement(m->liste_obstacle);
 	freeElement(m->liste_projectiles);
 	freeElement(m->liste_ennemis);
-	freeElement(m->liste_bonus);
-	freeElement(m->liste_malus);
+	freeElementDeclencheur(m->liste_bonus);
+	freeElementDeclencheur(m->liste_malus);
+	freeBackground(m->background);
 	free(m);
 }
 

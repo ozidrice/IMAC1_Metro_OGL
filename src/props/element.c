@@ -1,7 +1,5 @@
 #include <math.h>
-#include "element.h"
-#include "monde.h"
-#include "windows.h"
+#include "props/element.h"
 
 /* 
 *	Malloc un element 
@@ -61,7 +59,7 @@ void addElementToList(struct Element **list, struct Element *elem){
 *	Retire et free l'élément de la liste
 */
 void removeElementFromList(struct Element **elem){
-	if(*elem != NULL){	
+	if(elem != NULL && *elem != NULL){	
 		struct Element *fils = (*elem)->next;
 		free(*elem);
 		*elem = fils;
@@ -86,7 +84,7 @@ int attaque(struct Element *attanquant, struct Element *cible){
 *	Si free = 1 : Free l'élément si il sort de l'écran
 */
 void moving(struct Element **e, float x, float y, int freeOnTop, int freeOnRight, int freeOnBottom, int freeOnLeft){
-	if(*e != NULL){
+	if(e!= NULL && *e != NULL){
 		(*e)->posx += x*(*e)->vit_deplacement_x;
 		(*e)->posy += y*(*e)->vit_deplacement_y;
 		if(freeOnLeft == 1 && (*e)->posx < -1){
@@ -110,55 +108,6 @@ void moving(struct Element **e, float x, float y, int freeOnTop, int freeOnRight
 				}
 			}
 		}
-	}
-}
-
-/*
-*	Renvoie 1 si les elements sont en colision
-*	0 sinon
-*/
-int estEnColision(struct Element *e1, struct Element *e2){
-	if(e1 == NULL || e2 == NULL)
-		return 0;
-	float ratio = windowRatio();
-	if(e1->posx+(e1->taille/ratio) > e2->posx-(e2->taille/ratio) && e1->posx-(e1->taille/ratio) < e2->posx+(e2->taille/ratio) &&
-		e1->posy-e1->taille < e2->posy+e2->taille && e1->posy+e1->taille > e2->posy-e2->taille
-		){
-		return 1;
-	}
-	return 0;
-}
-
-/*
-*	Test colisions entre les listes d'elem
-*	Retire les elements mort des listes
-*/
-void colision(struct Element **liste1, struct Element **liste2){
-	if(*liste1 != NULL && *liste2 != NULL){
-		//Foreach liste1
-		do{
-			int meurt_1 = 0, meurt_2 = 0;
-			if(*liste2 != NULL){
-				//Foreach liste2
-				struct Element **liste2_tmp = liste2;
-				do{
-					meurt_2 = 0; 
-					if(estEnColision(*liste1,*liste2_tmp)){
-						meurt_1 = attaque(*liste2_tmp,*liste1);
-						meurt_2 = attaque(*liste1,*liste2_tmp);
-						if(meurt_1 == 1)
-							removeElementFromList(liste1);
-						if(meurt_2 == 1)
-							removeElementFromList(liste2_tmp);
-						else
-							liste2_tmp = &((*liste2_tmp)->next);
-					}else
-						liste2_tmp = &((*liste2_tmp)->next);
-				}while(*liste2_tmp != NULL);
-			}
-			if(meurt_1 == 0)
-				liste1 = &((*liste1)->next);
-		}while(*liste1 != NULL);
 	}
 }
 
@@ -217,45 +166,6 @@ Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplace
 }
 
 
-/*___________________BONUS_____________________*/
-
-/*
-*	malloc un Bonus 
-*/
-Bonus *creerBonus(float x, float y, GLuint *texture){
-	int pv = -1;
-	int pa = 1; 
-	float taille = .05; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = -1/1000.;
-	vit_deplacement_y = 0; 
-	Uint32 intervalle_projectile = 0;
-	int nombreProjectileParTir = 0;
-	float angleTir = 0;
-	float taille_projectile = 0;
-	float vit_deplacement_projectile = 0;
-	return (Bonus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
-}
-
-/*___________________MALUS_____________________*/
-
-/*
-*	malloc malus
-*/
-Malus *creerMalus(float x, float y, GLuint *texture){
-	int pv = -1;
-	int pa = 1; 
-	float taille = .05; 
-	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = -1/100.;
-	vit_deplacement_y = 0; 
-	Uint32 intervalle_projectile = 0;
-	int nombreProjectileParTir = 0;
-	float angleTir = 0;
-	float taille_projectile = 0;
-	float vit_deplacement_projectile = 0;
-	return (Malus*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
-}
 
 
 /*___________________OBSTACLE_____________________*/
@@ -312,7 +222,7 @@ Projectile *lance_projectile(struct Element *e){
 	return NULL;
 }
 
-/*
+/*cos
 *	Créé les projectiles necessaire à un tir 
 *	en prenant en compte le nombreProjectileParTir
 */
@@ -334,7 +244,7 @@ Projectile *creerProjectileMultiple(struct Element *e){
 			dep_y = sin(angle);
 
 		}
-		float diag_lenght = (e->taille*sqrt(2))/2;
+		float diag_lenght = (e->taille*sqrt(2))/2+.01;
 		float ray = (e->taille/2)+diag_lenght;
 		float posx , posy, vit_parent_x, vit_parent_y;
 		if(e->angleTir > 0){

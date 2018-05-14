@@ -5,9 +5,6 @@
 #include <SDL/SDL_ttf.h>
 #include <GL/gl.h>
 #include <GL/glu.h>
-
-static unsigned int WINDOW_WIDTH = 1200;
-static unsigned int WINDOW_HEIGHT = 800;
 	
 /*	Init la fenetre
 *	Return 1 if ok
@@ -25,5 +22,13 @@ void displayText(const char *text, int x, int y, int size, char *font_path, int 
 
 /*	 renvoie le ratio largeur/hauteur de l'image */
 float windowRatio();
+
+unsigned int get_WINDOW_WIDTH();
+
+unsigned int get_WINDOW_HEIGHT();
+
+void set_WINDOW_WIDTH(unsigned int w);
+
+void set_WINDOW_HEIGHT(unsigned int h);
 
 #endif

@@ -1,7 +1,7 @@
-#include "menu.h"
-#include "jeu.h"
-#include "background.h"
-#include "windows.h"
+#include "affichage/menu.h"
+#include "monde/jeu.h"
+#include "affichage/background.h"
+#include "affichage/windows.h"
 #include <SDL/SDL_ttf.h>
 
 static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
@@ -17,8 +17,8 @@ int actionBouton(){
 	float ratio = windowRatio();
    
    		while(SDL_PollEvent(&e)) {
-			x = -1 + 2. * e.button.x / WINDOW_WIDTH;
-			y = -(-1 + 2. * e.button.y / WINDOW_HEIGHT);
+			x = -1 + 2. * e.button.x / get_WINDOW_WIDTH();
+			y = -(-1 + 2. * e.button.y / get_WINDOW_HEIGHT());
 	
 			if(e.type == SDL_MOUSEBUTTONUP){
 				if(x > -0.1*ratio && x < 0.1*ratio ){
@@ -157,9 +157,9 @@ void afficheBouton(){
 	displayText(NIVEAU,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*9)) ,20,font_path,255,0,0);
 	displayText(CHOISIR,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*13)),20,font_path, 255, 0,0);*/
 
-	displayText(JOUER,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)-(WINDOW_HEIGHT/(ratio*6.5)),20,font_path, 0, 0,255);
+	displayText(JOUER,get_WINDOW_WIDTH()/(1.55*ratio),(get_WINDOW_HEIGHT()/ratio)-(get_WINDOW_HEIGHT()/(ratio*6.5)),20,font_path, 0, 0,255);
 
-	displayText(QUITTER,WINDOW_WIDTH/(1.55*ratio),(WINDOW_HEIGHT/ratio)+(WINDOW_HEIGHT/(ratio*13)),20,font_path, 255, 0,0);
+	displayText(QUITTER,get_WINDOW_WIDTH()/(1.55*ratio),(get_WINDOW_HEIGHT()/ratio)+(get_WINDOW_HEIGHT()/(ratio*13)),20,font_path, 255, 0,0);
 }
 
 
