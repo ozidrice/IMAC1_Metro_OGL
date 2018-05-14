@@ -4,8 +4,6 @@
 #include "windows.h"
 #include <SDL/SDL_ttf.h>
 
-static GLuint *TEXTURE_MENU;
-static GLuint *TEXTURE_TITRE;
 static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 
 /* 
@@ -46,14 +44,13 @@ int afficheMenu(){
 /*	Monde *monde = creerMonde();*/
 
 	int loop = 1;
-
 	if(0 == initWindow())
 	        return 0;
+	
+	preload_texture();
+	
 
 	while(loop){
-
-		char* path = "./img/menu.PNG";
-		TEXTURE_MENU = generateID(path);
 	        Uint32 startTime2 = SDL_GetTicks();
         	SDL_Event e;
 
@@ -100,7 +97,8 @@ int afficheMenu(){
 * Permet affichage des différents éléments du menu
 */
 void ElementMenu(){
-	glBindTexture(GL_TEXTURE_2D, *TEXTURE_MENU);
+	GLuint *texture_menu = get_texture("TEXTURE_MENU");
+	glBindTexture(GL_TEXTURE_2D, *texture_menu);
 	traceRectanglePlein(-1,-1, 1,1);
 	glBindTexture(GL_TEXTURE_2D,0);
 	afficheBouton();
@@ -112,16 +110,16 @@ void ElementMenu(){
 * Free la texture Menu
 */
 void freeMenu(){
-	glDeleteTextures(1,TEXTURE_MENU);
-	glDeleteTextures(1,TEXTURE_TITRE);
 }
 
 /*
 * chargement de la texture de fond
 */
 void afficheTitre(){
-	TEXTURE_TITRE = generateID("img/littlejourney.png");
-	glBindTexture(GL_TEXTURE_2D, *TEXTURE_TITRE);
+	GLuint *texture_titre = get_texture("TEXTURE_TITRE");
+	printf("%d\n",*texture_titre);
+
+	glBindTexture(GL_TEXTURE_2D, *texture_titre);
 	float ratio = windowRatio();
 	traceRectanglePlein(-0.5*ratio,0 ,0.5*ratio, ratio/2); 
 	glBindTexture(GL_TEXTURE_2D,0);

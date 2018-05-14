@@ -22,7 +22,6 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 */
 int launch(){
     initKeys(); //Initialisation touches clavier
-    preload_texture(); //Initialisation des textures
     Monde *monde = creerMonde(); //Creation du monde
     LancerMonde(monde, 1);
 
@@ -76,8 +75,8 @@ void loop(Monde *monde){
         glEnable(GL_TEXTURE_2D);
     	glEnable(GL_BLEND);
     	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-	afficherMonde(monde);
-	affichageHUD(monde);
+        	afficherMonde(monde);
+        	affichageHUD(monde);
         glDisable(GL_BLEND);
         glDisable(GL_TEXTURE_2D);
 
