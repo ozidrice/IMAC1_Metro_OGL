@@ -90,6 +90,10 @@ void loop(Monde *monde){
     }
 }
 
+int is_ended(Monde *m){
+    
+}
+
 /*
 *   Initialise toutes les touches à relachée 
 */
