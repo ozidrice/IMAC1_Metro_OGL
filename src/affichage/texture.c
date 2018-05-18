@@ -26,8 +26,8 @@ void preload_texture(){
 	TEXTURE_BONUS_TAILLE = generateID("img/bonus_taille.png");
 	TEXTURE_MALUS_VIE = generateID("img/malus_pv.png");
 	TEXTURE_MALUS_TAILLE = generateID("img/malus_taille.png");
-	TEXTURE_TITRE = generateID("img/littlejourney.png");
-	TEXTURE_MENU = generateID("img/menu.PNG");
+	TEXTURE_TITRE = generateID("img/title.png");
+	TEXTURE_MENU = generateID("img/menuu.png");
 }
 
 /*
