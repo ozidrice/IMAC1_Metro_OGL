@@ -12,5 +12,5 @@ void actionMalus(int typeMalus, Monde *monde);
 void undoActionMalus(int typeMalus, Monde *monde);
 
 /* Malloc un Malus */
-Malus *creerMalus(float x, float y, GLuint *texture, Uint32 duree_effet, int type);
+Malus *creerMalus(float x, float y, GLuint *texture, Uint32 duree_effet, int type, int ChangeTaille);
 #endif

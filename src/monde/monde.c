@@ -45,7 +45,7 @@ void LancerMonde(Monde *m, int niveau){
 	char * MAP = NULL;
  	switch(niveau) {
         case 1:
-            MAP = "bin/map/lev00.bmp";
+            MAP = "bin/map/lev03.bmp";
               break;
         case 2:
 			MAP = "bin/map/map6.bmp";
@@ -118,7 +118,7 @@ void collisionsElementDeclencheur(Monde *m){
 */
 void collisionsJoueur(Monde *m){
 	collision(&m->joueur, &(m->liste_projectiles));
-	collision(&m->joueur ,&(m->liste_obstacle));
+	/*collision(&m->joueur ,&(m->liste_obstacle));*/
 	collision(&m->joueur, &(m->liste_ennemis));
 
 
@@ -230,7 +230,7 @@ void chargerMonde(Monde *m, char * MAP){
 
 			
 			// RATIO u est la nouvelle coordonnée y, v est la nouvelle coordonnée x
-			float u = -(-1 + 2.* y/get_WINDOW_HEIGHT());
+			float u = -(-1 + 2.* y/get_WINDOW_HEIGHT())-0.06;
 			float v = -1 + 2. * x/get_WINDOW_WIDTH();
 
 			Uint32 pixel = obtenirPixel(map,x,y);
@@ -245,7 +245,7 @@ void chargerMonde(Monde *m, char * MAP){
 			if(r==165 && g==0 && b==0) /* Rouge => ennemi basic */
 			{
 				/*printf(" hauteur %d\n", y);*/
-				Ennemi *en = creerEnnemi(v,u,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
+				Ennemi *en = creerEnnemi(v,u,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"),0);
 				ajouterEnnemi(m,en);
 			}
 			if(r==255 && g==255 && b==165) /* Jaune => Bonus vitesse */
@@ -266,15 +266,30 @@ void chargerMonde(Monde *m, char * MAP){
 
 			if(r==165 && g==0 && b==255) /* Violet => Malus vie en moins*/
 			{
-				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_VIE"),0,1);
+				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_VIE"),0,1,0);
 				ajouterMalus(m,ma);			
 			}	
 
 			if(r==30 && g==90 && b==50) /* Vert foncé => Malus taille plus grande */
 			{
-				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_TAILLE"),6000,2);
+				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_TAILLE"),6000,2,0);
+				ajouterMalus(m,ma);			
+			}
+
+
+			if(r==0 && g==0 && b==0) /* Noir => Malus : aspire toutes les pv en stock */
+			{
+				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_TROU"),0,3,1);
 				ajouterMalus(m,ma);			
 			}	
+
+
+			if(r==255 && g==0 && b==0) /* Rouge vermillon => Ennemi BIG BOSS */
+			{	
+				Ennemi *en = creerEnnemi(v,u,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI_BIG"),1);
+				ajouterEnnemi(m,en);			
+			}	
+
 		}
 	}
 	SDL_FreeSurface(map);

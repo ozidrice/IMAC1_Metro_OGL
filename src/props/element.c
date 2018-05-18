@@ -153,15 +153,21 @@ Joueur *creerJoueur(GLuint *texture){
 }
 
 
-/*___________________ENNEMI_____________________*/
+/*___________________ENNEMI__________________ ___*/
 
 /*
 *	malloc un Ennemi 
+*	change = 0 --> taille : 0.05 pv = 5 si = change = 1 --> taille = 1 pv = 20
 */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture){
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture, int change){
 	int pv = 5;
 	int pa = 1;
 	float taille = .05;
+	if( change == 1){
+		taille = 1;
+		pv = 20;
+		
+	}
 	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
