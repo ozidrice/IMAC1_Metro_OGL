@@ -18,7 +18,7 @@ Monde *creerMonde(){
 	m->liste_obstacle = NULL;
 	m->liste_bonus = NULL;
 	m->liste_malus = NULL;
-	m->background = creerBackground("img/fondjeu.png",6.,.001);
+	m->background = creerBackground("img/fondjeu.png",9.,.001);
 	m->vit_defilement_x = VIT_DEFILEMENT_DEFAUT;
 	return m;
 }

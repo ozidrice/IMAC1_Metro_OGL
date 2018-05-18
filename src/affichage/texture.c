@@ -17,7 +17,7 @@ static GLuint *TEXTURE_MENU;
 *	Précharge les textures pour pouvoir les utiliser plus tard
 */
 void preload_texture(){
-	TEXTURE_JOUEUR = generateID("img/joueur.png");
+	TEXTURE_JOUEUR = generateID("img/joueur2.png");
 	TEXTURE_PROJECTILE = generateID("img/USB.png");
 	TEXTURE_OBSTACLE = generateID("img/obstacles.png");
 	TEXTURE_ENNEMI = generateID("img/rat.png");
