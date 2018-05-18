@@ -32,18 +32,33 @@ void collisionBonus(Bonus **liste_b, Monde *m){
 */
 void actionBonus(int typeBonus, Monde *monde){
 	switch(typeBonus){
-		case 1:
+		case 1: // VIE
 			monde->joueur->pv++;
+			break;
+		case 2: // VITESSE
+			monde->joueur->vit_deplacement_x = monde->joueur->vit_deplacement_x*3;
+			monde->joueur->vit_deplacement_y = monde->joueur->vit_deplacement_y*3;
+			break;
+		case 3 : // BOUCLIER
+			monde->joueur->taille = 0.05;
+			break;
 		default :
 			break;
 	}
 }
+
 
 /*
 *	Retire les effets du bonus (si le bonus a une durée)
 */
 void undoActionBonus(int typeBonus, Monde *monde){
 	switch(typeBonus){
+		case 2:
+			monde->joueur->vit_deplacement_x = monde->joueur->vit_deplacement_x/3;
+			monde->joueur->vit_deplacement_y = monde->joueur->vit_deplacement_y/3;
+		case 3:
+			monde->joueur->taille = 0.17;
+			break;
 		default :
 			break;
 	}

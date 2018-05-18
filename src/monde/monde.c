@@ -1,5 +1,10 @@
 #include <math.h>
 #include "monde/monde.h"
+
+
+static unsigned int WINDOW_WIDTH = 1200;
+static unsigned int WINDOW_HEIGHT = 800;
+
 static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
 
 /* 
@@ -40,7 +45,7 @@ void LancerMonde(Monde *m, int niveau){
 	char * MAP = NULL;
  	switch(niveau) {
         case 1:
-            MAP = "bin/map/map7.bmp";
+            MAP = "bin/map/lev00.bmp";
               break;
         case 2:
 			MAP = "bin/map/map6.bmp";
@@ -79,8 +84,7 @@ void action(Monde *m){
 	defilerProjectiles(m);
 	
 	generateNewProjectiles(m,m->joueur);
-	generateNewProjectiles(m,m->liste_ennemis);
-	
+	generateNewProjectiles(m,m->liste_ennemis);	
 	collisionsJoueur(m);
 	collisionsElement(m);
 	collisionsElementDeclencheur(m);
@@ -114,8 +118,10 @@ void collisionsElementDeclencheur(Monde *m){
 */
 void collisionsJoueur(Monde *m){
 	collision(&m->joueur, &(m->liste_projectiles));
-	collision(&m->joueur, &(m->liste_obstacle));
+	collision(&m->joueur ,&(m->liste_obstacle));
 	collision(&m->joueur, &(m->liste_ennemis));
+
+
 }
 
 /*
@@ -207,36 +213,66 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
 void chargerMonde(Monde *m, char * MAP){
 
 	SDL_Surface *map = NULL;
+	printf("%s\n", MAP);
 	map = SDL_LoadBMP(MAP);
 	
-	int x,y;
+	float x,y;
 	Uint8 r, g,b,a;
-	
-	for(y=0; y<map->h; y+=22)
+	printf("hauteur %d\n", map->h);
+	printf("largeur %d\n", map->w);
+
+
+	for(y=0.; y<map->h; y+=36.)
 	{
-		for(x=0; x<map->w; x+=22)
+		for(x=0.; x<map->w; x+=36.)
 		{
+
+
+			
+			// RATIO u est la nouvelle coordonnée y, v est la nouvelle coordonnée x
+			float u = -(-1 + 2.* y/get_WINDOW_HEIGHT());
+			float v = -1 + 2. * x/get_WINDOW_WIDTH();
+
 			Uint32 pixel = obtenirPixel(map,x,y);
 			SDL_GetRGBA(pixel, map->format, &r, &g, &b, &a);
 			if(r==255 && g==165 && b==0) /* Orange == obstacle */
 			{
-				Obstacle *o = creerObstacle(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_OBSTACLE"));
+			
+				/*printf(" hauteur %d\n", y);*/
+				Obstacle *o = creerObstacle(v,u,get_texture("TEXTURE_OBSTACLE"));
 				ajouterObstacle(m,o);
 			}
-			if(r==165 && g==0 && b==0) /* Rouge => ennemi */
+			if(r==165 && g==0 && b==0) /* Rouge => ennemi basic */
 			{
-				Ennemi *en = creerEnnemi(x*0.001,((map->h - y)*0.001)-0.4,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
+				/*printf(" hauteur %d\n", y);*/
+				Ennemi *en = creerEnnemi(v,u,-1/1000.,0,2000,5,-M_PI,1/100.,-1/100.,get_texture("TEXTURE_ENNEMI"));
 				ajouterEnnemi(m,en);
 			}
-			if(r==255 && g==255 && b==165) /* Jaune => Bonus */
+			if(r==255 && g==255 && b==165) /* Jaune => Bonus vitesse */
 			{
-				Bonus *b = creerBonus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_BONUS"),0,1);
+				Bonus *b = creerBonus(v,u,get_texture("TEXTURE_BONUS_VITESSE"),5000,2);
+				ajouterBonus(m,b);			
+			}
+			if(r==0 && g==255 && b==0) /* Vert => Bonus vie */
+			{
+				Bonus *b = creerBonus(v,u,get_texture("TEXTURE_BONUS_VIE"),1000,1);
+				ajouterBonus(m,b);			
+			}
+			if(r==100 && g==100 && b==100) /* Gris => Bonus taille */
+			{
+				Bonus *b = creerBonus(v,u,get_texture("TEXTURE_BONUS_TAILLE"),12000,3);
 				ajouterBonus(m,b);			
 			}
 
-			if(r==165 && g==0 && b==255) /* Violet => Malus */
+			if(r==165 && g==0 && b==255) /* Violet => Malus vie en moins*/
 			{
-				Malus *ma = creerMalus(x*0.001,((map->h - y)*0.001)-0.4,get_texture("TEXTURE_MALUS"),1000,1);
+				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_VIE"),0,1);
+				ajouterMalus(m,ma);			
+			}	
+
+			if(r==30 && g==90 && b==50) /* Vert foncé => Malus taille plus grande */
+			{
+				Malus *ma = creerMalus(v,u-0.05,get_texture("TEXTURE_MALUS_TAILLE"),6000,2);
 				ajouterMalus(m,ma);			
 			}	
 		}

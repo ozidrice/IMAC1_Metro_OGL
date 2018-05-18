@@ -22,7 +22,6 @@ int estEncollision(struct Element *e1, struct Element *e2);
 */
 void collision(struct Element **liste1, struct Element **liste2);
 
-
 /*
 *	Type: 
 *		1 --> Bonus 

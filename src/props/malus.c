@@ -10,7 +10,7 @@ Malus *creerMalus(float x, float y, GLuint *texture, Uint32 duree_effet, int typ
 	int pa = 1; 
 	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
-	vit_deplacement_x = -1/100.;
+	vit_deplacement_x = -1/1000.;
 	vit_deplacement_y = 0; 
 	Uint32 intervalle_projectile = 0;
 	int nombreProjectileParTir = 0;
@@ -32,6 +32,12 @@ void collisionMalus(Malus **liste_m, Monde *m){
 */
 void actionMalus(int typeMalus, Monde *monde){
 	switch(typeMalus){
+		case 1:
+			monde->joueur->pv--;
+			break;
+		case 2:
+			monde->joueur->taille = 0.3;
+			break;
 		default :
 			break;
 	}
@@ -42,6 +48,9 @@ void actionMalus(int typeMalus, Monde *monde){
 */
 void undoActionMalus(int typeMalus, Monde *monde){
 	switch(typeMalus){
+		case 2:
+			monde->joueur->taille = 0.17;
+			break;
 		default :
 			break;
 	}

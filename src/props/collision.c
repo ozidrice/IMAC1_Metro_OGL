@@ -35,8 +35,9 @@ void collision(struct Element **liste1, struct Element **liste2){
 					if(estEncollision(*liste1,*liste2_tmp)){
 						meurt_1 = attaque(*liste2_tmp,*liste1);
 						meurt_2 = attaque(*liste1,*liste2_tmp);
-						if(meurt_1 == 1)
+						if(meurt_1 == 1){
 							removeElementFromList(liste1);
+						}
 						if(meurt_2 == 1)
 							removeElementFromList(liste2_tmp);
 						else
