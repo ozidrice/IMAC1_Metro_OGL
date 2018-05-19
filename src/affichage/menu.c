@@ -9,7 +9,7 @@ static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 /*
 * Loop avec affichage du Menu et lancement du jeu 
 */
-int afficheMenu(){
+int afficheMenu(char *str_button1){
 /*	Monde *monde = creerMonde();*/
 
 	int loop = 1;
@@ -29,7 +29,7 @@ int afficheMenu(){
         	    switch(e.type) {
         	        case SDL_QUIT:
         	        	loop = 0;
-        	        	return 1;
+        	        	return 0;
         	        case SDL_MOUSEBUTTONUP:
 
 						ratio = windowRatio(); 
@@ -43,7 +43,7 @@ int afficheMenu(){
 							}
 							else if( y < -0.25*ratio  && y > -0.4*ratio){
 								printf("Tu nous quitte déjà ?!\n");	
-								return 1;
+								return 0;
 							}
 						}
 						
@@ -52,13 +52,12 @@ int afficheMenu(){
         	            break;
         	    }
         	}
-
 		
 		glClear(GL_COLOR_BUFFER_BIT);
 	        glEnable(GL_TEXTURE_2D);
 	       	glEnable(GL_BLEND);
 	    	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		ElementMenu();		
+		ElementMenu(str_button1);		
 			
 
         	glDisable(GL_BLEND);
@@ -70,22 +69,18 @@ int afficheMenu(){
         	    SDL_Delay(FRAMERATE_MILLISECONDS2 - elapsedTime2);
 		}
 	}
-
-
-	if(launch() == 1)
-		return 1;
 	return 1;
 }
 
 /* 
 * Permet affichage des différents éléments du menu
 */
-void ElementMenu(){
+void ElementMenu(char *str_button1){
 	GLuint *texture_menu = get_texture("TEXTURE_MENU");
 	glBindTexture(GL_TEXTURE_2D, *texture_menu);
 	traceRectanglePlein(-1,-1, 1,1);
 	glBindTexture(GL_TEXTURE_2D,0);
-	afficheBouton();
+	afficheBouton(str_button1);
 	afficheTitre();	
 }
 
@@ -111,7 +106,7 @@ void afficheTitre(){
 /*
 * Affichage boutons avec textes 
 */
-void afficheBouton(){
+void afficheBouton(char *str_button1){
 	float ratio = windowRatio();
 
 	// Boutons blancs
@@ -120,10 +115,10 @@ void afficheBouton(){
 	traceRectanglePlein(-0.1*ratio,-0.25*ratio,0.1*ratio,-0.4*ratio);
 
 	char* font_path ="bin/font/Moon Flower.ttf";
-	char* JOUER = "JOUER";
+	char* BUTTON_1 = str_button1;
 	char* QUITTER = "QUITTER";
 
-	displayText(JOUER,get_WINDOW_WIDTH()/(1.47*ratio),(get_WINDOW_HEIGHT()/ratio)-(get_WINDOW_HEIGHT()/(ratio*5.8)),70,font_path, 0, 0,0);
+	displayText(BUTTON_1,get_WINDOW_WIDTH()/(1.47*ratio),(get_WINDOW_HEIGHT()/ratio)-(get_WINDOW_HEIGHT()/(ratio*5.8)),70,font_path, 0, 0,0);
 
 	displayText(QUITTER,get_WINDOW_WIDTH()/(1.52*ratio),(get_WINDOW_HEIGHT()/ratio)+(get_WINDOW_HEIGHT()/(ratio*17)),70,font_path, 0, 0,0);
 }
