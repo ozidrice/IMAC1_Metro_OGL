@@ -9,7 +9,7 @@ static const Uint32 FRAMERATE_MILLISECONDS2 = 1000 / 60;
 /*
 * Loop avec affichage du Menu et lancement du jeu 
 */
-int afficheMenu(char *str_button1){
+int afficheMenu(char *str_button1, int fin){
 /*	Monde *monde = creerMonde();*/
 
 	int loop = 1;
@@ -57,8 +57,7 @@ int afficheMenu(char *str_button1){
 	        glEnable(GL_TEXTURE_2D);
 	       	glEnable(GL_BLEND);
 	    	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		ElementMenu(str_button1);		
-			
+		ElementMenu(str_button1,fin);		
 
         	glDisable(GL_BLEND);
 	        glDisable(GL_TEXTURE_2D);
@@ -75,13 +74,22 @@ int afficheMenu(char *str_button1){
 /* 
 * Permet affichage des différents éléments du menu
 */
-void ElementMenu(char *str_button1){
-	GLuint *texture_menu = get_texture("TEXTURE_MENU");
-	glBindTexture(GL_TEXTURE_2D, *texture_menu);
-	traceRectanglePlein(-1,-1, 1,1);
-	glBindTexture(GL_TEXTURE_2D,0);
-	afficheBouton(str_button1);
-	afficheTitre();	
+void ElementMenu(char *str_button1, int fin){
+	if (fin == 0){
+		GLuint *texture_menu = get_texture("TEXTURE_MENU");
+		glBindTexture(GL_TEXTURE_2D, *texture_menu);
+		traceRectanglePlein(-1,-1, 1,1);
+		glBindTexture(GL_TEXTURE_2D,0);
+		afficheBouton(str_button1);
+		afficheTitre();	
+	}
+	else{
+		char* font_path ="bin/font/Moon Flower.ttf";
+		GLuint *texture_menu = get_texture("TEXTURE_MENU");
+		glBindTexture(GL_TEXTURE_2D, *texture_menu);
+		traceRectanglePlein(-1,-1, 1,1);
+		displayText(str_button1,220,100,100,font_path, 0, 0,0);
+	}
 }
 
 
@@ -118,9 +126,10 @@ void afficheBouton(char *str_button1){
 	char* BUTTON_1 = str_button1;
 	char* QUITTER = "QUITTER";
 
-	displayText(BUTTON_1,get_WINDOW_WIDTH()/(1.47*ratio),(get_WINDOW_HEIGHT()/ratio)-(get_WINDOW_HEIGHT()/(ratio*5.8)),70,font_path, 0, 0,0);
+	displayText(BUTTON_1,get_WINDOW_WIDTH()/(1.55*ratio),(get_WINDOW_HEIGHT()/ratio)-(get_WINDOW_HEIGHT()/(ratio*6.2)),50,font_path, 0, 0,0);
 
 	displayText(QUITTER,get_WINDOW_WIDTH()/(1.52*ratio),(get_WINDOW_HEIGHT()/ratio)+(get_WINDOW_HEIGHT()/(ratio*17)),70,font_path, 0, 0,0);
 }
+
 
 

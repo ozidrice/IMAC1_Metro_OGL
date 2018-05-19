@@ -129,7 +129,7 @@ void collisionsElementDeclencheur(Monde *m){
 */
 void collisionsJoueur(Monde *m){
 	collision(&m->joueur, &(m->liste_projectiles));
-	/*collision(&m->joueur ,&(m->liste_obstacle));*/
+	collision(&m->joueur ,&(m->liste_obstacle));
 	collision(&m->joueur, &(m->liste_ennemis));
 
 

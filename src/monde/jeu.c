@@ -12,7 +12,9 @@ void affichageHUD(Monde *m);
 void freeHUD();
 void gestionNiveau();
 
+
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
+static int nbNiv = 1;
 
 
 /*
@@ -22,9 +24,6 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 *       1 si success
 */
 int launch(){
-    initKeys(); //Initialisation touches clavier
-    
-    
     gestionNiveau();
     
     //Free
@@ -44,8 +43,8 @@ void gestionNiveau(){
     while(continuer){
         //Au premier lancement on affiche pas le menu d'entre niveau
         if(first_time_executed != 1){
-            char * str_button = (joueur_a_reussi_niveau) ? "Suivant" : "Recommencer"; 
-            continuer = afficheMenu(str_button);
+            char * str_button = (joueur_a_reussi_niveau) ? "  Suivant" : "Recommencer"; 
+            continuer = afficheMenu(str_button,0);
             printf("CONTINUER : %d\n",continuer  );
         }
         
@@ -55,20 +54,26 @@ void gestionNiveau(){
             if(chargerNiveau(monde, niveau) == 0){
                 continuer = 0;
             }else{
-                // Lancement de la boucle d'affichage
+		//Initialisation touches clavier
+		initKeys();
+		// Lancement de la boucle d'affichage
                 loop(monde);    
                 joueur_a_reussi_niveau = joueur_a_gagne(monde);
                 freeMonde(monde);
             }
 
             //Si le joueur a gagné il passe au niveau suivant
-            if(joueur_a_reussi_niveau == 1)
-                niveau++;  
-            first_time_executed = 0;          
+            if(joueur_a_reussi_niveau == 1){
+		niveau++; 
+		if(niveau > nbNiv){
+			afficheMenu("BRAVO TU AS FINI LE JEU ! ",1);
+			continuer = 0;
+		}
+	     }
+           first_time_executed = 0;        
         }
     }
 }
-
 
 
 /*

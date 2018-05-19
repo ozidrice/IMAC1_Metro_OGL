@@ -20,10 +20,10 @@
 
 
 /* permet l'affichage de tout les éléments du menu */
-void ElementMenu(char *str_button1);
+void ElementMenu(char *str_button1, int fin);
 
 /* Affiche l'image du Menu */
-int afficheMenu(char *str_button1);
+int afficheMenu(char *str_button1, int fin);
 
 /* permet Affichage du titre */
 void afficheTitre();
