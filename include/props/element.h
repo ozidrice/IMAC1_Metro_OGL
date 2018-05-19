@@ -65,7 +65,7 @@ void afficheElement(struct Element *e);
 Joueur *creerJoueur(GLuint *texture);
 
 /* Malloc un Ennemi */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture);
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y,Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture, int change);
 
 
 /* Malloc un Obstacle */

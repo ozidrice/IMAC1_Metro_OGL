@@ -141,27 +141,33 @@ Joueur *creerJoueur(GLuint *texture){
 	int pa = 1; 
 	float x = -.9;
 	float y = 0;
-	float taille = .1; 
+	float taille = .17; 
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = vit_deplacement_y = 1/100.; 
 	Uint32 intervalle_projectile = 2000;
 	int nombreProjectileParTir = 1;
 	float angleTir = M_PI*2;
-	float taille_projectile = .03;
+	float taille_projectile = .02;
 	float vit_deplacement_projectile = 1/20.;
 	return (Joueur*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
 
-/*___________________ENNEMI_____________________*/
+/*___________________ENNEMI__________________ ___*/
 
 /*
 *	malloc un Ennemi 
+*	change = 0 --> taille : 0.05 pv = 5 si = change = 1 --> taille = 1 pv = 20
 */
-Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture){
+Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplacement_y, Uint32 intervalle_projectile, int nombreProjectileParTir, float angleTir, float taille_projectile, float vit_deplacement_projectile, GLuint *texture, int change){
 	int pv = 5;
 	int pa = 1;
-	float taille = .1;
+	float taille = .05;
+	if( change == 1){
+		taille = 1;
+		pv = 20;
+		
+	}
 	return (Ennemi*) initElement(pv,pa,x,y,taille,vit_deplacement_x,vit_deplacement_y,intervalle_projectile,nombreProjectileParTir,angleTir,taille_projectile,vit_deplacement_projectile,texture);
 }
 
@@ -176,7 +182,7 @@ Ennemi *creerEnnemi(float x, float y, float vit_deplacement_x, float vit_deplace
 Obstacle *creerObstacle(float x, float y, GLuint *texture){
 	int pv = -1;
 	int pa = 1; 
-	float taille = .1; 
+	float taille = .05; 
 	float vit_deplacement_x, vit_deplacement_y;
 	vit_deplacement_x = -1/1000.;
 	vit_deplacement_y = 0; 
