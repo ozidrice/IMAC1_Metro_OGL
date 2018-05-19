@@ -20,7 +20,7 @@
 
 
 /* permet l'affichage de tout les éléments du menu */
-void ElementMenu(char *str_button1, int fin);
+void Elements(char *str_button1, int fin);
 
 /* Affiche l'image du Menu */
 int afficheMenu(char *str_button1, int fin);

@@ -14,7 +14,7 @@ void gestionNiveau();
 
 
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
-static int nbNiv = 1;
+static int nbNiv = 3;
 
 
 /*
@@ -119,7 +119,6 @@ void loop(Monde *monde){
 
         
         if(1 == est_finit(monde)){
-            printf("LOL\n");
             loop=0;
         }
 

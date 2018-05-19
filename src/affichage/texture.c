@@ -12,7 +12,8 @@ static GLuint *TEXTURE_MALUS_VIE;
 static GLuint *TEXTURE_MALUS_TAILLE;
 static GLuint *TEXTURE_MALUS_TROU;
 static GLuint *TEXTURE_TITRE;
-static GLuint *TEXTURE_MENU;
+static GLuint *TEXTURE_MENU;	
+static GLuint *TEXTURE_FIN;
 
 
 /*
@@ -32,6 +33,7 @@ void preload_texture(){
 	TEXTURE_MALUS_TROU = generateID("img/malus_trou.png");
 	TEXTURE_TITRE = generateID("img/title.png");
 	TEXTURE_MENU = generateID("img/menuu.png");
+	TEXTURE_FIN = generateID("img/fin1.png");
 
 }
 
@@ -52,6 +54,7 @@ void free_texture(){
 	glDeleteTextures(1,TEXTURE_MALUS_TROU);
 	glDeleteTextures(1,TEXTURE_TITRE);
 	glDeleteTextures(1,TEXTURE_MENU);
+	glDeleteTextures(1,TEXTURE_FIN);
 
 }
 
@@ -85,6 +88,8 @@ GLuint *get_texture(char *str){
 		return TEXTURE_TITRE;
 	if(strcmp(str,"TEXTURE_MENU") == 0)
 		return TEXTURE_MENU;
+	if(strcmp(str,"TEXTURE_FIN") == 0)
+		return TEXTURE_FIN;
 	return NULL;
 }
 

@@ -57,7 +57,7 @@ int afficheMenu(char *str_button1, int fin){
 	        glEnable(GL_TEXTURE_2D);
 	       	glEnable(GL_BLEND);
 	    	glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
-		ElementMenu(str_button1,fin);		
+		Elements(str_button1,fin);		
 
         	glDisable(GL_BLEND);
 	        glDisable(GL_TEXTURE_2D);
@@ -74,7 +74,7 @@ int afficheMenu(char *str_button1, int fin){
 /* 
 * Permet affichage des différents éléments du menu
 */
-void ElementMenu(char *str_button1, int fin){
+void Elements(char *str_button1, int fin){
 	if (fin == 0){
 		GLuint *texture_menu = get_texture("TEXTURE_MENU");
 		glBindTexture(GL_TEXTURE_2D, *texture_menu);
@@ -85,10 +85,10 @@ void ElementMenu(char *str_button1, int fin){
 	}
 	else{
 		char* font_path ="bin/font/Moon Flower.ttf";
-		GLuint *texture_menu = get_texture("TEXTURE_MENU");
-		glBindTexture(GL_TEXTURE_2D, *texture_menu);
+		GLuint *texture_fin = get_texture("TEXTURE_FIN");
+		glBindTexture(GL_TEXTURE_2D, *texture_fin);
 		traceRectanglePlein(-1,-1, 1,1);
-		displayText(str_button1,220,100,100,font_path, 0, 0,0);
+		displayText(str_button1,240,100,100,font_path, 0, 0,0);
 	}
 }
 
