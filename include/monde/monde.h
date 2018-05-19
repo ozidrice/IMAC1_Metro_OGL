@@ -30,6 +30,8 @@ void afficherMonde(Monde *m);
 */
 int est_finit(Monde *m);
 
+int joueur_a_gagne(Monde *m);
+
 /* Ajoute le malus m au Monde */
 void ajouterMalus(Monde *m, Malus *ma);
 
@@ -46,7 +48,7 @@ void ajouterEnnemi(Monde *m, Ennemi *e);
 void chargerMonde(Monde *m, char * MAP);
 
 /* Gestion des niveaux */
-void LancerMonde(Monde *m, int niveau);
+int chargerNiveau(Monde *m, int niveau);
 
 /* obtient un pixel de la surface */
 Uint32 obtenirPixel(SDL_Surface *surface, int x, int y);

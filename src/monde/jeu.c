@@ -10,6 +10,7 @@ void displayText();
 void handle_inputs();
 void affichageHUD(Monde *m);
 void freeHUD();
+void gestionNiveau();
 
 static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 
@@ -22,19 +23,50 @@ static int KEYS[322]; //Record status of all keys (0 == up & 1 == down)
 */
 int launch(){
     initKeys(); //Initialisation touches clavier
-    Monde *monde = creerMonde(); //Creation du monde
-    LancerMonde(monde, 1);
-
-    // Lancement de la boucle d'affichage
-    loop(monde);
+    
+    
+    gestionNiveau();
     
     //Free
     freeWindow();
     freeHUD();
-    freeMonde(monde);
     free_texture();
     freeMenu();
     return 1;
+}
+
+/*Charge le niveau courant et lance la partie*/
+void gestionNiveau(){
+    Monde *monde; 
+
+    //Chargement du monde en fonction du niveau
+    int first_time_executed = 1, niveau = 1, continuer = 1, joueur_a_reussi_niveau = 0;
+    while(continuer){
+        //Au premier lancement on affiche pas le menu d'entre niveau
+        if(first_time_executed != 1){
+            char * str_button = (joueur_a_reussi_niveau) ? "Suivant" : "Recommencer"; 
+            continuer = afficheMenu(str_button);
+            printf("CONTINUER : %d\n",continuer  );
+        }
+        
+        if(continuer){
+            //On charge le niveau
+            monde = creerMonde(); 
+            if(chargerNiveau(monde, niveau) == 0){
+                continuer = 0;
+            }else{
+                // Lancement de la boucle d'affichage
+                loop(monde);    
+                joueur_a_reussi_niveau = joueur_a_gagne(monde);
+                freeMonde(monde);
+            }
+
+            //Si le joueur a gagné il passe au niveau suivant
+            if(joueur_a_reussi_niveau == 1)
+                niveau++;  
+            first_time_executed = 0;          
+        }
+    }
 }
 
 

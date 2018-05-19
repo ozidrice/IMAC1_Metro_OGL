@@ -20,16 +20,16 @@
 
 
 /* permet l'affichage de tout les éléments du menu */
-void ElementMenu();
+void ElementMenu(char *str_button1);
 
 /* Affiche l'image du Menu */
-int afficheMenu();
+int afficheMenu(char *str_button1);
 
 /* permet Affichage du titre */
 void afficheTitre();
 
 /* affiche bouton et texte du bouton */
-void afficheBouton();
+void afficheBouton(char *str_button1);
 
 /* Libère la texture appliquée pour le menu */
 void freeMenu();

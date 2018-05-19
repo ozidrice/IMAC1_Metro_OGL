@@ -2,7 +2,10 @@
 
 int main(int argc, char const *argv[])
 {
-	if(afficheMenu() == 1)
-		return EXIT_SUCCESS;
+	if(afficheMenu("Jouer") == 1){
+		if(launch() == 1){
+			return EXIT_SUCCESS;
+		}
+	}
 	return EXIT_FAILURE;
 }

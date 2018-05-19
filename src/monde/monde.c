@@ -5,7 +5,7 @@
 static unsigned int WINDOW_WIDTH = 1200;
 static unsigned int WINDOW_HEIGHT = 800;
 
-static float VIT_DEFILEMENT_DEFAUT = 1; //n fois la vitesse de déplacement définie de l'élement
+static float VIT_DEFILEMENT_DEFAUT = 5; //n fois la vitesse de déplacement définie de l'élement
 
 /* 
 *	Malloc un monde 
@@ -40,23 +40,29 @@ void afficherMonde(Monde *m){
 
 
 /* lance la map correspondant au niveau */
-
-void LancerMonde(Monde *m, int niveau){
+/* Return 1 si ok 
+	0 si le niveau n'existe pas 
+*/
+int chargerNiveau(Monde *m, int niveau){
 	char * MAP = NULL;
  	switch(niveau) {
         case 1:
-            MAP = "bin/map/lev03.bmp";
+            MAP = "bin/map/lev01.bmp";
               break;
         case 2:
-			MAP = "bin/map/map6.bmp";
+            MAP = "bin/map/lev02.bmp";
               break;
         case 3:
-			MAP = "bin/map/map5.bmp"; 
+            MAP = "bin/map/lev03.bmp"; 
            	  break;
         default:
  	 	  break;
     }
-	chargerMonde(m,MAP);
+    if(MAP != NULL){
+		chargerMonde(m,MAP);
+    	return 1;
+    }
+    return 0;
 }
 
 /*
@@ -64,13 +70,18 @@ void LancerMonde(Monde *m, int niveau){
 *	0 sinon
 */
 int est_finit(Monde *m){
-	if(m->joueur == NULL){
-		printf("1\n");
+	if(m->joueur == NULL || m->joueur->pv <= 0){
 		return 1;   
 	}
 	// printf("%p\n",m->liste_ennemis );
 	if(m->liste_ennemis == NULL){
-		printf("2\n");
+		return 1;
+	}
+	return 0;
+}
+
+int joueur_a_gagne(Monde *m){
+	if(est_finit(m) == 1 && m->joueur != NULL && m->joueur->pv > 0){
 		return 1;
 	}
 	return 0;
@@ -158,10 +169,10 @@ void ajouterEnnemi(Monde *m, Ennemi *e){
 *	Fait défiler le monde d'une unité de défilement
 */
 void defilerMonde(Monde *m){
-	moving(&(m->liste_obstacle), 1., 1., 0,0,0,1.);
-	moving(&(m->liste_ennemis), 1., 1., 0,0,0,1.);
-	movingElementDeclencheur(&(m->liste_bonus), 1., 1., 0,0,0,1.);
-	movingElementDeclencheur(&(m->liste_malus), 1., 1., 0,0,0,1.);
+	moving(&(m->liste_obstacle), m->vit_defilement_x, 1., 0,0,0,1.);
+	moving(&(m->liste_ennemis), m->vit_defilement_x, 1., 0,0,0,1.);
+	movingElementDeclencheur(&(m->liste_bonus), m->vit_defilement_x, 1., 0,0,0,1.);
+	movingElementDeclencheur(&(m->liste_malus), m->vit_defilement_x, 1., 0,0,0,1.);
 }
 
 
@@ -213,15 +224,10 @@ Uint32 obtenirPixel(SDL_Surface *surface, int x, int y)
 void chargerMonde(Monde *m, char * MAP){
 
 	SDL_Surface *map = NULL;
-	printf("%s\n", MAP);
 	map = SDL_LoadBMP(MAP);
 	
 	float x,y;
 	Uint8 r, g,b,a;
-	printf("hauteur %d\n", map->h);
-	printf("largeur %d\n", map->w);
-
-
 	for(y=0.; y<map->h; y+=36.)
 	{
 		for(x=0.; x<map->w; x+=36.)
